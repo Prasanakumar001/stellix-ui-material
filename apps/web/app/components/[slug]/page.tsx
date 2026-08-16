@@ -39,6 +39,9 @@ import {
   AgentStatus, ToolCallCard, ModelSelector, TokenCounter, ConversationList, SystemPrompt,
   // Phase 12 compositions
   AIChatLayout, DashboardLayout, AgentWorkbench, CodeReview, DataExplorer, OnboardingWizard,
+  // Phase 13 animations
+  GlimmEffect, GlidingHighlight, MorphTransition, ConfettiEffect,
+  TypewriterEffect, NumberTicker, ProgressRing, RippleEffect, ShakeAnimation, SlideReveal,
 } from '@stellix/ui-web';
 
 // --- Search is rendered inline to avoid fixed-position overlay escaping preview ---
@@ -2642,6 +2645,216 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
 <OnboardingWizard />`,
     nativeCode: 'Same API - import from @stellix/ui-native',
     propsTable: [],
+  },
+
+  'glimm-effect': {
+    title: 'GlimmEffect',
+    description: 'Shimmer / glimmer highlight that sweeps across wrapped content to draw attention or indicate loading.',
+    category: 'Animations',
+    preview: <GlimmEffect active><div className="rounded-xl border border-line bg-surface p-8 text-center text-ink">Hover to see shimmer</div></GlimmEffect>,
+    webCode: `import { GlimmEffect } from '@stellix/ui-web';
+
+<GlimmEffect active>
+  <div className="rounded-xl border border-line bg-surface p-8 text-center text-ink">
+    Hover to see shimmer
+  </div>
+</GlimmEffect>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { prop: 'active', type: 'boolean', default: 'false', description: 'Enable the shimmer sweep animation.' },
+      { prop: 'duration', type: 'number', default: '1200', description: 'Duration of one sweep cycle in ms.' },
+      { prop: 'children', type: 'ReactNode', default: '—', description: 'Content to wrap with the shimmer effect.' },
+    ],
+  },
+
+  'gliding-highlight': {
+    title: 'GlidingHighlight',
+    description: 'Animated pill that slides between tab/nav items, providing a smooth active-state indicator.',
+    category: 'Animations',
+    preview: <GlidingHighlight items={[{id: 'a', label: 'Overview'}, {id: 'b', label: 'API'}, {id: 'c', label: 'Examples'}, {id: 'd', label: 'FAQ'}]} activeId="b" onChange={() => {}} />,
+    webCode: `import { GlidingHighlight } from '@stellix/ui-web';
+
+<GlidingHighlight
+  items={[
+    { id: 'a', label: 'Overview' },
+    { id: 'b', label: 'API' },
+    { id: 'c', label: 'Examples' },
+    { id: 'd', label: 'FAQ' },
+  ]}
+  activeId="b"
+  onChange={(id) => setActive(id)}
+/>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { prop: 'items', type: '{ id: string; label: string }[]', default: '—', description: 'List of navigation items.' },
+      { prop: 'activeId', type: 'string', default: '—', description: 'ID of the currently active item.' },
+      { prop: 'onChange', type: '(id: string) => void', default: '—', description: 'Callback when user selects a different item.' },
+    ],
+  },
+
+  'morph-transition': {
+    title: 'MorphTransition',
+    description: 'Smooth fade/scale transition triggered when its key prop changes, ideal for route or state changes.',
+    category: 'Animations',
+    preview: <MorphTransition transitionKey="demo"><div className="rounded-xl border border-line bg-surface p-6 text-center text-ink">Content fades in</div></MorphTransition>,
+    webCode: `import { MorphTransition } from '@stellix/ui-web';
+
+<MorphTransition transitionKey={currentView}>
+  <div className="rounded-xl border border-line bg-surface p-6 text-center text-ink">
+    Content fades in
+  </div>
+</MorphTransition>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { prop: 'transitionKey', type: 'string | number', default: '—', description: 'Changing this value triggers the transition.' },
+      { prop: 'duration', type: 'number', default: '300', description: 'Transition duration in ms.' },
+      { prop: 'children', type: 'ReactNode', default: '—', description: 'Content to transition.' },
+    ],
+  },
+
+  'confetti-effect': {
+    title: 'ConfettiEffect',
+    description: 'Burst of confetti particles over wrapped content — perfect for success states and celebrations.',
+    category: 'Animations',
+    preview: <ConfettiEffect active={false}><div className="rounded-xl border border-line bg-surface p-6 text-center text-ink text-sm">Click the Preview tab to trigger</div></ConfettiEffect>,
+    webCode: `import { ConfettiEffect } from '@stellix/ui-web';
+
+<ConfettiEffect active={showConfetti}>
+  <div className="rounded-xl border border-line bg-surface p-6 text-center text-ink text-sm">
+    Click the Preview tab to trigger
+  </div>
+</ConfettiEffect>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { prop: 'active', type: 'boolean', default: 'false', description: 'Set to true to fire the confetti burst.' },
+      { prop: 'count', type: 'number', default: '80', description: 'Number of confetti particles.' },
+      { prop: 'children', type: 'ReactNode', default: '—', description: 'Content beneath the confetti layer.' },
+    ],
+  },
+
+  'typewriter-effect': {
+    title: 'TypewriterEffect',
+    description: 'Types out a string character-by-character with a blinking cursor, mimicking a terminal or live narration.',
+    category: 'Animations',
+    preview: <TypewriterEffect text="Stellix UI Material ships 92 components for Next.js and React Native." speed={40} />,
+    webCode: `import { TypewriterEffect } from '@stellix/ui-web';
+
+<TypewriterEffect
+  text="Stellix UI Material ships 92 components for Next.js and React Native."
+  speed={40}
+/>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { prop: 'text', type: 'string', default: '—', description: 'The string to type out.' },
+      { prop: 'speed', type: 'number', default: '50', description: 'Delay in ms between each character.' },
+      { prop: 'loop', type: 'boolean', default: 'false', description: 'Restart from the beginning after finishing.' },
+    ],
+  },
+
+  'number-ticker': {
+    title: 'NumberTicker',
+    description: 'Animates a numeric value counting up (or down) to the target, with optional prefix, suffix, and decimals.',
+    category: 'Animations',
+    preview: <div className="flex gap-8"><NumberTicker value={1456} prefix="" suffix=" tests" /><NumberTicker value={92} suffix=" components" /><NumberTicker value={99.9} suffix="%" decimals={1} /></div>,
+    webCode: `import { NumberTicker } from '@stellix/ui-web';
+
+<div className="flex gap-8">
+  <NumberTicker value={1456} suffix=" tests" />
+  <NumberTicker value={92} suffix=" components" />
+  <NumberTicker value={99.9} suffix="%" decimals={1} />
+</div>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { prop: 'value', type: 'number', default: '—', description: 'Target numeric value to animate to.' },
+      { prop: 'suffix', type: 'string', default: "''", description: 'Text appended after the number.' },
+      { prop: 'decimals', type: 'number', default: '0', description: 'Number of decimal places to display.' },
+    ],
+  },
+
+  'progress-ring': {
+    title: 'ProgressRing',
+    description: 'Circular SVG progress indicator with an optional center label, configurable size and stroke width.',
+    category: 'Animations',
+    preview: <div className="flex gap-6"><ProgressRing value={75} label="75%" /><ProgressRing value={45} size={48} strokeWidth={3} /><ProgressRing value={100} label="Done" /></div>,
+    webCode: `import { ProgressRing } from '@stellix/ui-web';
+
+<div className="flex gap-6">
+  <ProgressRing value={75} label="75%" />
+  <ProgressRing value={45} size={48} strokeWidth={3} />
+  <ProgressRing value={100} label="Done" />
+</div>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { prop: 'value', type: 'number', default: '—', description: 'Progress percentage (0–100).' },
+      { prop: 'size', type: 'number', default: '64', description: 'Diameter of the ring in px.' },
+      { prop: 'strokeWidth', type: 'number', default: '4', description: 'Thickness of the progress arc.' },
+    ],
+  },
+
+  'ripple-effect': {
+    title: 'RippleEffect',
+    description: 'Material-style ink ripple that radiates from the pointer on click, wrapping any interactive element.',
+    category: 'Animations',
+    preview: <RippleEffect><button className="rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white">Click for ripple</button></RippleEffect>,
+    webCode: `import { RippleEffect } from '@stellix/ui-web';
+
+<RippleEffect>
+  <button className="rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white">
+    Click for ripple
+  </button>
+</RippleEffect>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { prop: 'color', type: 'string', default: "'rgba(255,255,255,0.35)'", description: 'Color of the ripple overlay.' },
+      { prop: 'duration', type: 'number', default: '500', description: 'Ripple expand duration in ms.' },
+      { prop: 'children', type: 'ReactNode', default: '—', description: 'Element that receives the ripple on click.' },
+    ],
+  },
+
+  'shake-animation': {
+    title: 'ShakeAnimation',
+    description: 'Horizontal shake animation applied to wrapped content — ideal for invalid form inputs or error states.',
+    category: 'Animations',
+    preview: <ShakeAnimation shake={false}><div className="rounded-lg border-2 border-red bg-red/5 p-4 text-center text-sm text-red">Invalid input - set shake=true to trigger</div></ShakeAnimation>,
+    webCode: `import { ShakeAnimation } from '@stellix/ui-web';
+
+<ShakeAnimation shake={hasError}>
+  <div className="rounded-lg border-2 border-red bg-red/5 p-4 text-center text-sm text-red">
+    Invalid input - set shake=true to trigger
+  </div>
+</ShakeAnimation>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { prop: 'shake', type: 'boolean', default: 'false', description: 'Trigger the shake animation when true.' },
+      { prop: 'intensity', type: 'number', default: '6', description: 'Pixel offset for the shake displacement.' },
+      { prop: 'children', type: 'ReactNode', default: '—', description: 'Content to apply the shake to.' },
+    ],
+  },
+
+  'slide-reveal': {
+    title: 'SlideReveal',
+    description: 'Slides content into view from a chosen direction when it enters the viewport, with an optional delay.',
+    category: 'Animations',
+    preview: <div className="space-y-3"><SlideReveal direction="up" delay={0}><div className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">Slides up</div></SlideReveal><SlideReveal direction="right" delay={200}><div className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">Slides right</div></SlideReveal><SlideReveal direction="left" delay={400}><div className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">Slides left</div></SlideReveal></div>,
+    webCode: `import { SlideReveal } from '@stellix/ui-web';
+
+<div className="space-y-3">
+  <SlideReveal direction="up" delay={0}>
+    <div className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">Slides up</div>
+  </SlideReveal>
+  <SlideReveal direction="right" delay={200}>
+    <div className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">Slides right</div>
+  </SlideReveal>
+  <SlideReveal direction="left" delay={400}>
+    <div className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">Slides left</div>
+  </SlideReveal>
+</div>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { prop: 'direction', type: "'up' | 'down' | 'left' | 'right'", default: "'up'", description: 'Direction the content slides in from.' },
+      { prop: 'delay', type: 'number', default: '0', description: 'Delay in ms before the animation starts.' },
+      { prop: 'children', type: 'ReactNode', default: '—', description: 'Content to reveal.' },
+    ],
   },
 };
 

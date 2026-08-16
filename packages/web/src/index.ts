@@ -97,6 +97,18 @@ export { CodeReview } from './components/CodeReview';
 export { DataExplorer } from './components/DataExplorer';
 export { OnboardingWizard } from './components/OnboardingWizard';
 
+// Phase 13 — Animations & Interactions
+export { GlimmEffect } from './components/GlimmEffect';
+export { GlidingHighlight } from './components/GlidingHighlight';
+export { MorphTransition } from './components/MorphTransition';
+export { ConfettiEffect } from './components/ConfettiEffect';
+export { TypewriterEffect } from './components/TypewriterEffect';
+export { NumberTicker } from './components/NumberTicker';
+export { ProgressRing } from './components/ProgressRing';
+export { RippleEffect } from './components/RippleEffect';
+export { ShakeAnimation } from './components/ShakeAnimation';
+export { SlideReveal } from './components/SlideReveal';
+
 // Tailwind preset
 export { default as stellixPreset } from './tokens/tailwind-preset';
 

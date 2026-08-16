@@ -1,0 +1,1 @@
+export { GlidingHighlight } from './GlidingHighlight';

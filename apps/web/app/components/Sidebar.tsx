@@ -161,6 +161,22 @@ const nav = [
       { label: 'OnboardingWizard', href: '/components/onboarding-wizard' },
     ],
   },
+  {
+    label: 'Animations',
+    icon: SparklesIcon,
+    children: [
+      { label: 'GlimmEffect', href: '/components/glimm-effect' },
+      { label: 'GlidingHighlight', href: '/components/gliding-highlight' },
+      { label: 'MorphTransition', href: '/components/morph-transition' },
+      { label: 'ConfettiEffect', href: '/components/confetti-effect' },
+      { label: 'TypewriterEffect', href: '/components/typewriter-effect' },
+      { label: 'NumberTicker', href: '/components/number-ticker' },
+      { label: 'ProgressRing', href: '/components/progress-ring' },
+      { label: 'RippleEffect', href: '/components/ripple-effect' },
+      { label: 'ShakeAnimation', href: '/components/shake-animation' },
+      { label: 'SlideReveal', href: '/components/slide-reveal' },
+    ],
+  },
 ];
 
 function NavGroup({ item, pathname }: { item: (typeof nav)[number]; pathname: string }) {
