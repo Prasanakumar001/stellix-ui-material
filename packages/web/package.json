@@ -1,0 +1,68 @@
+{
+  "name": "@stellix/ui-web",
+  "version": "0.1.1",
+  "description": "Web components for Stellix UI Material — Tailwind CSS + Next.js",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "ui-components",
+    "stellix",
+    "tailwindcss",
+    "nextjs",
+    "heroicons",
+    "responsive",
+    "dark-mode",
+    "accessible"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --external react --external react-dom",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "@stellix/ui-core": "workspace:*",
+    "@stellix/ui-tokens": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.0"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}

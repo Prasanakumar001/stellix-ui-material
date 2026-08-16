@@ -1,0 +1,1 @@
+export { DiffTable } from './DiffTable';

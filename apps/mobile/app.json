@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Stellix UI Material Demo",
+    "slug": "stellix-ui-material-demo",
+    "version": "0.1.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#fafafa"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.stellix.uimaterial.demo"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#fafafa"
+      },
+      "package": "com.stellix.uimaterial.demo"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "stellix-ui"
+  }
+}
