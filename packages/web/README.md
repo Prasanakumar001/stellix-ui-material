@@ -2,13 +2,13 @@
 
 > 19 production-ready UI components for Next.js — Tailwind CSS 4, Heroicons, fully responsive, dark mode, accessible.
 
-**[Live Demo](https://stellix-ui-material.vercel.app/)** | [GitHub](https://github.com/Prasanakumar001/stellix-ui-material)
+**[Live Demo](https://stellix-ui-material.vercel.app/)**
 
 ---
 
 ## Why @stellix/ui-web?
 
-- **19 components** — every component from [beautifului.dev](https://www.beautifului.dev/), rebuilt production-ready
+- **19 components** — built by Stellix Private Ltd, production-ready components with modern design
 - **4 breakpoints** — mobile, tablet, web, big screen — every component adapts
 - **Dark mode** — full token swap via CSS variables, one-click toggle
 - **Accessible** — WCAG 2.1 AA, ARIA attributes, keyboard navigation, focus-visible, skip-to-content
@@ -165,4 +165,4 @@ export default function Page() {
 
 ## License
 
-MIT - [Stellix Private Ltd](https://github.com/Prasanakumar001/stellix-ui-material)
+MIT - Stellix Private Ltd

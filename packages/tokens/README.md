@@ -2,7 +2,7 @@
 
 > Shared design tokens for the Stellix UI Material component library.
 
-**[Live Demo](https://stellix-ui-material.vercel.app/)** | [GitHub](https://github.com/Prasanakumar001/stellix-ui-material)
+**[Live Demo](https://stellix-ui-material.vercel.app/)**
 
 ## What is this?
 
@@ -62,7 +62,7 @@ console.log(easings.spring);      // 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 
 ## Part Of
 
-This package is part of the [Stellix UI Material](https://github.com/stellix-private-limited) component library:
+This package is part of the Stellix UI Material component library:
 
 | Package | Purpose |
 |---|---|

@@ -2,7 +2,7 @@
 
 > Headless hooks, TypeScript types, and utilities for the Stellix UI Material component library.
 
-**[Live Demo](https://stellix-ui-material.vercel.app/)** | [GitHub](https://github.com/Prasanakumar001/stellix-ui-material)
+**[Live Demo](https://stellix-ui-material.vercel.app/)**
 
 ## What is this?
 

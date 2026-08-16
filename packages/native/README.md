@@ -2,7 +2,7 @@
 
 > 19 React Native components for mobile apps — built with NativeWind and Reanimated.
 
-**[Live Demo (Web version)](https://stellix-ui-material.vercel.app/)** | [GitHub](https://github.com/Prasanakumar001/stellix-ui-material)
+**[Live Demo (Web version)](https://stellix-ui-material.vercel.app/)**
 
 ## What is this?
 
