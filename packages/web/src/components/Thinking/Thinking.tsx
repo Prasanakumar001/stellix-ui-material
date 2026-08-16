@@ -61,7 +61,7 @@ function TraceItem({ step, index }: { step: ThinkingStep; index: number }) {
         aria-expanded={isOpen}
         aria-label={`${step.type} trace — ${step.status || 'pending'}`}
         className={cn(
-          'flex w-full items-center gap-3 px-4 py-3 text-left transition-colors',
+          'flex w-full items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3 text-left transition-colors',
           'hover:bg-surface-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:rounded-lg',
         )}
       >
@@ -147,18 +147,18 @@ export function Thinking({ steps, defaultOpen = false }: ThinkingProps) {
         <span className="flex-1 text-sm font-semibold text-ink">Thinking</span>
 
         {/* Step counter badges */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 shrink-0">
           {completedCount > 0 && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-green/10 px-2 py-0.5 text-xs font-medium text-green">
+            <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-green/10 px-2 py-0.5 text-xs font-medium text-green">
               {completedCount} done
             </span>
           )}
           {activeCount > 0 && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+            <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
               {activeCount} active
             </span>
           )}
-          <span className="text-xs text-ink-3">{steps.length} steps</span>
+          <span className="text-xs text-ink-3">{steps.length}</span>
         </div>
 
         <ChevronDownIcon

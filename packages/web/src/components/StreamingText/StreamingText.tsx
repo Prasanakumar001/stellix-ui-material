@@ -123,7 +123,7 @@ export function StreamingText({
   return (
     <div className="space-y-4" data-testid="streaming-text">
       {/* Streaming text body */}
-      <div className="text-sm leading-relaxed text-ink sm:text-base">
+      <div className="text-sm leading-relaxed text-ink sm:text-base break-words overflow-hidden">
         {displayed.split(' ').filter(Boolean).map((word, i) => (
           <span
             key={i}

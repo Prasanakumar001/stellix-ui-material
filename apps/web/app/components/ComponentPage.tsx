@@ -153,14 +153,14 @@ export function ComponentPage({
 
           {/* Preview container — uses forced CSS vars to isolate from global theme */}
           <div
-            className="rounded-xl border p-2 overflow-hidden transition-colors duration-300"
+            className="rounded-xl border p-1 sm:p-2 overflow-hidden transition-colors duration-300"
             style={{
               borderColor: previewDark ? '#2e2e2e' : '#e5e5e5',
               backgroundColor: previewDark ? '#111111' : '#fafafa',
             }}
           >
             <div
-              className="mx-auto rounded-lg border p-6 transition-all duration-300 overflow-auto"
+              className="mx-auto rounded-lg border p-3 sm:p-6 transition-all duration-300 overflow-hidden"
               style={{
                 maxWidth: selectedViewport.width,
                 minHeight: 200,
