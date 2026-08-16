@@ -30,6 +30,13 @@ import {
   DonutChart, GaugeChart,
   MultiStepApproval,
   ComparisonCard,
+  // Phase 11 components
+  Button, Badge, Avatar, Tag, Tooltip, Toggle,
+  Input, Textarea, Select, Checkbox, Radio, Switch,
+  Toast, Alert, ProgressBar, Spinner, SkeletonBlock, EmptyState, StepIndicator,
+  Tabs, Breadcrumb, Pagination, Dropdown, Modal, Drawer, Accordion,
+  DataCard, TimelineView, FileTree, JSONViewer, MarkdownView, Changelog, ActivityFeed,
+  AgentStatus, ToolCallCard, ModelSelector, TokenCounter, ConversationList, SystemPrompt,
 } from '@stellix/ui-web';
 
 // --- Search is rendered inline to avoid fixed-position overlay escaping preview ---
@@ -1207,6 +1214,1343 @@ const componentRegistry: Record<string, ComponentConfig> = {
       { name: 'title', type: 'string', default: '-', description: 'Heading for the control panel.' },
       { name: 'properties', type: 'PropertyControl[]', default: '-', description: 'Array of control definitions (slider, toggle, select, color).' },
       { name: 'onChange', type: '(id: string, value: number | string | boolean) => void', default: '-', description: 'Fired whenever any control value changes.' },
+    ],
+  },
+
+  // -- Primitives ----------------------------------------------------------------
+  button: {
+    title: 'Button',
+    description: 'A versatile button component with five variants, three sizes, loading state, and icon support.',
+    category: 'Primitives',
+    preview: (
+      <div className="flex flex-wrap items-center gap-3">
+        <Button variant="primary">Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="ghost">Ghost</Button>
+        <Button variant="danger">Danger</Button>
+        <Button variant="outline">Outline</Button>
+        <Button variant="primary" loading>Loading</Button>
+        <Button variant="primary" disabled>Disabled</Button>
+      </div>
+    ),
+    webCode: `import { Button } from '@stellix/ui-web';
+
+<Button variant="primary">Save changes</Button>
+<Button variant="secondary">Cancel</Button>
+<Button variant="ghost">Learn more</Button>
+<Button variant="danger">Delete</Button>
+<Button variant="outline">Export</Button>
+<Button variant="primary" loading>Saving...</Button>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'variant', type: "'primary' | 'secondary' | 'ghost' | 'danger' | 'outline'", default: "'primary'", description: 'Visual style of the button.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Controls padding and font size.' },
+      { name: 'loading', type: 'boolean', default: 'false', description: 'Shows a spinner and disables interaction.' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents clicks and applies muted styling.' },
+      { name: 'onClick', type: '() => void', default: '-', description: 'Click handler.' },
+    ],
+  },
+
+  badge: {
+    title: 'Badge',
+    description: 'A compact status or label chip with color variants and optional dot indicator.',
+    category: 'Primitives',
+    preview: (
+      <div className="flex flex-wrap items-center gap-2">
+        <Badge color="default">Default</Badge>
+        <Badge color="blue">Info</Badge>
+        <Badge color="green">Success</Badge>
+        <Badge color="yellow">Warning</Badge>
+        <Badge color="red">Error</Badge>
+        <Badge color="purple">Beta</Badge>
+        <Badge color="green" dot>Live</Badge>
+      </div>
+    ),
+    webCode: `import { Badge } from '@stellix/ui-web';
+
+<Badge color="default">Default</Badge>
+<Badge color="blue">Info</Badge>
+<Badge color="green">Success</Badge>
+<Badge color="yellow">Warning</Badge>
+<Badge color="red">Error</Badge>
+<Badge color="green" dot>Live</Badge>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'color', type: "'default' | 'blue' | 'green' | 'yellow' | 'red' | 'purple'", default: "'default'", description: 'Color scheme of the badge.' },
+      { name: 'dot', type: 'boolean', default: 'false', description: 'Show a small pulsing dot before the label.' },
+      { name: 'children', type: 'ReactNode', default: '-', description: 'Badge label content.' },
+    ],
+  },
+
+  avatar: {
+    title: 'Avatar',
+    description: 'User avatar with image, initials fallback, status ring, and size variants.',
+    category: 'Primitives',
+    preview: (
+      <div className="flex flex-wrap items-center gap-4">
+        <Avatar size="xs" initials="AL" />
+        <Avatar size="sm" initials="AT" status="online" />
+        <Avatar size="md" initials="GH" status="away" />
+        <Avatar size="lg" src="https://i.pravatar.cc/80?img=3" alt="User" status="busy" />
+        <Avatar size="xl" initials="JN" />
+      </div>
+    ),
+    webCode: `import { Avatar } from '@stellix/ui-web';
+
+<Avatar size="sm" initials="AL" />
+<Avatar size="md" src="/avatars/user.png" alt="Ada Lovelace" status="online" />
+<Avatar size="lg" initials="AT" status="away" />`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'src', type: 'string', default: '-', description: 'Image URL for the avatar.' },
+      { name: 'initials', type: 'string', default: '-', description: 'Fallback initials shown when no image is provided.' },
+      { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Size of the avatar circle.' },
+      { name: 'status', type: "'online' | 'away' | 'busy' | 'offline'", default: '-', description: 'Status indicator ring color.' },
+    ],
+  },
+
+  tag: {
+    title: 'Tag',
+    description: 'A removable or static label tag for categorization and filtering.',
+    category: 'Primitives',
+    preview: (
+      <div className="flex flex-wrap items-center gap-2">
+        <Tag>TypeScript</Tag>
+        <Tag color="blue">React</Tag>
+        <Tag color="green" removable onRemove={() => {}}>Next.js</Tag>
+        <Tag color="purple" removable onRemove={() =>{}}>Tailwind</Tag>
+        <Tag color="orange">Node.js</Tag>
+      </div>
+    ),
+    webCode: `import { Tag } from '@stellix/ui-web';
+
+<Tag>TypeScript</Tag>
+<Tag color="blue">React</Tag>
+<Tag color="green" removable onRemove={() => removeTag('nextjs')}>Next.js</Tag>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'color', type: "'default' | 'blue' | 'green' | 'purple' | 'orange' | 'red'", default: "'default'", description: 'Tag color scheme.' },
+      { name: 'removable', type: 'boolean', default: 'false', description: 'Show a remove (x) button.' },
+      { name: 'onRemove', type: '() => void', default: '-', description: 'Called when the remove button is clicked.' },
+      { name: 'children', type: 'ReactNode', default: '-', description: 'Tag label.' },
+    ],
+  },
+
+  tooltip: {
+    title: 'Tooltip',
+    description: 'A lightweight tooltip that appears on hover with configurable placement.',
+    category: 'Primitives',
+    preview: (
+      <div className="flex flex-wrap items-center gap-6 py-6">
+        <Tooltip content="Save your changes" placement="top">
+          <Button variant="outline" size="sm">Hover me (top)</Button>
+        </Tooltip>
+        <Tooltip content="Opens in a new tab" placement="bottom">
+          <Button variant="outline" size="sm">Hover me (bottom)</Button>
+        </Tooltip>
+        <Tooltip content="Copy to clipboard" placement="right">
+          <Button variant="ghost" size="sm">Hover me (right)</Button>
+        </Tooltip>
+      </div>
+    ),
+    webCode: `import { Tooltip } from '@stellix/ui-web';
+
+<Tooltip content="Save your changes" placement="top">
+  <Button variant="outline">Save</Button>
+</Tooltip>
+
+<Tooltip content="Opens in a new tab" placement="bottom">
+  <a href="#">External link</a>
+</Tooltip>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'content', type: 'ReactNode', default: '-', description: 'Tooltip text or content.' },
+      { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right'", default: "'top'", description: 'Preferred placement relative to the trigger.' },
+      { name: 'delay', type: 'number', default: '300', description: 'Delay in ms before showing the tooltip.' },
+      { name: 'children', type: 'ReactNode', default: '-', description: 'Trigger element.' },
+    ],
+  },
+
+  toggle: {
+    title: 'Toggle',
+    description: 'A toggle button that switches between active and inactive states, useful for toolbar actions.',
+    category: 'Primitives',
+    preview: (
+      <div className="flex flex-col gap-4">
+        <Toggle checked={true} onChange={() => {}} label="Dark Mode" description="Enable dark theme" />
+        <Toggle checked={false} onChange={() => {}} label="Notifications" description="Receive email alerts" />
+      </div>
+    ),
+    webCode: `import { Toggle } from '@stellix/ui-web';
+
+const [bold, setBold] = useState(false);
+
+<Toggle pressed={bold} onPressedChange={setBold}>Bold</Toggle>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'pressed', type: 'boolean', default: 'false', description: 'Controlled pressed state.' },
+      { name: 'onPressedChange', type: '(pressed: boolean) => void', default: '-', description: 'Fired when the toggle state changes.' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents interaction.' },
+      { name: 'children', type: 'ReactNode', default: '-', description: 'Toggle label or icon.' },
+    ],
+  },
+
+  input: {
+    title: 'Input',
+    description: 'A styled text input with optional label, helper text, error state, and leading/trailing adornments.',
+    category: 'Primitives',
+    preview: (
+      <div className="space-y-4 max-w-sm">
+        <Input label="Email address" placeholder="you@example.com" type="email" />
+        <Input label="API Key" placeholder="sk-..." type="password" helperText="Keep this secret." />
+        <Input label="Username" placeholder="ada_lovelace" error="Username is already taken." />
+        <Input label="Search" placeholder="Search docs..." leadingIcon="search" />
+      </div>
+    ),
+    webCode: `import { Input } from '@stellix/ui-web';
+
+<Input label="Email" placeholder="you@example.com" type="email" />
+<Input label="API Key" type="password" helperText="Keep this secret." />
+<Input label="Username" error="Username is already taken." />`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'label', type: 'string', default: '-', description: 'Label displayed above the input.' },
+      { name: 'error', type: 'string', default: '-', description: 'Error message shown below; applies error styling.' },
+      { name: 'helperText', type: 'string', default: '-', description: 'Helper text shown below the input.' },
+      { name: 'leadingIcon', type: 'string', default: '-', description: 'Icon name to show inside the left edge.' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the input.' },
+    ],
+  },
+
+  textarea: {
+    title: 'Textarea',
+    description: 'A multi-line text input with auto-resize, character count, and error state.',
+    category: 'Primitives',
+    preview: (
+      <div className="space-y-4 max-w-sm">
+        <Textarea label="System prompt" placeholder="You are a helpful assistant..." value="" onChange={() => {}} rows={3} />
+        <Textarea label="Notes" placeholder="Add context..." value="Some notes here." onChange={() => {}} maxLength={300} rows={3} />
+      </div>
+    ),
+    webCode: `import { Textarea } from '@stellix/ui-web';
+
+<Textarea
+  label="System prompt"
+  placeholder="You are a helpful assistant..."
+  rows={4}
+  autoResize
+/>
+
+<Textarea
+  label="Notes"
+  maxLength={300}
+  showCount
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'label', type: 'string', default: '-', description: 'Label displayed above the textarea.' },
+      { name: 'rows', type: 'number', default: '3', description: 'Initial visible row count.' },
+      { name: 'autoResize', type: 'boolean', default: 'false', description: 'Expand height as content grows.' },
+      { name: 'maxLength', type: 'number', default: '-', description: 'Character limit.' },
+      { name: 'showCount', type: 'boolean', default: 'false', description: 'Display remaining character count.' },
+    ],
+  },
+
+  select: {
+    title: 'Select',
+    description: 'A styled select dropdown with label, placeholder, and option groups.',
+    category: 'Primitives',
+    preview: (
+      <div className="space-y-4 max-w-sm">
+        <Select
+          label="Model"
+          placeholder="Choose a model..."
+          options={[
+            { value: 'chimera-70b', label: 'Chimera-70B' },
+            { value: 'gpt-4o', label: 'GPT-4o' },
+            { value: 'claude-3-5', label: 'Claude 3.5 Sonnet' },
+            { value: 'gemini-pro', label: 'Gemini Pro' },
+          ]}
+        />
+        <Select
+          label="Output format"
+          options={[
+            { value: 'json', label: 'JSON' },
+            { value: 'markdown', label: 'Markdown' },
+            { value: 'plain', label: 'Plain text' },
+          ]}
+          defaultValue="json"
+        />
+      </div>
+    ),
+    webCode: `import { Select } from '@stellix/ui-web';
+
+<Select
+  label="Model"
+  placeholder="Choose a model..."
+  options={[
+    { value: 'chimera-70b', label: 'Chimera-70B' },
+    { value: 'gpt-4o',      label: 'GPT-4o' },
+  ]}
+  onChange={(val) => setModel(val)}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'options', type: 'SelectOption[]', default: '-', description: 'Array of { value, label } objects.' },
+      { name: 'label', type: 'string', default: '-', description: 'Label shown above the select.' },
+      { name: 'placeholder', type: 'string', default: '-', description: 'Placeholder when no value is selected.' },
+      { name: 'defaultValue', type: 'string', default: '-', description: 'Initially selected value (uncontrolled).' },
+      { name: 'onChange', type: '(value: string) => void', default: '-', description: 'Fired when selection changes.' },
+    ],
+  },
+
+  checkbox: {
+    title: 'Checkbox',
+    description: 'An accessible checkbox with label, indeterminate state, and error display.',
+    category: 'Primitives',
+    preview: (
+      <div className="space-y-3">
+        <Checkbox checked={true} onChange={() => {}} label="Agree to terms" />
+        <Checkbox checked={false} onChange={() => {}} label="Newsletter" />
+        <Checkbox checked={false} indeterminate={true} onChange={() => {}} label="Select all" />
+      </div>
+    ),
+    webCode: `import { Checkbox } from '@stellix/ui-web';
+
+const [enabled, setEnabled] = useState(true);
+
+<Checkbox
+  checked={enabled}
+  onChange={setEnabled}
+  label="Enable streaming responses"
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'checked', type: 'boolean', default: 'false', description: 'Controlled checked state.' },
+      { name: 'onChange', type: '(checked: boolean) => void', default: '-', description: 'Fired when the checkbox is toggled.' },
+      { name: 'label', type: 'string', default: '-', description: 'Label text shown beside the checkbox.' },
+      { name: 'indeterminate', type: 'boolean', default: 'false', description: 'Shows the indeterminate dash state.' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables interaction.' },
+    ],
+  },
+
+  radio: {
+    title: 'Radio',
+    description: 'A radio group for single-option selection with accessible keyboard navigation.',
+    category: 'Primitives',
+    preview: (
+      <Radio
+        name="plan"
+        value="pro"
+        onChange={() => {}}
+        options={[
+          { value: 'free', label: 'Free' },
+          { value: 'pro', label: 'Pro', description: 'For teams' },
+          { value: 'enterprise', label: 'Enterprise' },
+        ]}
+      />
+    ),
+    webCode: `import { Radio } from '@stellix/ui-web';
+
+const [model, setModel] = useState('gpt4o');
+
+<Radio
+  name="model"
+  value={model}
+  onChange={setModel}
+  options={[
+    { value: 'chimera', label: 'Chimera-70B', description: 'Best quality.' },
+    { value: 'gpt4o',   label: 'GPT-4o',      description: 'Balanced.' },
+    { value: 'haiku',   label: 'Claude Haiku', description: 'Fastest.' },
+  ]}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'options', type: 'RadioOption[]', default: '-', description: 'Array of { value, label, description? } items.' },
+      { name: 'value', type: 'string', default: '-', description: 'Currently selected value.' },
+      { name: 'onChange', type: '(value: string) => void', default: '-', description: 'Fired when selection changes.' },
+      { name: 'name', type: 'string', default: '-', description: 'HTML name attribute for the group.' },
+    ],
+  },
+
+  switch: {
+    title: 'Switch',
+    description: 'An accessible on/off switch control with label and optional helper text.',
+    category: 'Primitives',
+    preview: (
+      <div className="space-y-4">
+        <Switch checked={true} onChange={() => {}} label="Notifications" size="md" />
+        <Switch checked={false} onChange={() => {}} label="Dark mode" size="sm" />
+        <Switch checked={false} onChange={() => {}} label="Beta features" size="lg" />
+      </div>
+    ),
+    webCode: `import { Switch } from '@stellix/ui-web';
+
+const [enabled, setEnabled] = useState(false);
+
+<Switch
+  checked={enabled}
+  onChange={setEnabled}
+  label="Enable dark mode"
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'checked', type: 'boolean', default: 'false', description: 'Controlled on/off state.' },
+      { name: 'onChange', type: '(checked: boolean) => void', default: '-', description: 'Fired when toggled.' },
+      { name: 'label', type: 'string', default: '-', description: 'Label shown beside the switch.' },
+      { name: 'helperText', type: 'string', default: '-', description: 'Supporting text shown below the label.' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents interaction.' },
+    ],
+  },
+
+  // -- Feedback ------------------------------------------------------------------
+  toast: {
+    title: 'Toast',
+    description: 'Non-blocking notification toasts with success, error, warning, and info variants, auto-dismiss, and action buttons.',
+    category: 'Feedback',
+    preview: (
+      <div className="space-y-3">
+        <Toast variant="success" title="Changes saved" description="Your settings have been updated successfully." />
+        <Toast variant="error" title="Upload failed" description="The file exceeds the 10 MB size limit." />
+        <Toast variant="warning" title="Rate limit approaching" description="You have used 90% of your monthly quota." />
+        <Toast variant="info" title="New version available" description="Stellix UI 2.1.0 is ready to install." action={{ label: 'Update now', onClick: () => {} }} />
+      </div>
+    ),
+    webCode: `import { Toast } from '@stellix/ui-web';
+
+<Toast variant="success" title="Changes saved" description="Settings updated." />
+<Toast variant="error"   title="Upload failed" description="File exceeds limit." />
+<Toast
+  variant="info"
+  title="New version available"
+  action={{ label: 'Update now', onClick: () => install() }}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'variant', type: "'success' | 'error' | 'warning' | 'info'", default: "'info'", description: 'Determines icon and color.' },
+      { name: 'title', type: 'string', default: '-', description: 'Bold heading of the toast.' },
+      { name: 'description', type: 'string', default: '-', description: 'Supporting detail text.' },
+      { name: 'action', type: '{ label: string; onClick: () => void }', default: '-', description: 'Optional inline action button.' },
+      { name: 'duration', type: 'number', default: '4000', description: 'Auto-dismiss timeout in ms. Pass 0 to disable.' },
+    ],
+  },
+
+  alert: {
+    title: 'Alert',
+    description: 'An inline alert banner for page-level feedback with optional dismiss button.',
+    category: 'Feedback',
+    preview: (
+      <div className="space-y-3">
+        <Alert variant="info" title="API key expiring soon" description="Your API key expires in 7 days. Rotate it to avoid downtime." />
+        <Alert variant="success" title="Deployment complete" description="v2.4.0 is live on all regions." dismissible />
+        <Alert variant="warning" title="Deprecated endpoint" description="The v1 API will be removed on 2027-01-01." />
+        <Alert variant="error" title="Service disruption" description="The embeddings endpoint is experiencing elevated latency." />
+      </div>
+    ),
+    webCode: `import { Alert } from '@stellix/ui-web';
+
+<Alert variant="info"    title="API key expiring soon" description="Rotate it to avoid downtime." />
+<Alert variant="success" title="Deployment complete"   description="v2.4.0 is live." dismissible />
+<Alert variant="error"   title="Service disruption"    description="Elevated latency on embeddings." />`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'variant', type: "'info' | 'success' | 'warning' | 'error'", default: "'info'", description: 'Color and icon set.' },
+      { name: 'title', type: 'string', default: '-', description: 'Alert heading.' },
+      { name: 'description', type: 'string', default: '-', description: 'Detail message.' },
+      { name: 'dismissible', type: 'boolean', default: 'false', description: 'Show a close button.' },
+    ],
+  },
+
+  'progress-bar': {
+    title: 'ProgressBar',
+    description: 'A horizontal progress bar with labeled value, animated fill, and color variants.',
+    category: 'Feedback',
+    preview: (
+      <div className="space-y-4 max-w-md">
+        <ProgressBar value={72} label="Uploading..." showValue />
+        <ProgressBar value={45} color="green" label="Training" showValue />
+        <ProgressBar value={90} color="orange" label="Disk usage" showValue />
+        <ProgressBar value={100} color="blue" label="Complete" showValue />
+        <ProgressBar indeterminate label="Processing..." />
+      </div>
+    ),
+    webCode: `import { ProgressBar } from '@stellix/ui-web';
+
+<ProgressBar value={72} label="Uploading..." showValue />
+<ProgressBar value={45} color="green" label="Training" showValue />
+<ProgressBar indeterminate label="Processing..." />`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'value', type: 'number', default: '0', description: 'Progress value 0-100.' },
+      { name: 'color', type: "'default' | 'green' | 'orange' | 'blue' | 'red'", default: "'default'", description: 'Fill color.' },
+      { name: 'label', type: 'string', default: '-', description: 'Label shown above the bar.' },
+      { name: 'showValue', type: 'boolean', default: 'false', description: 'Show numeric percentage.' },
+      { name: 'indeterminate', type: 'boolean', default: 'false', description: 'Show animated indeterminate state.' },
+    ],
+  },
+
+  spinner: {
+    title: 'Spinner',
+    description: 'A simple circular loading spinner in multiple sizes and colors.',
+    category: 'Feedback',
+    preview: (
+      <div className="flex flex-wrap items-center gap-6">
+        <Spinner size="xs" />
+        <Spinner size="sm" />
+        <Spinner size="md" />
+        <Spinner size="lg" color="green" />
+        <Spinner size="xl" color="accent" />
+      </div>
+    ),
+    webCode: `import { Spinner } from '@stellix/ui-web';
+
+<Spinner size="sm" />
+<Spinner size="md" color="green" />
+<Spinner size="lg" color="accent" />`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Diameter of the spinner.' },
+      { name: 'color', type: "'default' | 'accent' | 'green' | 'red'", default: "'default'", description: 'Stroke color.' },
+    ],
+  },
+
+  'skeleton-block': {
+    title: 'SkeletonBlock',
+    description: 'Placeholder skeleton shapes for loading states - text lines, rectangles, and circles.',
+    category: 'Feedback',
+    preview: (
+      <div className="space-y-6 max-w-sm">
+        <div className="flex items-center gap-3">
+          <SkeletonBlock shape="circle" width={40} height={40} />
+          <div className="flex-1 space-y-2">
+            <SkeletonBlock height={14} width="60%" />
+            <SkeletonBlock height={12} width="40%" />
+          </div>
+        </div>
+        <SkeletonBlock height={120} />
+        <div className="space-y-2">
+          <SkeletonBlock height={12} />
+          <SkeletonBlock height={12} width="85%" />
+          <SkeletonBlock height={12} width="70%" />
+        </div>
+      </div>
+    ),
+    webCode: `import { SkeletonBlock } from '@stellix/ui-web';
+
+// Circle avatar placeholder
+<SkeletonBlock shape="circle" width={40} height={40} />
+
+// Image placeholder
+<SkeletonBlock height={200} />
+
+// Text lines
+<SkeletonBlock height={14} />
+<SkeletonBlock height={14} width="80%" />`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'shape', type: "'rect' | 'circle'", default: "'rect'", description: 'Shape of the skeleton block.' },
+      { name: 'width', type: "number | string", default: "'100%'", description: 'Width (px or CSS value).' },
+      { name: 'height', type: 'number', default: '16', description: 'Height in pixels.' },
+      { name: 'animate', type: 'boolean', default: 'true', description: 'Enable shimmer animation.' },
+    ],
+  },
+
+  'empty-state': {
+    title: 'EmptyState',
+    description: 'A centered empty state illustration with title, description, and optional CTA button.',
+    category: 'Feedback',
+    preview: (
+      <div className="space-y-8">
+        <EmptyState
+          icon="inbox"
+          title="No conversations yet"
+          description="Start a new conversation to see it appear here."
+          action={{ label: 'New conversation', onClick: () => {} }}
+        />
+        <EmptyState
+          icon="search"
+          title="No results found"
+          description="Try adjusting your search or filter to find what you are looking for."
+        />
+      </div>
+    ),
+    webCode: `import { EmptyState } from '@stellix/ui-web';
+
+<EmptyState
+  icon="inbox"
+  title="No conversations yet"
+  description="Start a new conversation to see it appear here."
+  action={{ label: 'New conversation', onClick: () => openNew() }}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'icon', type: 'string', default: '-', description: 'Icon name to display above the title.' },
+      { name: 'title', type: 'string', default: '-', description: 'Primary heading.' },
+      { name: 'description', type: 'string', default: '-', description: 'Supporting detail text.' },
+      { name: 'action', type: '{ label: string; onClick: () => void }', default: '-', description: 'Optional CTA button.' },
+    ],
+  },
+
+  'step-indicator': {
+    title: 'StepIndicator',
+    description: 'A horizontal step progress indicator for multi-step flows with completed, active, and upcoming states.',
+    category: 'Feedback',
+    preview: (
+      <div className="space-y-8">
+        <StepIndicator
+          steps={[
+            { id: '1', label: 'Account' },
+            { id: '2', label: 'Profile' },
+            { id: '3', label: 'Billing' },
+            { id: '4', label: 'Review' },
+          ]}
+          currentStep={2}
+        />
+        <StepIndicator
+          steps={[
+            { id: '1', label: 'Ingest' },
+            { id: '2', label: 'Embed' },
+            { id: '3', label: 'Index' },
+          ]}
+          currentStep={3}
+        />
+      </div>
+    ),
+    webCode: `import { StepIndicator } from '@stellix/ui-web';
+
+<StepIndicator
+  steps={[
+    { id: '1', label: 'Account' },
+    { id: '2', label: 'Profile' },
+    { id: '3', label: 'Billing' },
+    { id: '4', label: 'Review' },
+  ]}
+  currentStep={2}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'steps', type: '{ id: string; label: string }[]', default: '-', description: 'Ordered step definitions.' },
+      { name: 'currentStep', type: 'number', default: '1', description: '1-based index of the active step.' },
+      { name: 'onStepClick', type: '(index: number) => void', default: '-', description: 'Allows clicking completed steps to navigate back.' },
+    ],
+  },
+
+  // -- Layout --------------------------------------------------------------------
+  tabs: {
+    title: 'Tabs',
+    description: 'An accessible tab bar with animated underline indicator and lazy-mounted panels.',
+    category: 'Layout',
+    preview: (
+      <div className="space-y-4">
+        <Tabs
+          tabs={[{ id: 'overview', label: 'Overview' }, { id: 'api', label: 'API' }, { id: 'examples', label: 'Examples' }]}
+          activeTab="overview"
+          onChange={() => {}}
+        />
+        <Tabs
+          tabs={[{ id: 'overview', label: 'Overview' }, { id: 'api', label: 'API' }, { id: 'examples', label: 'Examples' }]}
+          activeTab="api"
+          onChange={() => {}}
+          variant="pill"
+        />
+        <Tabs
+          tabs={[{ id: 'overview', label: 'Overview' }, { id: 'api', label: 'API' }, { id: 'examples', label: 'Examples' }]}
+          activeTab="examples"
+          onChange={() => {}}
+          variant="bordered"
+        />
+      </div>
+    ),
+    webCode: `import { Tabs } from '@stellix/ui-web';
+
+const [tab, setTab] = useState('overview');
+
+<Tabs
+  value={tab}
+  onChange={setTab}
+  tabs={[
+    { value: 'overview',   label: 'Overview',       content: <Overview /> },
+    { value: 'api',        label: 'API Reference',  content: <ApiDocs /> },
+    { value: 'changelog',  label: 'Changelog',      content: <Changelog /> },
+  ]}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'tabs', type: '{ value: string; label: string; content: ReactNode }[]', default: '-', description: 'Tab definitions including panel content.' },
+      { name: 'value', type: 'string', default: '-', description: 'Controlled active tab value.' },
+      { name: 'onChange', type: '(value: string) => void', default: '-', description: 'Fired when a tab is clicked.' },
+    ],
+  },
+
+  breadcrumb: {
+    title: 'Breadcrumb',
+    description: 'A navigational breadcrumb trail with optional truncation for deep paths.',
+    category: 'Layout',
+    preview: (
+      <div className="space-y-4">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Components', href: '/components' },
+            { label: 'Layout', href: '/components?category=layout' },
+            { label: 'Breadcrumb' },
+          ]}
+        />
+        <Breadcrumb
+          items={[
+            { label: 'Projects', href: '/projects' },
+            { label: 'Chimera', href: '/projects/chimera' },
+            { label: 'Training runs', href: '/projects/chimera/runs' },
+            { label: 'Run #42', href: '/projects/chimera/runs/42' },
+            { label: 'Metrics' },
+          ]}
+          maxItems={3}
+        />
+      </div>
+    ),
+    webCode: `import { Breadcrumb } from '@stellix/ui-web';
+
+<Breadcrumb
+  items={[
+    { label: 'Home',       href: '/' },
+    { label: 'Components', href: '/components' },
+    { label: 'Breadcrumb' },
+  ]}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'items', type: '{ label: string; href?: string }[]', default: '-', description: 'Ordered crumb items. Last item is the current page.' },
+      { name: 'maxItems', type: 'number', default: '-', description: 'Truncate with ellipsis beyond this count.' },
+      { name: 'separator', type: 'ReactNode', default: "'/'", description: 'Custom separator between crumbs.' },
+    ],
+  },
+
+  pagination: {
+    title: 'Pagination',
+    description: 'A pagination control with page number buttons, prev/next arrows, and optional page size selector.',
+    category: 'Layout',
+    preview: (
+      <Pagination
+        currentPage={3}
+        totalPages={10}
+        onPageChange={() => {}}
+      />
+    ),
+    webCode: `import { Pagination } from '@stellix/ui-web';
+
+const [page, setPage] = useState(1);
+
+<Pagination
+  page={page}
+  totalPages={20}
+  onPageChange={setPage}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'page', type: 'number', default: '1', description: 'Current page (1-based).' },
+      { name: 'totalPages', type: 'number', default: '-', description: 'Total number of pages.' },
+      { name: 'onPageChange', type: '(page: number) => void', default: '-', description: 'Fired when a page is selected.' },
+      { name: 'siblings', type: 'number', default: '1', description: 'Number of sibling pages shown around the current page.' },
+    ],
+  },
+
+  dropdown: {
+    title: 'Dropdown',
+    description: 'A context menu or action dropdown with keyboard navigation and optional icons.',
+    category: 'Layout',
+    preview: (
+      <Dropdown
+        trigger={<Button variant="outline">Actions</Button>}
+        items={[
+          { id: 'edit', label: 'Edit', icon: 'pencil', onClick: () => {} },
+          { id: 'duplicate', label: 'Duplicate', icon: 'copy', onClick: () => {} },
+          { id: 'divider', type: 'divider' },
+          { id: 'archive', label: 'Archive', icon: 'archive', onClick: () => {} },
+          { id: 'delete', label: 'Delete', icon: 'trash', variant: 'danger', onClick: () => {} },
+        ]}
+      />
+    ),
+    webCode: `import { Dropdown } from '@stellix/ui-web';
+
+<Dropdown
+  trigger={<Button variant="outline">Actions</Button>}
+  items={[
+    { id: 'edit',      label: 'Edit',      icon: 'pencil',  onClick: () => editItem() },
+    { id: 'duplicate', label: 'Duplicate', icon: 'copy',    onClick: () => duplicateItem() },
+    { id: 'divider',   type: 'divider' },
+    { id: 'delete',    label: 'Delete',    icon: 'trash',   variant: 'danger', onClick: () => deleteItem() },
+  ]}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'trigger', type: 'ReactNode', default: '-', description: 'Element that opens the dropdown on click.' },
+      { name: 'items', type: 'DropdownItem[]', default: '-', description: 'Menu items, including optional dividers.' },
+      { name: 'placement', type: "'bottom-start' | 'bottom-end' | 'top-start'", default: "'bottom-start'", description: 'Preferred open direction.' },
+    ],
+  },
+
+  modal: {
+    title: 'Modal',
+    description: 'An accessible dialog with backdrop, focus trap, and configurable size.',
+    category: 'Layout',
+    preview: (
+      <div className="flex flex-col gap-2 items-start">
+        <Button variant="primary" size="md">Open Modal</Button>
+        <p className="text-xs text-ink-3">Modal renders as an overlay — trigger via button in your app.</p>
+      </div>
+    ),
+    webCode: `import { Modal } from '@stellix/ui-web';
+
+const [open, setOpen] = useState(false);
+
+<Modal
+  open={open}
+  onClose={() => setOpen(false)}
+  title="Confirm deployment"
+  footer={
+    <>
+      <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+      <Button variant="primary" onClick={deploy}>Deploy</Button>
+    </>
+  }
+>
+  <p>This will push changes to production.</p>
+</Modal>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'open', type: 'boolean', default: 'false', description: 'Controls visibility.' },
+      { name: 'onClose', type: '() => void', default: '-', description: 'Fired on backdrop click or Escape key.' },
+      { name: 'title', type: 'string', default: '-', description: 'Modal heading.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Controls max width.' },
+      { name: 'footer', type: 'ReactNode', default: '-', description: 'Content in the modal footer (action buttons).' },
+    ],
+  },
+
+  drawer: {
+    title: 'Drawer',
+    description: 'A slide-in panel from any edge of the viewport with configurable width.',
+    category: 'Layout',
+    preview: (
+      <div className="flex flex-col gap-2 items-start">
+        <Button variant="outline" size="md">Open Drawer</Button>
+        <p className="text-xs text-ink-3">Drawer renders as an overlay — trigger via button in your app.</p>
+      </div>
+    ),
+    webCode: `import { Drawer } from '@stellix/ui-web';
+
+const [open, setOpen] = useState(false);
+
+<Drawer
+  open={open}
+  onClose={() => setOpen(false)}
+  title="Agent settings"
+  side="right"
+>
+  <SettingsForm />
+</Drawer>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'open', type: 'boolean', default: 'false', description: 'Controls visibility.' },
+      { name: 'onClose', type: '() => void', default: '-', description: 'Fired on overlay click or Escape key.' },
+      { name: 'side', type: "'left' | 'right' | 'top' | 'bottom'", default: "'right'", description: 'Edge from which the drawer slides in.' },
+      { name: 'title', type: 'string', default: '-', description: 'Drawer header title.' },
+      { name: 'width', type: 'string', default: "'400px'", description: 'Width for left/right drawers.' },
+    ],
+  },
+
+  accordion: {
+    title: 'Accordion',
+    description: 'Collapsible content sections with smooth animation and single or multiple open modes.',
+    category: 'Layout',
+    preview: (
+      <Accordion
+        type="single"
+        items={[
+          { id: '1', title: 'What is Chimera?', content: 'Chimera is Stellix Private Ltd\'s flagship MoE transformer model, designed for enterprise agentic AI workloads with multimodal input and tool-use capabilities.' },
+          { id: '2', title: 'How do I install Stellix UI?', content: 'Run npm install @stellix/ui-web in your Next.js project, then wrap your app with the StelixProvider component.' },
+          { id: '3', title: 'Is there a React Native version?', content: 'Yes - all components are available in @stellix/ui-native with the same API surface.' },
+        ]}
+      />
+    ),
+    webCode: `import { Accordion } from '@stellix/ui-web';
+
+<Accordion
+  type="single"
+  items={[
+    { id: '1', title: 'What is Chimera?',        content: 'Chimera is our flagship MoE model...' },
+    { id: '2', title: 'How do I install?',        content: 'Run npm install @stellix/ui-web...' },
+    { id: '3', title: 'Is there a native build?', content: 'Yes - @stellix/ui-native has the same API.' },
+  ]}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'items', type: '{ id: string; title: string; content: ReactNode }[]', default: '-', description: 'Accordion section definitions.' },
+      { name: 'type', type: "'single' | 'multiple'", default: "'single'", description: 'Whether one or many panels can be open at once.' },
+      { name: 'defaultOpen', type: 'string[]', default: '[]', description: 'IDs of panels open by default.' },
+    ],
+  },
+
+  // -- Data Display --------------------------------------------------------------
+  'data-card': {
+    title: 'DataCard',
+    description: 'A metric card displaying a key figure, label, trend indicator, and optional sparkline.',
+    category: 'Data Display',
+    preview: (
+      <div className="grid grid-cols-2 gap-4">
+        <DataCard label="Total requests" value="2.4M" trend={12.5} trendDirection="up" />
+        <DataCard label="Avg latency" value="142ms" trend={-8.3} trendDirection="down" />
+        <DataCard label="Error rate" value="0.12%" trend={2.1} trendDirection="up" trendBad />
+        <DataCard label="Active agents" value="7" />
+      </div>
+    ),
+    webCode: `import { DataCard } from '@stellix/ui-web';
+
+<DataCard label="Total requests" value="2.4M" trend={12.5} trendDirection="up" />
+<DataCard label="Avg latency"    value="142ms" trend={-8.3} trendDirection="down" />
+<DataCard label="Error rate"     value="0.12%" trend={2.1} trendDirection="up" trendBad />`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'label', type: 'string', default: '-', description: 'Metric label.' },
+      { name: 'value', type: 'string | number', default: '-', description: 'Primary metric value.' },
+      { name: 'trend', type: 'number', default: '-', description: 'Percentage change to display.' },
+      { name: 'trendDirection', type: "'up' | 'down'", default: '-', description: 'Direction of the trend arrow.' },
+      { name: 'trendBad', type: 'boolean', default: 'false', description: 'Invert color so up-trend shows as red.' },
+    ],
+  },
+
+  'timeline-view': {
+    title: 'TimelineView',
+    description: 'A vertical timeline of events with timestamps, icons, and optional detail expansion.',
+    category: 'Data Display',
+    preview: (
+      <TimelineView
+        items={[
+          { id: '1', title: 'Model training started', description: 'Phase 1 of 4 - dataset ingestion', date: '2026-08-15 09:00', status: 'completed' },
+          { id: '2', title: 'Checkpoint saved', description: 'Step 10,000 - loss: 1.42', date: '2026-08-15 10:30', status: 'completed' },
+          { id: '3', title: 'Evaluation running', description: 'MMLU benchmark in progress', date: '2026-08-15 11:00', status: 'active' },
+          { id: '4', title: 'Deployment scheduled', description: 'Pending evaluation pass', date: '2026-08-15 12:00', status: 'upcoming' },
+        ]}
+      />
+    ),
+    webCode: `import { TimelineView } from '@stellix/ui-web';
+
+<TimelineView
+  events={[
+    { id: '1', title: 'Training started',   description: 'Phase 1 - ingestion',  timestamp: '2026-08-15T09:00:00Z', status: 'completed' },
+    { id: '2', title: 'Checkpoint saved',   description: 'Step 10k - loss: 1.42', timestamp: '2026-08-15T10:30:00Z', status: 'completed' },
+    { id: '3', title: 'Evaluation running', description: 'MMLU benchmark',        timestamp: '2026-08-15T11:00:00Z', status: 'active' },
+  ]}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'events', type: 'TimelineEvent[]', default: '-', description: 'Ordered array of timeline events.' },
+      { name: 'showTimestamps', type: 'boolean', default: 'true', description: 'Display formatted timestamps beside events.' },
+    ],
+  },
+
+  'file-tree': {
+    title: 'FileTree',
+    description: 'An expandable file system tree with file-type icons and selection state.',
+    category: 'Data Display',
+    preview: (
+      <FileTree
+        items={[
+          { name: 'src', type: 'folder', children: [
+            { name: 'components', type: 'folder', children: [
+              { name: 'Button.tsx', type: 'file' },
+              { name: 'Badge.tsx', type: 'file' },
+            ]},
+            { name: 'hooks', type: 'folder', children: [
+              { name: 'useTheme.ts', type: 'file' },
+            ]},
+            { name: 'index.ts', type: 'file' },
+          ]},
+          { name: 'package.json', type: 'file' },
+          { name: 'tsconfig.json', type: 'file' },
+        ]}
+      />
+    ),
+    webCode: `import { FileTree } from '@stellix/ui-web';
+
+<FileTree
+  nodes={[
+    { id: 'src', name: 'src', type: 'folder', children: [
+      { id: 'app', name: 'app', type: 'folder', children: [
+        { id: 'page', name: 'page.tsx', type: 'file' },
+      ]},
+    ]},
+    { id: 'pkg', name: 'package.json', type: 'file' },
+  ]}
+  onSelect={(node) => openFile(node.id)}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'nodes', type: 'FileNode[]', default: '-', description: 'Tree of file and folder nodes.' },
+      { name: 'defaultExpanded', type: 'string[]', default: '[]', description: 'IDs of folders expanded by default.' },
+      { name: 'onSelect', type: '(node: FileNode) => void', default: '-', description: 'Fired when a node is clicked.' },
+    ],
+  },
+
+  'json-viewer': {
+    title: 'JSONViewer',
+    description: 'A collapsible, syntax-highlighted JSON tree with copy and expand-all controls.',
+    category: 'Data Display',
+    preview: (
+      <JSONViewer
+        data={{
+          model: 'chimera-70b',
+          usage: { prompt_tokens: 512, completion_tokens: 248, total_tokens: 760 },
+          choices: [{ index: 0, message: { role: 'assistant', content: 'Hello, how can I help?' }, finish_reason: 'stop' }],
+          created: 1723680000,
+        }}
+        defaultExpanded
+      />
+    ),
+    webCode: `import { JSONViewer } from '@stellix/ui-web';
+
+<JSONViewer
+  data={{
+    model: 'chimera-70b',
+    usage: { prompt_tokens: 512, completion_tokens: 248 },
+    choices: [{ message: { role: 'assistant', content: 'Hello!' } }],
+  }}
+  defaultExpanded
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'data', type: 'unknown', default: '-', description: 'Any JSON-serializable value to display.' },
+      { name: 'defaultExpanded', type: 'boolean', default: 'false', description: 'Expand all nodes on first render.' },
+      { name: 'maxDepth', type: 'number', default: '3', description: 'Maximum initially expanded depth.' },
+    ],
+  },
+
+  'markdown-view': {
+    title: 'MarkdownView',
+    description: 'A styled Markdown renderer with code highlighting, table support, and link handling.',
+    category: 'Data Display',
+    preview: (
+      <MarkdownView
+        content={`## Stellix UI Material\n\nA **production-ready** component library for agentic AI interfaces.\n\n- 39 cross-platform components\n- Full dark mode support\n- TypeScript first\n\n\`\`\`ts\nimport { Button } from '@stellix/ui-web';\n\`\`\``}
+      />
+    ),
+    webCode: `import { MarkdownView } from '@stellix/ui-web';
+
+<MarkdownView
+  content={\`## Hello\n\nThis is **bold** and this is \\\`code\\\`.\n\n- Item 1\n- Item 2\`}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'content', type: 'string', default: '-', description: 'Markdown string to render.' },
+      { name: 'sanitize', type: 'boolean', default: 'true', description: 'Strip unsafe HTML before rendering.' },
+      { name: 'onLinkClick', type: '(href: string) => void', default: '-', description: 'Intercept link clicks.' },
+    ],
+  },
+
+  changelog: {
+    title: 'Changelog',
+    description: 'A versioned changelog list with release date, version badge, and categorized entries.',
+    category: 'Data Display',
+    preview: (
+      <Changelog
+        entries={[
+          {
+            version: '2.1.0',
+            date: '2026-08-15',
+            changes: [
+              { type: 'feat', description: '39 Phase 11 components including Button, Badge, and Avatar.' },
+              { type: 'fix', description: 'Reduced bundle size by 18% via tree-shaking improvements.' },
+            ],
+          },
+          {
+            version: '2.0.0',
+            date: '2026-07-01',
+            changes: [
+              { type: 'feat', description: 'Phase 10 variants - PulseLoader, WaveLoader, AgentChat, and more.' },
+              { type: 'fix', description: 'Search modal z-index conflict on nested portals.' },
+              { type: 'breaking', description: 'Renamed FineTuneCard onChange signature - value is now typed.' },
+            ],
+          },
+        ]}
+      />
+    ),
+    webCode: `import { Changelog } from '@stellix/ui-web';
+
+<Changelog
+  releases={[
+    {
+      version: '2.1.0',
+      date: '2026-08-15',
+      entries: [
+        { type: 'added',    text: '39 new Phase 11 components.' },
+        { type: 'improved', text: 'Reduced bundle size by 18%.' },
+      ],
+    },
+  ]}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'releases', type: 'Release[]', default: '-', description: 'Ordered array of release objects.' },
+    ],
+  },
+
+  'activity-feed': {
+    title: 'ActivityFeed',
+    description: 'A chronological feed of user and system activity events with actor avatars and timestamps.',
+    category: 'Data Display',
+    preview: (
+      <ActivityFeed
+        items={[
+          { id: '1', user: { name: 'Ada Lovelace' }, action: 'deployed', target: 'Chimera-70B v2.1', timestamp: '2 minutes ago' },
+          { id: '2', user: { name: 'Alan Turing' }, action: 'commented on', target: 'Training run #42', timestamp: '15 minutes ago' },
+          { id: '3', user: { name: 'System' }, action: 'auto-scaled', target: 'Worker pool to 8 instances', timestamp: '1 hour ago' },
+          { id: '4', user: { name: 'Grace Hopper' }, action: 'approved', target: 'PR #187 - add token counter', timestamp: '3 hours ago' },
+        ]}
+      />
+    ),
+    webCode: `import { ActivityFeed } from '@stellix/ui-web';
+
+<ActivityFeed
+  events={[
+    { id: '1', actor: { name: 'Ada Lovelace', initials: 'AL' }, action: 'deployed', target: 'v2.1', timestamp: '2m ago' },
+    { id: '2', actor: { name: 'System', initials: 'SY' },       action: 'scaled',   target: 'Workers x8', timestamp: '1h ago' },
+  ]}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'events', type: 'ActivityEvent[]', default: '-', description: 'Feed events to display.' },
+      { name: 'onLoadMore', type: '() => void', default: '-', description: 'Called when the user scrolls to the bottom.' },
+    ],
+  },
+
+  // -- AI / Agent ----------------------------------------------------------------
+  'agent-status': {
+    title: 'AgentStatus',
+    description: 'Displays the current state of an AI agent - idle, thinking, executing, or error - with an animated indicator.',
+    category: 'AI / Agent',
+    preview: (
+      <div className="space-y-3">
+        <AgentStatus state="idle" label="Agent ready" model="Chimera-70B" duration={0} />
+        <AgentStatus state="thinking" label="Analyzing request" model="Chimera-70B" duration={2400} />
+        <AgentStatus state="acting" label="Calling read_file" model="Chimera-70B" duration={5200} />
+        <AgentStatus state="error" label="Tool call failed" model="Chimera-70B" duration={8100} />
+      </div>
+    ),
+    webCode: `import { AgentStatus } from '@stellix/ui-web';
+
+<AgentStatus status="idle"      label="Chimera-70B" />
+<AgentStatus status="thinking"  label="Chimera-70B" detail="Analyzing request..." />
+<AgentStatus status="executing" label="Chimera-70B" detail="Calling tool: read_file" />
+<AgentStatus status="error"     label="Chimera-70B" detail="Tool call failed" />`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'status', type: "'idle' | 'thinking' | 'executing' | 'error'", default: "'idle'", description: 'Current agent state.' },
+      { name: 'label', type: 'string', default: '-', description: 'Agent or model name.' },
+      { name: 'detail', type: 'string', default: '-', description: 'Additional status detail text.' },
+    ],
+  },
+
+  'tool-call-card': {
+    title: 'ToolCallCard',
+    description: 'A detailed card showing a single tool call with input parameters, output, and execution status.',
+    category: 'AI / Agent',
+    preview: (
+      <div className="space-y-4">
+        <ToolCallCard
+          toolName="read_file"
+          status="success"
+          input={{ path: 'src/components/Button.tsx', encoding: 'utf-8' }}
+          output="142 lines read successfully."
+          duration={82}
+        />
+        <ToolCallCard
+          toolName="search_web"
+          status="running"
+          input={{ query: 'Stellix UI installation guide', max_results: 5 }}
+        />
+        <ToolCallCard
+          toolName="run_shell"
+          status="error"
+          input={{ command: 'npm test' }}
+          output="Error: 3 tests failed."
+          duration={4200}
+        />
+      </div>
+    ),
+    webCode: `import { ToolCallCard } from '@stellix/ui-web';
+
+<ToolCallCard
+  toolName="read_file"
+  status="success"
+  input={{ path: 'src/index.ts' }}
+  output="142 lines read."
+  duration={82}
+/>
+
+<ToolCallCard
+  toolName="search_web"
+  status="running"
+  input={{ query: 'docs', max_results: 5 }}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'toolName', type: 'string', default: '-', description: 'Name of the tool being called.' },
+      { name: 'status', type: "'running' | 'success' | 'error'", default: "'running'", description: 'Execution status.' },
+      { name: 'input', type: 'Record<string, unknown>', default: '-', description: 'Input parameters passed to the tool.' },
+      { name: 'output', type: 'string', default: '-', description: 'Tool output or error message.' },
+      { name: 'duration', type: 'number', default: '-', description: 'Execution time in milliseconds.' },
+    ],
+  },
+
+  'model-selector': {
+    title: 'ModelSelector',
+    description: 'A rich model picker showing provider, context window, cost, and capability badges.',
+    category: 'AI / Agent',
+    preview: (
+      <ModelSelector
+        value="chimera-70b"
+        models={[
+          { id: 'chimera-70b', name: 'Chimera-70B', provider: 'Stellix', contextWindow: 128000, costPer1k: 0.002, capabilities: ['tools', 'vision', 'reasoning'] },
+          { id: 'gpt-4o', name: 'GPT-4o', provider: 'OpenAI', contextWindow: 128000, costPer1k: 0.005, capabilities: ['tools', 'vision'] },
+          { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet', provider: 'Anthropic', contextWindow: 200000, costPer1k: 0.003, capabilities: ['tools', 'vision', 'reasoning'] },
+          { id: 'gemini-pro-2', name: 'Gemini 2.0 Pro', provider: 'Google', contextWindow: 1000000, costPer1k: 0.0035, capabilities: ['tools', 'vision'] },
+        ]}
+        onChange={(id) => console.log('model', id)}
+      />
+    ),
+    webCode: `import { ModelSelector } from '@stellix/ui-web';
+
+<ModelSelector
+  value={selectedModel}
+  models={[
+    { id: 'chimera-70b',       name: 'Chimera-70B',        provider: 'Stellix',    contextWindow: 128000, costPer1k: 0.002 },
+    { id: 'gpt-4o',            name: 'GPT-4o',             provider: 'OpenAI',     contextWindow: 128000, costPer1k: 0.005 },
+    { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet',  provider: 'Anthropic',  contextWindow: 200000, costPer1k: 0.003 },
+  ]}
+  onChange={(id) => setSelectedModel(id)}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'models', type: 'ModelOption[]', default: '-', description: 'Available models with metadata.' },
+      { name: 'value', type: 'string', default: '-', description: 'Currently selected model ID.' },
+      { name: 'onChange', type: '(id: string) => void', default: '-', description: 'Fired when the user selects a model.' },
+    ],
+  },
+
+  'token-counter': {
+    title: 'TokenCounter',
+    description: 'Displays prompt, completion, and total token counts with a visual usage bar against the context limit.',
+    category: 'AI / Agent',
+    preview: (
+      <div className="space-y-4 max-w-sm">
+        <TokenCounter
+          prompt={3240}
+          completion={512}
+          contextLimit={128000}
+          model="Chimera-70B"
+        />
+        <TokenCounter
+          prompt={185000}
+          completion={4096}
+          contextLimit={200000}
+          model="Claude 3.5 Sonnet"
+          warning
+        />
+      </div>
+    ),
+    webCode: `import { TokenCounter } from '@stellix/ui-web';
+
+<TokenCounter
+  prompt={3240}
+  completion={512}
+  contextLimit={128000}
+  model="Chimera-70B"
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'prompt', type: 'number', default: '0', description: 'Number of prompt tokens.' },
+      { name: 'completion', type: 'number', default: '0', description: 'Number of completion tokens.' },
+      { name: 'contextLimit', type: 'number', default: '-', description: 'Maximum context window size for the model.' },
+      { name: 'model', type: 'string', default: '-', description: 'Model name label.' },
+      { name: 'warning', type: 'boolean', default: 'false', description: 'Highlight when approaching context limit.' },
+    ],
+  },
+
+  'conversation-list': {
+    title: 'ConversationList',
+    description: 'A sidebar list of past conversations with search, pinning, and delete actions.',
+    category: 'AI / Agent',
+    preview: (
+      <div className="h-96 w-72 overflow-auto rounded-xl border border-line">
+        <ConversationList
+          conversations={[
+            { id: '1', title: 'Refactor auth module', lastMessage: 'Here is the updated code...', timestamp: '2 min ago', pinned: true },
+            { id: '2', title: 'MoE architecture deep-dive', lastMessage: 'The gating network routes tokens to...', timestamp: '1 hr ago' },
+            { id: '3', title: 'Debug slow query', lastMessage: 'Try adding an index on user_id.', timestamp: 'Yesterday' },
+            { id: '4', title: 'Write unit tests for API', lastMessage: 'I have generated 12 test cases.', timestamp: '2 days ago' },
+          ]}
+          activeId="2"
+          onSelect={(id) => console.log('select', id)}
+          onDelete={(id) => console.log('delete', id)}
+          onPin={(id) => console.log('pin', id)}
+        />
+      </div>
+    ),
+    webCode: `import { ConversationList } from '@stellix/ui-web';
+
+<ConversationList
+  conversations={[
+    { id: '1', title: 'Refactor auth module',   lastMessage: 'Here is the updated code...', timestamp: '2m ago', pinned: true },
+    { id: '2', title: 'MoE architecture',       lastMessage: 'The gating network...',        timestamp: '1h ago' },
+  ]}
+  activeId={activeConversation}
+  onSelect={(id) => setActiveConversation(id)}
+  onDelete={(id) => deleteConversation(id)}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'conversations', type: 'Conversation[]', default: '-', description: 'List of conversation summaries.' },
+      { name: 'activeId', type: 'string', default: '-', description: 'Currently selected conversation ID.' },
+      { name: 'onSelect', type: '(id: string) => void', default: '-', description: 'Fired when a conversation is clicked.' },
+      { name: 'onDelete', type: '(id: string) => void', default: '-', description: 'Fired when delete is triggered.' },
+      { name: 'onPin', type: '(id: string) => void', default: '-', description: 'Fired when pin/unpin is triggered.' },
+    ],
+  },
+
+  'system-prompt': {
+    title: 'SystemPrompt',
+    description: 'An editable system prompt card with token count, template picker, and version history.',
+    category: 'AI / Agent',
+    preview: (
+      <SystemPrompt
+        value="You are Chimera, a helpful enterprise AI assistant built by Stellix Private Ltd. You have access to tools for reading files, searching the web, and running code. Always respond in the user's language and cite your sources."
+        maxTokens={2048}
+        presets={[
+          { label: 'Helpful assistant', value: 'You are a helpful AI assistant.' },
+          { label: 'Senior engineer', value: 'You are a senior software engineer who writes clean, tested code.' },
+          { label: 'Data analyst', value: 'You are a data analyst who explains findings clearly with charts.' },
+        ]}
+        onChange={(val) => console.log('prompt', val)}
+      />
+    ),
+    webCode: `import { SystemPrompt } from '@stellix/ui-web';
+
+const [prompt, setPrompt] = useState('You are a helpful assistant.');
+
+<SystemPrompt
+  value={prompt}
+  tokenCount={tokenize(prompt).length}
+  templates={[
+    { id: 'helpful', name: 'Helpful assistant', prompt: 'You are a helpful AI assistant.' },
+    { id: 'coder',   name: 'Senior engineer',   prompt: 'You are a senior software engineer.' },
+  ]}
+  onChange={setPrompt}
+/>`,
+    nativeCode: `Same API - import from @stellix/ui-native`,
+    propsTable: [
+      { name: 'value', type: 'string', default: '-', description: 'Current system prompt text.' },
+      { name: 'onChange', type: '(value: string) => void', default: '-', description: 'Fired on every edit.' },
+      { name: 'tokenCount', type: 'number', default: '-', description: 'Token count to display.' },
+      { name: 'templates', type: '{ id: string; name: string; prompt: string }[]', default: '[]', description: 'Preset templates available in the picker.' },
     ],
   },
 };
