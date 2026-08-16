@@ -160,8 +160,9 @@ export function ComponentPage({
             }}
           >
             <div
-              className="mx-auto rounded-lg border p-3 sm:p-6 transition-all duration-300 overflow-hidden"
+              className="mx-auto rounded-lg border p-3 sm:p-6 transition-all duration-300 overflow-hidden box-border"
               style={{
+                width: '100%',
                 maxWidth: selectedViewport.width,
                 minHeight: 200,
                 borderColor: previewDark ? '#2e2e2e' : '#e5e5e5',

@@ -84,8 +84,8 @@ function ContextCard({ chunk, index }: { chunk: ContextCardsProps['chunks'][0]; 
 export function ContextCards({ chunks }: ContextCardsProps) {
   return (
     <div
-      className="grid gap-4"
-      style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))' }}
+      className="grid gap-4 w-full max-w-full"
+      style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))' }}
       data-testid="context-cards"
     >
       {chunks.map((chunk, i) => (
