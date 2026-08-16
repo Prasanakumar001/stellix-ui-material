@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useExpandable, cn, truncate, type ContextCardsProps } from '@stellix/ui-core';
 import { DocumentIcon } from '../Icons';
 import {
@@ -82,10 +82,32 @@ function ContextCard({ chunk, index }: { chunk: ContextCardsProps['chunks'][0]; 
 
 /* ── Main ContextCards ── */
 export function ContextCards({ chunks }: ContextCardsProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [cols, setCols] = useState(1);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const update = () => {
+      const w = el.offsetWidth;
+      if (w < 500) setCols(1);
+      else if (w < 800) setCols(2);
+      else if (w < 1200) setCols(3);
+      else setCols(4);
+    };
+
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <div
-      className="grid gap-4 w-full max-w-full"
-      style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))' }}
+      ref={ref}
+      className="grid gap-4 w-full"
+      style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
       data-testid="context-cards"
     >
       {chunks.map((chunk, i) => (
