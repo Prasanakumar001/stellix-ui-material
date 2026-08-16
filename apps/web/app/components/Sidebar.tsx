@@ -149,6 +149,18 @@ const nav = [
       { label: 'SystemPrompt', href: '/components/system-prompt' },
     ],
   },
+  {
+    label: 'Compositions',
+    icon: Squares2X2Icon,
+    children: [
+      { label: 'AIChatLayout', href: '/components/ai-chat-layout' },
+      { label: 'DashboardLayout', href: '/components/dashboard-layout' },
+      { label: 'AgentWorkbench', href: '/components/agent-workbench' },
+      { label: 'CodeReview', href: '/components/code-review' },
+      { label: 'DataExplorer', href: '/components/data-explorer' },
+      { label: 'OnboardingWizard', href: '/components/onboarding-wizard' },
+    ],
+  },
 ];
 
 function NavGroup({ item, pathname }: { item: (typeof nav)[number]; pathname: string }) {

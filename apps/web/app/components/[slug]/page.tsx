@@ -37,6 +37,8 @@ import {
   Tabs, Breadcrumb, Pagination, Dropdown, Modal, Drawer, Accordion,
   DataCard, TimelineView, FileTree, JSONViewer, MarkdownView, Changelog, ActivityFeed,
   AgentStatus, ToolCallCard, ModelSelector, TokenCounter, ConversationList, SystemPrompt,
+  // Phase 12 compositions
+  AIChatLayout, DashboardLayout, AgentWorkbench, CodeReview, DataExplorer, OnboardingWizard,
 } from '@stellix/ui-web';
 
 // --- Search is rendered inline to avoid fixed-position overlay escaping preview ---
@@ -2552,6 +2554,94 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
       { name: 'tokenCount', type: 'number', default: '-', description: 'Token count to display.' },
       { name: 'templates', type: '{ id: string; name: string; prompt: string }[]', default: '[]', description: 'Preset templates available in the picker.' },
     ],
+  },
+
+  // ═══════════════════════════════════════
+  // Phase 12 — Composition Patterns
+  // ═══════════════════════════════════════
+
+  'ai-chat-layout': {
+    title: 'AIChatLayout',
+    description: 'Full-page AI chat layout with conversation sidebar, chat thread, and prompt composer bar.',
+    category: 'Compositions',
+    preview: (
+      <div className="h-[500px] rounded-xl border border-line overflow-hidden">
+        <AIChatLayout />
+      </div>
+    ),
+    webCode: `import { AIChatLayout } from '@stellix/ui-web';
+
+<AIChatLayout
+  conversations={[...]}
+  messages={[...]}
+  onSend={(msg) => handleSend(msg)}
+/>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { name: 'conversations', type: 'ConversationItem[]', default: 'sample data', description: 'List of past conversations for sidebar.' },
+      { name: 'messages', type: 'ChatMessage[]', default: 'sample data', description: 'Messages for the main chat thread.' },
+      { name: 'onSend', type: '(msg: string) => void', default: '-', description: 'Fired when user sends a message.' },
+    ],
+  },
+
+  'dashboard-layout': {
+    title: 'DashboardLayout',
+    description: 'Analytics dashboard with metric cards, charts, task list, and activity feed.',
+    category: 'Compositions',
+    preview: <DashboardLayout />,
+    webCode: `import { DashboardLayout } from '@stellix/ui-web';
+
+<DashboardLayout />`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [],
+  },
+
+  'agent-workbench': {
+    title: 'AgentWorkbench',
+    description: 'AI agent workspace with status bar, thinking panel, tool chips, streaming output, and approval card.',
+    category: 'Compositions',
+    preview: <AgentWorkbench />,
+    webCode: `import { AgentWorkbench } from '@stellix/ui-web';
+
+<AgentWorkbench />`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [],
+  },
+
+  'code-review': {
+    title: 'CodeReview',
+    description: 'Code review layout with diff viewer, review chat thread, and approval actions.',
+    category: 'Compositions',
+    preview: <CodeReview />,
+    webCode: `import { CodeReview } from '@stellix/ui-web';
+
+<CodeReview />`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [],
+  },
+
+  'data-explorer': {
+    title: 'DataExplorer',
+    description: 'Data exploration layout with filter chips, sortable records table, and insight charts.',
+    category: 'Compositions',
+    preview: <DataExplorer />,
+    webCode: `import { DataExplorer } from '@stellix/ui-web';
+
+<DataExplorer />`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [],
+  },
+
+  'onboarding-wizard': {
+    title: 'OnboardingWizard',
+    description: 'Multi-step onboarding flow with step indicator, dynamic content, and navigation buttons.',
+    category: 'Compositions',
+    preview: <OnboardingWizard />,
+    webCode: `import { OnboardingWizard } from '@stellix/ui-web';
+
+<OnboardingWizard />`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [],
   },
 };
 

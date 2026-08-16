@@ -89,6 +89,14 @@ export { TokenCounter } from './components/TokenCounter';
 export { ConversationList } from './components/ConversationList';
 export { SystemPrompt } from './components/SystemPrompt';
 
+// Phase 12 — Composition Patterns
+export { AIChatLayout } from './components/AIChatLayout';
+export { DashboardLayout } from './components/DashboardLayout';
+export { AgentWorkbench } from './components/AgentWorkbench';
+export { CodeReview } from './components/CodeReview';
+export { DataExplorer } from './components/DataExplorer';
+export { OnboardingWizard } from './components/OnboardingWizard';
+
 // Tailwind preset
 export { default as stellixPreset } from './tokens/tailwind-preset';
 
