@@ -25,6 +25,21 @@ export { CodeBlock } from './components/CodeBlock';
 export { FineTuneCard } from './components/FineTuneCard';
 export { SelectionActions } from './components/SelectionActions';
 
+// Variants — LoadingState
+export { PulseLoader, SkeletonLoader, ProgressLoader, WaveLoader, TypingLoader } from './components/LoadingState';
+// Variants — TaskRows
+export { CapsuleTaskRows, KanbanTaskRows, TimelineTaskRows } from './components/TaskRows';
+// Variants — Chat
+export { BubbleChat, ThreadChat, AgentChat } from './components/Chat';
+// Variants — CodeBlock
+export { TerminalBlock, MultiFileBlock, DiffBlock } from './components/CodeBlock';
+// Variants — InsightCards
+export { DonutChart, GaugeChart } from './components/InsightCards';
+// Variants — ApprovalCard
+export { MultiStepApproval } from './components/ApprovalCard';
+// Variants — RecommendationCard
+export { ComparisonCard } from './components/RecommendationCard';
+
 // Tailwind preset
 export { default as stellixPreset } from './tokens/tailwind-preset';
 
