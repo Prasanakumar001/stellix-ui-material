@@ -79,6 +79,7 @@ export { FileTree } from './components/FileTree';
 export { JSONViewer } from './components/JSONViewer';
 export { MarkdownView } from './components/MarkdownView';
 export { Changelog } from './components/Changelog';
+export type { ChangelogProps, ChangelogEntry, ChangeEntry, ChangeType } from './components/Changelog';
 export { ActivityFeed } from './components/ActivityFeed';
 
 // Phase 11 — AI / Agent

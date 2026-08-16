@@ -19,12 +19,17 @@ import {
   CursorArrowRaysIcon,
   RectangleGroupIcon,
   Squares2X2Icon,
+  ShieldCheckIcon,
 } from '@heroicons/react/24/outline';
 
 const nav = [
   { label: 'Overview', href: '/', icon: HomeIcon },
   { label: 'Setup', href: '/setup', icon: WrenchScrewdriverIcon },
   { label: 'Documentation', href: '/docs', icon: BookOpenIcon },
+  { label: 'Playground', href: '/playground', icon: CursorArrowRaysIcon },
+  { label: 'Theme Playground', href: '/theme-playground', icon: HomeIcon },
+  { label: 'Changelog', href: '/changelog', icon: BookOpenIcon },
+  { label: 'Accessibility', href: '/accessibility', icon: ShieldCheckIcon },
   {
     label: 'Feedback',
     icon: SparklesIcon,
