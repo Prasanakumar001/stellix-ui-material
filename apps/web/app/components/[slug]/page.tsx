@@ -22,6 +22,14 @@ import {
   InsightCards,
   ToolChips,
   FineTuneCard,
+  // Phase 10 variants
+  PulseLoader, SkeletonLoader, ProgressLoader, WaveLoader, TypingLoader,
+  CapsuleTaskRows, KanbanTaskRows, TimelineTaskRows,
+  BubbleChat, ThreadChat, AgentChat,
+  TerminalBlock, MultiFileBlock, DiffBlock,
+  DonutChart, GaugeChart,
+  MultiStepApproval,
+  ComparisonCard,
 } from '@stellix/ui-web';
 
 // --- Search is rendered inline to avoid fixed-position overlay escaping preview ---
@@ -90,10 +98,42 @@ const componentRegistry: Record<string, ComponentConfig> = {
       'Animated loading indicators with three variants - pixel-grid Drive, bouncing Dots, and spinning Orbit - plus an optional elapsed timer and label.',
     category: 'Feedback',
     preview: (
-      <div className="flex flex-wrap items-center gap-8">
-        <LoadingState variant="drive" label="Processing..." showTimer />
-        <LoadingState variant="dots" label="Thinking..." />
-        <LoadingState variant="orbit" />
+      <div className="space-y-8">
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Original Variants</p>
+          <div className="flex flex-wrap items-center gap-6">
+            <LoadingState variant="drive" label="Drive" showTimer />
+            <LoadingState variant="dots" label="Dots" />
+            <LoadingState variant="orbit" label="Orbit" />
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">New Variants</p>
+          <div className="flex flex-wrap items-center gap-6">
+            <div className="flex flex-col items-center gap-2 rounded-xl border border-line bg-surface p-4">
+              <PulseLoader />
+              <span className="text-xs text-ink-3">Pulse</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 rounded-xl border border-line bg-surface p-4">
+              <ProgressLoader />
+              <span className="text-xs text-ink-3">Progress</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 rounded-xl border border-line bg-surface p-4">
+              <WaveLoader />
+              <span className="text-xs text-ink-3">Wave</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 rounded-xl border border-line bg-surface p-4">
+              <TypingLoader />
+              <span className="text-xs text-ink-3">Typing</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Skeleton</p>
+          <div className="rounded-xl border border-line bg-surface p-4">
+            <SkeletonLoader />
+          </div>
+        </div>
       </div>
     ),
     webCode: `import { LoadingState } from '@stellix/ui-web';
@@ -172,17 +212,34 @@ const componentRegistry: Record<string, ComponentConfig> = {
     description:
       'A list of agent task rows with status badges (running, completed, failed, queued), animated progress bars, and optionally expandable detail drawers.',
     category: 'Feedback',
-    preview: (
-      <TaskRows
-        expandable
-        tasks={[
-          { id: '1', title: 'Ingest document corpus', status: 'completed', progress: 100, duration: 1240 },
-          { id: '2', title: 'Embed chunks into vector store', status: 'running', progress: 62, description: 'Processing batch 3 of 5' },
-          { id: '3', title: 'Fine-tune retrieval model', status: 'queued' },
-          { id: '4', title: 'Validate output schema', status: 'failed', description: 'JSON schema mismatch on field "confidence"' },
-        ]}
-      />
-    ),
+    preview: (() => {
+      const tasks = [
+        { id: '1', title: 'Ingest document corpus', status: 'completed' as const, progress: 100, duration: 1240 },
+        { id: '2', title: 'Embed chunks into vector store', status: 'running' as const, progress: 62, description: 'Processing batch 3 of 5' },
+        { id: '3', title: 'Fine-tune retrieval model', status: 'queued' as const },
+        { id: '4', title: 'Validate output schema', status: 'failed' as const, description: 'JSON schema mismatch on field "confidence"' },
+      ];
+      return (
+        <div className="space-y-8">
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">List (Default)</p>
+            <TaskRows expandable tasks={tasks} />
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Capsule</p>
+            <CapsuleTaskRows tasks={tasks} />
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Kanban</p>
+            <KanbanTaskRows tasks={tasks} />
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Timeline</p>
+            <TimelineTaskRows tasks={tasks} />
+          </div>
+        </div>
+      );
+    })(),
     webCode: `import { TaskRows } from '@stellix/ui-web';
 
 <TaskRows
@@ -262,21 +319,24 @@ const componentRegistry: Record<string, ComponentConfig> = {
       'A dark-themed syntax-highlighted code block with optional streaming mode, line numbers, copy button, and language label.',
     category: 'Content',
     preview: (
-      <CodeBlock
-        language="typescript"
-        showLineNumbers
-        code={`import { CodeBlock } from '@stellix/ui-web';
-
-function App() {
-  return (
-    <CodeBlock
-      language="typescript"
-      showLineNumbers
-      code={sourceCode}
-    />
-  );
-}`}
-      />
+      <div className="space-y-8">
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Default</p>
+          <CodeBlock language="typescript" showLineNumbers code={`const greeting = 'Hello, Stellix!';\nconsole.log(greeting);`} />
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Terminal</p>
+          <TerminalBlock commands={['$ npm install @stellix/ui-web', 'added 42 packages in 3.2s', '$ npm run dev', 'ready - started server on http://localhost:3000']} />
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Multi-File</p>
+          <MultiFileBlock files={[{ name: 'App.tsx', language: 'tsx', code: `export default function App() {\n  return <div>Hello</div>;\n}` }, { name: 'index.ts', language: 'ts', code: `export { App } from './App';` }]} />
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Diff</p>
+          <DiffBlock lines={[{ type: 'unchanged', content: 'const name = "Stellix";' }, { type: 'remove', content: 'const version = "0.1.0";' }, { type: 'add', content: 'const version = "0.1.4";' }, { type: 'unchanged', content: 'export { name, version };' }]} />
+        </div>
+      </div>
     ),
     webCode: `import { CodeBlock } from '@stellix/ui-web';
 
@@ -738,24 +798,33 @@ function App() {
     description:
       'A full conversation thread with user and assistant message bubbles, optional reasoning disclosure, auto-scroll, tab support, and an inline send input.',
     category: 'Navigation',
-    preview: (
-      <Chat
-        tabs={['General', 'Code', 'Data']}
-        messages={[
-          { id: '1', role: 'user', content: 'What is a mixture of experts model?', timestamp: Date.now() - 60000 },
-          {
-            id: '2',
-            role: 'assistant',
-            content:
-              'A Mixture of Experts (MoE) is a neural network architecture where different subnetworks ("experts") specialise in different parts of the input space, and a gating mechanism routes each token to the most relevant expert.',
-            reasoning: 'The question is about MoE architecture. I should explain routing and sparsity clearly.',
-            timestamp: Date.now() - 30000,
-          },
-          { id: '3', role: 'user', content: 'How does the gating network work?', timestamp: Date.now() - 10000 },
-        ]}
-        onSend={(msg) => console.log('send', msg)}
-      />
-    ),
+    preview: (() => {
+      const msgs = [
+        { id: '1', role: 'user' as const, content: 'What is a mixture of experts model?', timestamp: Date.now() - 60000 },
+        { id: '2', role: 'assistant' as const, content: 'A Mixture of Experts (MoE) routes each token to specialized subnetworks via a gating mechanism.', reasoning: 'The question is about MoE architecture.', timestamp: Date.now() - 30000 },
+        { id: '3', role: 'user' as const, content: 'How does the gating network work?', timestamp: Date.now() - 10000 },
+      ];
+      return (
+        <div className="space-y-8">
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Default Chat</p>
+            <div className="h-64"><Chat tabs={['General', 'Code']} messages={msgs} /></div>
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Bubble Chat (WhatsApp-style)</p>
+            <div className="h-64"><BubbleChat tabs={[]} messages={msgs} /></div>
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Thread Chat (Slack-style)</p>
+            <div className="h-64"><ThreadChat tabs={[]} messages={msgs} /></div>
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Agent Chat (Tool calls)</p>
+            <div className="h-64"><AgentChat tabs={[]} messages={msgs} /></div>
+          </div>
+        </div>
+      );
+    })(),
     webCode: `import { Chat } from '@stellix/ui-web';
 
 <Chat
@@ -947,6 +1016,7 @@ function App() {
       'A responsive grid of metric cards each with a title, description, trend indicator, and a mini inline SVG chart (bar, line, or area).',
     category: 'Cards & Controls',
     preview: (
+      <div>
       <InsightCards
         insights={[
           {
@@ -996,8 +1066,17 @@ function App() {
           },
         ]}
       />
+      <div className="mt-8">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Donut Chart</p>
+        <DonutChart segments={[{ label: 'Web', value: 45, color: 'var(--color-accent)' }, { label: 'Mobile', value: 30, color: 'var(--color-green)' }, { label: 'API', value: 25, color: 'var(--color-orange)' }]} centerLabel="Traffic" />
+      </div>
+      <div className="mt-8">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Gauge Chart</p>
+        <GaugeChart value={73} max={100} label="CPU Usage" />
+      </div>
+    </div>
     ),
-    webCode: `import { InsightCards } from '@stellix/ui-web';
+    webCode: `import { InsightCards, DonutChart, GaugeChart } from '@stellix/ui-web';
 
 <InsightCards
   insights={[
