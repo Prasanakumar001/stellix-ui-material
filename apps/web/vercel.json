@@ -1,0 +1,5 @@
+{
+  "installCommand": "cd ../.. && pnpm install --no-frozen-lockfile",
+  "buildCommand": "cd ../.. && pnpm turbo run build --filter='./packages/*' && cd apps/web && next build",
+  "framework": "nextjs"
+}
