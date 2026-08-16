@@ -10,6 +10,8 @@ import {
   WrenchScrewdriverIcon,
   BookOpenIcon,
   ChevronDownIcon,
+  SunIcon,
+  MoonIcon,
   SparklesIcon,
   ChatBubbleLeftRightIcon,
   DocumentTextIcon,
@@ -136,6 +138,28 @@ function NavGroup({ item, pathname }: { item: (typeof nav)[number]; pathname: st
   );
 }
 
+function DarkModeToggle() {
+  const [dark, setDark] = useState(false);
+  const toggle = () => {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.classList.toggle('dark', next);
+    document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
+  };
+  return (
+    <div className="border-t border-line p-3">
+      <button
+        onClick={toggle}
+        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-ink-2 hover:bg-surface-field hover:text-ink transition-colors"
+        aria-label="Toggle dark mode"
+      >
+        {dark ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
+        {dark ? 'Light Mode' : 'Dark Mode'}
+      </button>
+    </div>
+  );
+}
+
 export function Sidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -154,6 +178,7 @@ export function Sidebar() {
           <NavGroup key={item.label} item={item} pathname={pathname} />
         ))}
       </nav>
+      <DarkModeToggle />
     </div>
   );
 

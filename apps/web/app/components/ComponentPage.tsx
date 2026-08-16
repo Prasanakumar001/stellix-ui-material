@@ -10,6 +10,8 @@ import {
   CheckIcon,
   CodeBracketIcon,
   EyeIcon,
+  SunIcon,
+  MoonIcon,
 } from '@heroicons/react/24/outline';
 
 const viewports = [
@@ -69,6 +71,7 @@ export function ComponentPage({
 }) {
   const [activeTab, setActiveTab] = useState<'preview' | 'web' | 'native'>('preview');
   const [viewport, setViewport] = useState('web');
+  const [previewDark, setPreviewDark] = useState(false);
 
   const selectedViewport = viewports.find((v) => v.id === viewport)!;
 
@@ -106,8 +109,8 @@ export function ComponentPage({
       {/* Preview tab */}
       {activeTab === 'preview' && (
         <div className="space-y-4">
-          {/* Viewport selector */}
-          <div className="flex items-center gap-2">
+          {/* Viewport selector + dark mode toggle */}
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs text-ink-3">Preview:</span>
             <div className="flex rounded-lg border border-line bg-surface-field/50 p-0.5">
               {viewports.map((vp) => (
@@ -125,13 +128,60 @@ export function ComponentPage({
               ))}
             </div>
             <span className="text-[10px] text-ink-3 tabular-nums">{selectedViewport.width}px</span>
+
+            <div className="ml-auto flex rounded-lg border border-line bg-surface-field/50 p-0.5">
+              <button
+                onClick={() => setPreviewDark(false)}
+                className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                  !previewDark ? 'bg-surface text-ink shadow-btn' : 'text-ink-3 hover:text-ink'
+                }`}
+              >
+                <SunIcon className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Light</span>
+              </button>
+              <button
+                onClick={() => setPreviewDark(true)}
+                className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                  previewDark ? 'bg-surface text-ink shadow-btn' : 'text-ink-3 hover:text-ink'
+                }`}
+              >
+                <MoonIcon className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Dark</span>
+              </button>
+            </div>
           </div>
 
           {/* Preview container */}
-          <div className="rounded-xl border border-line bg-surface-canvas p-2 overflow-hidden">
+          <div className={`rounded-xl border border-line p-2 overflow-hidden transition-colors duration-300 ${previewDark ? 'bg-[#111111]' : 'bg-surface-canvas'}`}>
             <div
-              className="mx-auto rounded-lg border border-line bg-surface p-6 transition-all duration-300 overflow-auto"
-              style={{ maxWidth: selectedViewport.width, minHeight: 200 }}
+              className={`mx-auto rounded-lg border p-6 transition-all duration-300 overflow-auto ${
+                previewDark
+                  ? 'border-[#2e2e2e] bg-[#0a0a0a] text-[#f5f5f5]'
+                  : 'border-line bg-surface'
+              }`}
+              style={{
+                maxWidth: selectedViewport.width,
+                minHeight: 200,
+                ...(previewDark ? {
+                  '--ink': '#f5f5f5',
+                  '--ink-2': '#a3a3a3',
+                  '--ink-3': '#737373',
+                  '--surface': '#0a0a0a',
+                  '--surface-field': '#171717',
+                  '--surface-canvas': '#111111',
+                  '--line': '#2e2e2e',
+                  '--line-strong': '#404040',
+                  '--color-ink': '#f5f5f5',
+                  '--color-ink-2': '#a3a3a3',
+                  '--color-ink-3': '#737373',
+                  '--color-surface': '#0a0a0a',
+                  '--color-surface-field': '#171717',
+                  '--color-surface-canvas': '#111111',
+                  '--color-line': '#2e2e2e',
+                  '--color-line-strong': '#404040',
+                } as React.CSSProperties : {}),
+              }}
+              data-theme={previewDark ? 'dark' : 'light'}
             >
               {children}
             </div>
