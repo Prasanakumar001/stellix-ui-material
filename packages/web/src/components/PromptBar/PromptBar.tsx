@@ -103,10 +103,10 @@ export function PromptBar({
   };
 
   return (
-    <div className="relative" data-testid="prompt-bar">
+    <div className="relative w-full max-w-full" data-testid="prompt-bar">
       <div
         className={cn(
-          'flex flex-col rounded-xl border border-line bg-surface shadow-card',
+          'flex flex-col rounded-xl border border-line bg-surface shadow-card w-full overflow-hidden',
           'focus-within:border-accent focus-within:shadow-raised',
           'transition-all duration-200',
         )}
@@ -131,8 +131,8 @@ export function PromptBar({
         />
 
         {/* Toolbar */}
-        <div className="border-t border-line px-2 py-1.5 sm:px-3">
-          <div className="flex items-center gap-1 sm:gap-1.5">
+        <div className="border-t border-line px-2 py-1.5 sm:px-3 overflow-hidden">
+          <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
             {/* @ Sources */}
             <button
               onClick={() => { closeAll(); setShowSources(true); }}
@@ -166,7 +166,7 @@ export function PromptBar({
               <button
                 onClick={() => { closeAll(); setShowModels(true); }}
                 className={cn(
-                  'inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs transition-colors shrink-0 min-w-0',
+                  'inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs transition-colors min-w-0',
                   showModels ? 'bg-accent/10 text-accent' : 'text-ink-2 hover:bg-surface-field',
                 )}
                 data-testid="model-picker-btn"
