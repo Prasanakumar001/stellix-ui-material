@@ -27,20 +27,14 @@ function Popover({
 }) {
   if (!open) return null;
   return (
-    <>
-      <div className="fixed inset-0 z-40" onClick={onClose} />
-      <div
-        className={cn(
-          'absolute top-full mt-2 z-50 w-full rounded-xl border border-line bg-surface p-2 shadow-overlay animate-pop-in max-h-60 overflow-y-auto',
-          'sm:w-72',
-          anchor === 'right' && 'right-0 left-auto sm:w-56',
-        )}
-        role="menu"
-        data-testid="popover-menu"
-      >
-        {children}
-      </div>
-    </>
+    <div
+      className="w-full border-t border-line bg-surface-field/50 p-2 animate-fade-in max-h-48 overflow-y-auto"
+      role="menu"
+      data-testid="popover-menu"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -137,86 +131,87 @@ export function PromptBar({
         />
 
         {/* Toolbar */}
-        <div className="flex flex-wrap items-center gap-1 border-t border-line px-2 py-1.5 sm:gap-1.5 sm:px-3">
-          {/* @ Sources */}
-          <button
-            onClick={() => { closeAll(); setShowSources(true); }}
-            className={cn(
-              'inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs transition-colors',
-              showSources ? 'bg-accent/10 text-accent' : 'text-ink-3 hover:bg-surface-field hover:text-ink',
-            )}
-            title="Add source (@)"
-            data-testid="sources-btn"
-          >
-            <AtSymbolIcon className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Sources</span>
-          </button>
-
-          {/* / Commands */}
-          <button
-            onClick={() => { closeAll(); setShowCommands(true); }}
-            className={cn(
-              'inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs transition-colors',
-              showCommands ? 'bg-accent/10 text-accent' : 'text-ink-3 hover:bg-surface-field hover:text-ink',
-            )}
-            title="Commands (/)"
-            data-testid="commands-btn"
-          >
-            <CommandLineIcon className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Commands</span>
-          </button>
-
-          {/* Model picker */}
-          {models.length > 0 && (
+        <div className="border-t border-line px-2 py-1.5 sm:px-3">
+          <div className="flex items-center gap-1 sm:gap-1.5">
+            {/* @ Sources */}
             <button
-              onClick={() => { closeAll(); setShowModels(true); }}
+              onClick={() => { closeAll(); setShowSources(true); }}
               className={cn(
-                'inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs transition-colors',
-                showModels ? 'bg-accent/10 text-accent' : 'text-ink-2 hover:bg-surface-field',
+                'inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs transition-colors shrink-0',
+                showSources ? 'bg-accent/10 text-accent' : 'text-ink-3 hover:bg-surface-field hover:text-ink',
               )}
-              data-testid="model-picker-btn"
+              title="Add source (@)"
+              data-testid="sources-btn"
             >
-              <SparklesIcon className="h-3.5 w-3.5" />
-              <span className="truncate max-w-16 sm:max-w-20">{selectedModel || 'Model'}</span>
-              <ChevronUpDownIcon className="h-3 w-3 text-ink-3" />
+              <AtSymbolIcon className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Sources</span>
             </button>
-          )}
 
-          {/* Dictation */}
-          {enableDictation && (
+            {/* / Commands */}
             <button
-              className="rounded-md p-1.5 text-ink-3 hover:bg-surface-field hover:text-ink transition-colors"
-              title="Voice input"
-              data-testid="dictation-btn"
+              onClick={() => { closeAll(); setShowCommands(true); }}
+              className={cn(
+                'inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs transition-colors shrink-0',
+                showCommands ? 'bg-accent/10 text-accent' : 'text-ink-3 hover:bg-surface-field hover:text-ink',
+              )}
+              title="Commands (/)"
+              data-testid="commands-btn"
             >
-              <DictationIcon className="h-4 w-4" />
+              <CommandLineIcon className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Commands</span>
             </button>
-          )}
 
-          <div className="flex-1" />
-
-          {/* Char count */}
-          <CharCount count={value.length} />
-
-          {/* Send button */}
-          <button
-            onClick={handleSubmit}
-            disabled={!value.trim()}
-            className={cn(
-              'inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-white',
-              'bg-accent hover:bg-accent/90 transition-colors',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
+            {/* Model picker */}
+            {models.length > 0 && (
+              <button
+                onClick={() => { closeAll(); setShowModels(true); }}
+                className={cn(
+                  'inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs transition-colors shrink-0 min-w-0',
+                  showModels ? 'bg-accent/10 text-accent' : 'text-ink-2 hover:bg-surface-field',
+                )}
+                data-testid="model-picker-btn"
+              >
+                <SparklesIcon className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate max-w-12 sm:max-w-20">{selectedModel || 'Model'}</span>
+                <ChevronUpDownIcon className="h-3 w-3 text-ink-3 shrink-0" />
+              </button>
             )}
-            data-testid="send-btn"
-          >
-            <PaperAirplaneIcon className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Send</span>
-          </button>
-        </div>
-      </div>
 
-      {/* ── Sources popover ── */}
-      <Popover open={showSources} onClose={() => { setShowSources(false); setSourceSearch(''); }}>
+            {/* Dictation */}
+            {enableDictation && (
+              <button
+                className="rounded-md p-1 text-ink-3 hover:bg-surface-field hover:text-ink transition-colors shrink-0"
+                title="Voice input"
+                data-testid="dictation-btn"
+              >
+                <DictationIcon className="h-3.5 w-3.5" />
+              </button>
+            )}
+
+            <div className="flex-1 min-w-0" />
+
+            {/* Char count */}
+            <CharCount count={value.length} />
+
+            {/* Send button */}
+            <button
+              onClick={handleSubmit}
+              disabled={!value.trim()}
+              className={cn(
+                'inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-white shrink-0',
+                'bg-accent hover:bg-accent/90 transition-colors',
+                'disabled:opacity-50 disabled:cursor-not-allowed',
+              )}
+              data-testid="send-btn"
+            >
+              <PaperAirplaneIcon className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Send</span>
+            </button>
+          </div>
+        </div>
+
+        {/* ── Sources popover (inline) ── */}
+        <Popover open={showSources} onClose={() => { setShowSources(false); setSourceSearch(''); }}>
         <div className="mb-2 flex items-center gap-2 rounded-lg border border-line bg-surface-field px-3 py-1.5">
           <MagnifyingGlassIcon className="h-3.5 w-3.5 text-ink-3" />
           <input
@@ -299,6 +294,7 @@ export function PromptBar({
           </button>
         ))}
       </Popover>
+      </div>
     </div>
   );
 }
