@@ -1134,9 +1134,9 @@ function App() {
 
 // --- Page ---------------------------------------------------------------------
 
-export default function ComponentSlugPage({ params }: { params: Promise<{ slug: string }> | { slug: string } }) {
-  const resolvedParams = 'then' in params ? React.use(params) : params;
-  const config = componentRegistry[resolvedParams.slug];
+export default function ComponentSlugPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = React.use(params);
+  const config = componentRegistry[slug];
 
   if (!config) {
     notFound();
