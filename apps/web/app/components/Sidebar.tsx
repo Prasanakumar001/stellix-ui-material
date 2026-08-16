@@ -85,7 +85,7 @@ function NavGroup({ item, pathname }: { item: (typeof nav)[number]; pathname: st
   const isActive = hasChildren
     ? item.children.some((c) => pathname === c.href)
     : pathname === item.href;
-  const [open, setOpen] = useState(isActive || true);
+  const [open, setOpen] = useState<boolean>(true);
   const Icon = item.icon;
 
   if (!hasChildren) {
