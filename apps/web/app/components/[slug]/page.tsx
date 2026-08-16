@@ -42,6 +42,8 @@ import {
   // Phase 13 animations
   GlimmEffect, GlidingHighlight, MorphTransition, ConfettiEffect,
   TypewriterEffect, NumberTicker, ProgressRing, RippleEffect, ShakeAnimation, SlideReveal,
+  // Phase 14 themes
+  ThemeSwitcher, ThemeBuilder,
 } from '@stellix/ui-web';
 
 // --- Search is rendered inline to avoid fixed-position overlay escaping preview ---
@@ -2853,7 +2855,49 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
     propsTable: [
       { prop: 'direction', type: "'up' | 'down' | 'left' | 'right'", default: "'up'", description: 'Direction the content slides in from.' },
       { prop: 'delay', type: 'number', default: '0', description: 'Delay in ms before the animation starts.' },
-      { prop: 'children', type: 'ReactNode', default: '—', description: 'Content to reveal.' },
+      { prop: 'children', type: 'ReactNode', default: '-', description: 'Content to reveal.' },
+    ],
+  },
+
+  // Phase 14 - Themes
+  'theme-switcher': {
+    title: 'ThemeSwitcher',
+    description: 'Pick from 8 preset themes - light, dark, midnight, sunset, forest, ocean, monochrome, and high-contrast. Instantly applies CSS variable overrides.',
+    category: 'Themes',
+    preview: <ThemeSwitcher />,
+    webCode: `import { ThemeSwitcher } from '@stellix/ui-web';
+
+<ThemeSwitcher />
+
+// Or target a specific element:
+const ref = useRef(null);
+<div ref={ref}>
+  <ThemeSwitcher target={ref} />
+  <YourContent />
+</div>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { name: 'target', type: 'RefObject<HTMLElement>', default: 'document.documentElement', description: 'Element to apply theme CSS variables to.' },
+    ],
+  },
+
+  'theme-builder': {
+    title: 'ThemeBuilder',
+    description: 'Custom theme builder with color pickers for every design token. Build your own theme by adjusting accent, text, surface, border, and status colors in real-time.',
+    category: 'Themes',
+    preview: <ThemeBuilder />,
+    webCode: `import { ThemeBuilder } from '@stellix/ui-web';
+
+<ThemeBuilder />
+
+// Or target a specific container:
+const ref = useRef(null);
+<div ref={ref}>
+  <ThemeBuilder target={ref} />
+</div>`,
+    nativeCode: 'Same API - import from @stellix/ui-native',
+    propsTable: [
+      { name: 'target', type: 'RefObject<HTMLElement>', default: 'document.documentElement', description: 'Element to apply custom CSS variables to.' },
     ],
   },
 };

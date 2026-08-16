@@ -109,6 +109,9 @@ export { RippleEffect } from './components/RippleEffect';
 export { ShakeAnimation } from './components/ShakeAnimation';
 export { SlideReveal } from './components/SlideReveal';
 
+// Phase 14 — Theme System
+export { ThemeSwitcher, ThemeBuilder, themePresets, applyTheme, type ThemePreset } from './components/ThemePresets';
+
 // Tailwind preset
 export { default as stellixPreset } from './tokens/tailwind-preset';
 

@@ -177,6 +177,14 @@ const nav = [
       { label: 'SlideReveal', href: '/components/slide-reveal' },
     ],
   },
+  {
+    label: 'Themes',
+    icon: HomeIcon,
+    children: [
+      { label: 'ThemeSwitcher', href: '/components/theme-switcher' },
+      { label: 'ThemeBuilder', href: '/components/theme-builder' },
+    ],
+  },
 ];
 
 function NavGroup({ item, pathname }: { item: (typeof nav)[number]; pathname: string }) {

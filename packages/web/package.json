@@ -38,7 +38,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts --external react --external react-dom",
+    "build": "tsup src/index.ts --format cjs,esm --no-dts --external react --external react-dom --external @heroicons/react",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist",
