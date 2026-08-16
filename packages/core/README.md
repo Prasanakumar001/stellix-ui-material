@@ -2,6 +2,8 @@
 
 > Headless hooks, TypeScript types, and utilities for the Stellix UI Material component library.
 
+**[Live Demo](https://stellix-ui-material.vercel.app/)** | [GitHub](https://github.com/Prasanakumar001/stellix-ui-material)
+
 ## What is this?
 
 `@stellix/ui-core` provides **11 platform-agnostic React hooks** and full TypeScript interfaces for all 19 Stellix UI components. Use it to build your own UI with Stellix logic — no CSS or rendering opinions included.

@@ -1,6 +1,6 @@
 {
   "name": "@stellix/ui-core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Headless logic, hooks, and types for Stellix UI Material",
   "license": "MIT",
   "keywords": [

@@ -1,10 +1,23 @@
 # @stellix/ui-web
 
-> 19 production-ready web components for Next.js — built with Tailwind CSS 4 and Heroicons.
+> 19 production-ready UI components for Next.js — Tailwind CSS 4, Heroicons, fully responsive, dark mode, accessible.
 
-## What is this?
+**[Live Demo](https://stellix-ui-material.vercel.app/)** | [GitHub](https://github.com/Prasanakumar001/stellix-ui-material)
 
-`@stellix/ui-web` is a complete UI component library cloning every component from [beautifului.dev](https://www.beautifului.dev/). Fully responsive across mobile, tablet, web, and big screen. Includes dark mode, accessibility (WCAG 2.1 AA), reduced motion support, and 1,400+ E2E tests.
+---
+
+## Why @stellix/ui-web?
+
+- **19 components** — every component from [beautifului.dev](https://www.beautifului.dev/), rebuilt production-ready
+- **4 breakpoints** — mobile, tablet, web, big screen — every component adapts
+- **Dark mode** — full token swap via CSS variables, one-click toggle
+- **Accessible** — WCAG 2.1 AA, ARIA attributes, keyboard navigation, focus-visible, skip-to-content
+- **Tree-shakeable** — import only what you need, unused components excluded from bundle
+- **TypeScript** — full type safety with exported interfaces for all props
+- **SVG icons** — Heroicons v2, no emojis
+- **1,400+ tests** — E2E (Playwright) across 4 viewports + unit tests (Vitest)
+
+---
 
 ## Install
 
@@ -16,7 +29,11 @@ pnpm add @stellix/ui-web
 
 **Peer dependencies:** `react ^18 || ^19`, `react-dom ^18 || ^19`
 
-## Setup (Next.js)
+---
+
+## Quick Start (Next.js)
+
+### 1. Configure Next.js
 
 ```ts
 // next.config.ts
@@ -24,6 +41,8 @@ export default {
   transpilePackages: ['@stellix/ui-web', '@stellix/ui-core', '@stellix/ui-tokens'],
 };
 ```
+
+### 2. Add Tailwind CSS theme
 
 ```css
 /* app/globals.css */
@@ -57,67 +76,93 @@ export default {
 }
 ```
 
-## Usage
+### 3. Use components
 
 ```tsx
-import {
-  LoadingState, Thinking, StreamingText, ApprovalCard,
-  ToolChips, TaskRows, Chat, PromptBar, RecommendationCard,
-  ContextCards, DiffTable, RecordsTable, FilterTable,
-  SidebarNav, Search, InsightCards, CodeBlock,
-  FineTuneCard, SelectionActions,
-} from '@stellix/ui-web';
+import { LoadingState, Chat, CodeBlock, StreamingText } from '@stellix/ui-web';
 
 export default function Page() {
   return (
     <div>
       <LoadingState variant="orbit" label="Processing..." />
-      <CodeBlock code="const x = 1;" language="ts" streaming />
-      <Chat messages={messages} tabs={['Chat', 'History']} />
+      <CodeBlock code="console.log('hello')" language="ts" streaming />
     </div>
   );
 }
 ```
 
-## All 19 Components
+---
 
-| Category | Components |
-|---|---|
-| **Feedback** | `LoadingState` (3 variants), `Thinking` (trace panel), `TaskRows` (live status) |
-| **Content** | `StreamingText` (citations + toolbar), `CodeBlock` (syntax highlighting), `ContextCards` (relevance meter) |
-| **Forms** | `ApprovalCard` (human-in-the-loop), `PromptBar` (composer + menus), `SelectionActions` (text toolbar) |
-| **Tables** | `DiffTable` (split/unified), `RecordsTable` (sorting + selection), `FilterTable` (chip filters) |
-| **Navigation** | `Chat` (tabs + reasoning), `Search` (command palette), `SidebarNav` (drawer + groups) |
-| **Cards** | `RecommendationCard` (confidence meter), `InsightCards` (SVG charts), `ToolChips` (status icons), `FineTuneCard` (property inspector) |
+## Component Catalog
 
-## Features
+> **[See all components live →](https://stellix-ui-material.vercel.app/)**
 
-- **Responsive** — 4 breakpoints: mobile, tablet, web, big screen
-- **Dark mode** — full token swap via CSS variables
-- **Accessible** — WCAG 2.1 AA, ARIA attributes, keyboard navigation, focus-visible
-- **Reduced motion** — respects `prefers-reduced-motion`
-- **Tree-shakeable** — import only what you need
-- **Heroicons** — all icons are SVG (no emojis)
-- **TypeScript** — full type safety, exported interfaces
+### Feedback Components
+| Component | Description | Demo |
+|---|---|---|
+| `LoadingState` | Pixel-grid loader with 3 variants (Drive, Dots, Orbit) + shimmer + timer | [View](https://stellix-ui-material.vercel.app/#loading-state) |
+| `Thinking` | Expandable trace panel with step types, progress bar, active indicators | [View](https://stellix-ui-material.vercel.app/#thinking) |
+| `TaskRows` | Live task status list with progress bars, status badges, expand details | [View](https://stellix-ui-material.vercel.app/#task-rows) |
+
+### Content Components
+| Component | Description | Demo |
+|---|---|---|
+| `StreamingText` | Word-by-word streaming with citations, action toolbar, follow-ups | [View](https://stellix-ui-material.vercel.app/#streaming-text) |
+| `CodeBlock` | Syntax-highlighted code with streaming, copy button, line numbers | [View](https://stellix-ui-material.vercel.app/#code-block) |
+| `ContextCards` | Knowledge chunks with relevance meter, source icons, show more/less | [View](https://stellix-ui-material.vercel.app/#context-cards) |
+
+### Form Components
+| Component | Description | Demo |
+|---|---|---|
+| `ApprovalCard` | Human-in-the-loop with radio/checkbox options, risk badge, custom input | [View](https://stellix-ui-material.vercel.app/#approval-card) |
+| `PromptBar` | Composer with @sources, /commands, model picker, dictation, char count | [View](https://stellix-ui-material.vercel.app/#prompt-bar) |
+| `SelectionActions` | Text highlight toolbar — Rewrite, Summarize, Explain, Translate | [View](https://stellix-ui-material.vercel.app/#selection-actions) |
+
+### Table Components
+| Component | Description | Demo |
+|---|---|---|
+| `DiffTable` | Code diff viewer with unified/split toggle, accept/reject per hunk | [View](https://stellix-ui-material.vercel.app/#diff-table) |
+| `RecordsTable` | CRM grid with column sorting, row selection, card view on mobile | [View](https://stellix-ui-material.vercel.app/#records-table) |
+| `FilterTable` | Dynamic filter chips with count badges, clear all, live result count | [View](https://stellix-ui-material.vercel.app/#filter-table) |
+
+### Navigation Components
+| Component | Description | Demo |
+|---|---|---|
+| `Chat` | Tabbed chat with avatars, reasoning toggle, composer | [View](https://stellix-ui-material.vercel.app/#chat) |
+| `Search` | Command palette (Cmd+K) with keyboard nav, categories, recent searches | [View](https://stellix-ui-material.vercel.app/#search) |
+| `SidebarNav` | Collapsible nav groups, quick search, mobile hamburger drawer | — |
+
+### Card & Control Components
+| Component | Description | Demo |
+|---|---|---|
+| `RecommendationCard` | Agent suggestion with confidence meter, alternatives, Accept/Modify/Reject | [View](https://stellix-ui-material.vercel.app/#recommendation-card) |
+| `InsightCards` | SVG charts (line/bar/area) with trend badges, responsive grid | [View](https://stellix-ui-material.vercel.app/#insight-cards) |
+| `ToolChips` | Tool call display with status icons, expandable diff counts | [View](https://stellix-ui-material.vercel.app/#tool-chips) |
+| `FineTuneCard` | Property inspector with slider, toggle, color picker, select | [View](https://stellix-ui-material.vercel.app/#fine-tune-card) |
+
+---
 
 ## Responsive Breakpoints
 
-| Breakpoint | Width | Tailwind |
+| Breakpoint | Width | Tailwind | Behavior |
+|---|---|---|---|
+| Mobile | < 640px | default | Card layouts, bottom sheets, stacked |
+| Tablet | 640–1023px | `sm:` | 2-column grids, side panels |
+| Web | 1024–1439px | `md:` | Full tables, expanded sidebars |
+| Big Screen | 1440px+ | `lg:` | 4-column grids, persistent panels |
+
+---
+
+## Also Available
+
+| Package | Purpose | Install |
 |---|---|---|
-| Mobile | < 640px | default |
-| Tablet | 640–1023px | `sm:` |
-| Web | 1024–1439px | `md:` |
-| Big Screen | 1440px+ | `lg:` |
+| [@stellix/ui-core](https://www.npmjs.com/package/@stellix/ui-core) | 11 headless hooks + TypeScript types | `npm i @stellix/ui-core` |
+| [@stellix/ui-tokens](https://www.npmjs.com/package/@stellix/ui-tokens) | Design tokens (colors, shadows, spacing) | `npm i @stellix/ui-tokens` |
+| [@stellix/ui-native](https://www.npmjs.com/package/@stellix/ui-native) | React Native components (NativeWind) | `npm i @stellix/ui-native` |
 
-## Part Of
-
-| Package | Purpose |
-|---|---|
-| [@stellix/ui-tokens](https://www.npmjs.com/package/@stellix/ui-tokens) | Design tokens |
-| [@stellix/ui-core](https://www.npmjs.com/package/@stellix/ui-core) | Headless hooks & types |
-| **@stellix/ui-web** | Web components (this package) |
-| [@stellix/ui-native](https://www.npmjs.com/package/@stellix/ui-native) | React Native components |
+---
 
 ## License
 
-MIT - Stellix Private Ltd
+MIT - [Stellix Private Ltd](https://github.com/Prasanakumar001/stellix-ui-material)

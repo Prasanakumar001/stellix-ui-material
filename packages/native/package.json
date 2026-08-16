@@ -1,6 +1,6 @@
 {
   "name": "@stellix/ui-native",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React Native components for Stellix UI Material — NativeWind + Reanimated",
   "license": "MIT",
   "keywords": [

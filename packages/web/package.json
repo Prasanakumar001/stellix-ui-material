@@ -1,6 +1,6 @@
 {
   "name": "@stellix/ui-web",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Web components for Stellix UI Material — Tailwind CSS + Next.js",
   "license": "MIT",
   "keywords": [

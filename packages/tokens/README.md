@@ -2,6 +2,8 @@
 
 > Shared design tokens for the Stellix UI Material component library.
 
+**[Live Demo](https://stellix-ui-material.vercel.app/)** | [GitHub](https://github.com/Prasanakumar001/stellix-ui-material)
+
 ## What is this?
 
 `@stellix/ui-tokens` provides a complete design token system — colors, shadows, spacing, breakpoints, typography, and animation timing constants — used across all Stellix UI packages. Use it to keep your app visually consistent with the Stellix design language.

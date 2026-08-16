@@ -2,6 +2,8 @@
 
 > 19 React Native components for mobile apps — built with NativeWind and Reanimated.
 
+**[Live Demo (Web version)](https://stellix-ui-material.vercel.app/)** | [GitHub](https://github.com/Prasanakumar001/stellix-ui-material)
+
 ## What is this?
 
 `@stellix/ui-native` provides all 19 Stellix UI Material components for React Native / Expo apps. Same component API as `@stellix/ui-web`, different rendering — NativeWind for Tailwind-style classes, Reanimated for animations, and native controls for touch.
