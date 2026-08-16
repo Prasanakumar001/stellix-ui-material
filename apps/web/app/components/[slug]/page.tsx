@@ -2363,22 +2363,24 @@ const [open, setOpen] = useState(false);
     preview: (
       <div className="space-y-4">
         <ToolCallCard
-          toolName="read_file"
+          name="read_file"
           status="success"
-          input={{ path: 'src/components/Button.tsx', encoding: 'utf-8' }}
-          output="142 lines read successfully."
+          input='{"path": "src/components/Button.tsx", "encoding": "utf-8"}'
+          output='"142 lines read successfully."'
           duration={82}
         />
         <ToolCallCard
-          toolName="search_web"
+          name="search_web"
           status="running"
-          input={{ query: 'Stellix UI installation guide', max_results: 5 }}
+          input='{"query": "Stellix UI installation guide", "max_results": 5}'
+          output=""
+          duration={0}
         />
         <ToolCallCard
-          toolName="run_shell"
+          name="run_shell"
           status="error"
-          input={{ command: 'npm test' }}
-          output="Error: 3 tests failed."
+          input='{"command": "npm test"}'
+          output='"Error: 3 tests failed."'
           duration={4200}
         />
       </div>
