@@ -107,7 +107,7 @@ const sampleFilterChips = [
 ];
 
 function StatefulFineTuneCard() {
-  const [properties, setProperties] = React.useState(sampleProperties);
+  const [properties, setProperties] = React.useState<Array<{ id: string; label: string; type: 'slider' | 'color' | 'toggle' | 'select'; value: number | string | boolean; min?: number; max?: number; step?: number; options?: string[] }>>(sampleProperties);
   return (
     <FineTuneCard
       title="Appearance"
