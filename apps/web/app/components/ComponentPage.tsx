@@ -160,7 +160,7 @@ export function ComponentPage({
             }}
           >
             <div
-              className="mx-auto rounded-lg border p-3 sm:p-6 transition-all duration-300 overflow-hidden"
+              className="mx-auto rounded-lg border p-3 sm:p-6 transition-all duration-300 overflow-visible"
               style={{
                 width: selectedViewport.width,
                 maxWidth: '100%',

@@ -31,7 +31,7 @@ function Popover({
       <div className="fixed inset-0 z-40" onClick={onClose} />
       <div
         className={cn(
-          'absolute bottom-full mb-2 z-50 w-full rounded-xl border border-line bg-surface p-2 shadow-overlay animate-pop-in',
+          'absolute top-full mt-2 z-50 w-full rounded-xl border border-line bg-surface p-2 shadow-overlay animate-pop-in max-h-60 overflow-y-auto',
           'sm:w-72',
           anchor === 'right' && 'right-0 left-auto sm:w-56',
         )}
@@ -137,7 +137,7 @@ export function PromptBar({
         />
 
         {/* Toolbar */}
-        <div className="flex items-center gap-1 border-t border-line px-2 py-1.5 sm:gap-1.5 sm:px-3">
+        <div className="flex flex-wrap items-center gap-1 border-t border-line px-2 py-1.5 sm:gap-1.5 sm:px-3">
           {/* @ Sources */}
           <button
             onClick={() => { closeAll(); setShowSources(true); }}
@@ -177,7 +177,7 @@ export function PromptBar({
               data-testid="model-picker-btn"
             >
               <SparklesIcon className="h-3.5 w-3.5" />
-              <span className="truncate max-w-20">{selectedModel || 'Model'}</span>
+              <span className="truncate max-w-16 sm:max-w-20">{selectedModel || 'Model'}</span>
               <ChevronUpDownIcon className="h-3 w-3 text-ink-3" />
             </button>
           )}
