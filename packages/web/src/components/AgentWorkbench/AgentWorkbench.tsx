@@ -14,21 +14,21 @@ const THINKING_STEPS = [
     type: 'reasoning' as const,
     content: 'The user wants to refactor the attention module. I should first read the current implementation, identify coupling, then propose a clean abstraction.',
     status: 'completed' as const,
-    timestamp: Date.now() - 12000,
+    timestamp: 1723900000000 - 12000,
   },
   {
     id: 's2',
     type: 'search' as const,
     content: 'Searching codebase for all references to MultiHeadAttention and cross-attention layers.',
     status: 'completed' as const,
-    timestamp: Date.now() - 9000,
+    timestamp: 1723900000000 - 9000,
   },
   {
     id: 's3',
     type: 'steps' as const,
     content: 'Plan: (1) extract query/key/value projections into separate module, (2) decouple positional encoding, (3) update all callers.',
     status: 'active' as const,
-    timestamp: Date.now() - 4000,
+    timestamp: 1723900000000 - 4000,
   },
 ];
 

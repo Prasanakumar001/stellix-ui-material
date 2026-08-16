@@ -814,9 +814,9 @@ const componentRegistry: Record<string, ComponentConfig> = {
     category: 'Navigation',
     preview: (() => {
       const msgs = [
-        { id: '1', role: 'user' as const, content: 'What is a mixture of experts model?', timestamp: Date.now() - 60000 },
-        { id: '2', role: 'assistant' as const, content: 'A Mixture of Experts (MoE) routes each token to specialized subnetworks via a gating mechanism.', reasoning: 'The question is about MoE architecture.', timestamp: Date.now() - 30000 },
-        { id: '3', role: 'user' as const, content: 'How does the gating network work?', timestamp: Date.now() - 10000 },
+        { id: '1', role: 'user' as const, content: 'What is a mixture of experts model?', timestamp: 1723900000000 - 60000 },
+        { id: '2', role: 'assistant' as const, content: 'A Mixture of Experts (MoE) routes each token to specialized subnetworks via a gating mechanism.', reasoning: 'The question is about MoE architecture.', timestamp: 1723900000000 - 30000 },
+        { id: '3', role: 'user' as const, content: 'How does the gating network work?', timestamp: 1723900000000 - 10000 },
       ];
       return (
         <div className="space-y-8">
@@ -844,10 +844,10 @@ const componentRegistry: Record<string, ComponentConfig> = {
 <Chat
   tabs={['General', 'Code', 'Data']}
   messages={[
-    { id: '1', role: 'user',      content: 'What is a mixture of experts model?',  timestamp: Date.now() - 60000 },
-    { id: '2', role: 'assistant', content: 'A Mixture of Experts (MoE) is...',     timestamp: Date.now() - 30000,
+    { id: '1', role: 'user',      content: 'What is a mixture of experts model?',  timestamp: 1723900000000 - 60000 },
+    { id: '2', role: 'assistant', content: 'A Mixture of Experts (MoE) is...',     timestamp: 1723900000000 - 30000,
       reasoning: 'The question is about MoE architecture.' },
-    { id: '3', role: 'user',      content: 'How does the gating network work?',    timestamp: Date.now() },
+    { id: '3', role: 'user',      content: 'How does the gating network work?',    timestamp: 1723900000000 },
   ]}
   onSend={(message) => sendToApi(message)}
 />`,
@@ -855,8 +855,8 @@ const componentRegistry: Record<string, ComponentConfig> = {
 
 <Chat
   messages={[
-    { id: '1', role: 'user',      content: 'What is MoE?',                timestamp: Date.now() },
-    { id: '2', role: 'assistant', content: 'A Mixture of Experts is...',  timestamp: Date.now() },
+    { id: '1', role: 'user',      content: 'What is MoE?',                timestamp: 1723900000000 },
+    { id: '2', role: 'assistant', content: 'A Mixture of Experts is...',  timestamp: 1723900000000 },
   ]}
   onSend={(msg) => sendToApi(msg)}
 />`,

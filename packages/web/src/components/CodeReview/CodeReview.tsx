@@ -38,7 +38,7 @@ const REVIEW_MESSAGES = [
     role: 'user' as const,
     content: 'Why split qkv into separate projections? The fused version is more memory-efficient.',
     reasoning: undefined,
-    timestamp: Date.now() - 300000,
+    timestamp: 1723900000000 - 300000,
   },
   {
     id: 'rm2',
@@ -47,7 +47,7 @@ const REVIEW_MESSAGES = [
       'Good point. The separate projections add flexibility for per-head dimension scaling and for swapping positional encodings independently on Q and K. ' +
       'That said, if memory is a priority at this scale we can keep a fused projection and split after the linear. Want me to revise the diff?',
     reasoning: 'The reviewer is weighing flexibility vs efficiency. I should acknowledge the trade-off and offer an alternative.',
-    timestamp: Date.now() - 240000,
+    timestamp: 1723900000000 - 240000,
   },
 ];
 
