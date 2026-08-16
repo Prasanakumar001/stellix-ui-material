@@ -39,8 +39,7 @@ playwright-report/
 test-results/
 e2e-report/
 
-# lock files (regenerated on install)
-pnpm-lock.yaml
+# lock files — keep pnpm-lock.yaml for Vercel deploys
 
 # misc
 *.log
