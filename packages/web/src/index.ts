@@ -40,6 +40,55 @@ export { MultiStepApproval } from './components/ApprovalCard';
 // Variants — RecommendationCard
 export { ComparisonCard } from './components/RecommendationCard';
 
+// Phase 11 — Primitives
+export { Button } from './components/Button';
+export { Badge } from './components/Badge';
+export { Avatar } from './components/Avatar';
+export { Tag } from './components/Tag';
+export { Tooltip } from './components/Tooltip';
+export { Toggle } from './components/Toggle';
+export { Input } from './components/Input';
+export { Textarea } from './components/Textarea';
+export { Select } from './components/Select';
+export { Checkbox } from './components/Checkbox';
+export { Radio } from './components/Radio';
+export { Switch } from './components/Switch';
+
+// Phase 11 — Feedback
+export { Toast } from './components/Toast';
+export { Alert } from './components/Alert';
+export { ProgressBar } from './components/ProgressBar';
+export { Spinner } from './components/Spinner';
+export { SkeletonBlock } from './components/SkeletonBlock';
+export { EmptyState } from './components/EmptyState';
+export { StepIndicator } from './components/StepIndicator';
+
+// Phase 11 — Layout
+export { Tabs } from './components/Tabs';
+export { Breadcrumb } from './components/Breadcrumb';
+export { Pagination } from './components/Pagination';
+export { Dropdown } from './components/Dropdown';
+export { Modal } from './components/Modal';
+export { Drawer } from './components/Drawer';
+export { Accordion } from './components/Accordion';
+
+// Phase 11 — Data Display
+export { DataCard } from './components/DataCard';
+export { TimelineView } from './components/TimelineView';
+export { FileTree } from './components/FileTree';
+export { JSONViewer } from './components/JSONViewer';
+export { MarkdownView } from './components/MarkdownView';
+export { Changelog } from './components/Changelog';
+export { ActivityFeed } from './components/ActivityFeed';
+
+// Phase 11 — AI / Agent
+export { AgentStatus } from './components/AgentStatus';
+export { ToolCallCard } from './components/ToolCallCard';
+export { ModelSelector } from './components/ModelSelector';
+export { TokenCounter } from './components/TokenCounter';
+export { ConversationList } from './components/ConversationList';
+export { SystemPrompt } from './components/SystemPrompt';
+
 // Tailwind preset
 export { default as stellixPreset } from './tokens/tailwind-preset';
 
