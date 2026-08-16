@@ -151,36 +151,42 @@ export function ComponentPage({
             </div>
           </div>
 
-          {/* Preview container */}
-          <div className={`rounded-xl border border-line p-2 overflow-hidden transition-colors duration-300 ${previewDark ? 'bg-[#111111]' : 'bg-surface-canvas'}`}>
+          {/* Preview container — uses forced CSS vars to isolate from global theme */}
+          <div
+            className="rounded-xl border p-2 overflow-hidden transition-colors duration-300"
+            style={{
+              borderColor: previewDark ? '#2e2e2e' : '#e5e5e5',
+              backgroundColor: previewDark ? '#111111' : '#fafafa',
+            }}
+          >
             <div
-              className={`mx-auto rounded-lg border p-6 transition-all duration-300 overflow-auto ${
-                previewDark
-                  ? 'border-[#2e2e2e] bg-[#0a0a0a] text-[#f5f5f5]'
-                  : 'border-line bg-surface'
-              }`}
+              className="mx-auto rounded-lg border p-6 transition-all duration-300 overflow-auto"
               style={{
                 maxWidth: selectedViewport.width,
                 minHeight: 200,
-                ...(previewDark ? {
-                  '--ink': '#f5f5f5',
-                  '--ink-2': '#a3a3a3',
-                  '--ink-3': '#737373',
-                  '--surface': '#0a0a0a',
-                  '--surface-field': '#171717',
-                  '--surface-canvas': '#111111',
-                  '--line': '#2e2e2e',
-                  '--line-strong': '#404040',
-                  '--color-ink': '#f5f5f5',
-                  '--color-ink-2': '#a3a3a3',
-                  '--color-ink-3': '#737373',
-                  '--color-surface': '#0a0a0a',
-                  '--color-surface-field': '#171717',
-                  '--color-surface-canvas': '#111111',
-                  '--color-line': '#2e2e2e',
-                  '--color-line-strong': '#404040',
-                } as React.CSSProperties : {}),
-              }}
+                borderColor: previewDark ? '#2e2e2e' : '#e5e5e5',
+                backgroundColor: previewDark ? '#0a0a0a' : '#ffffff',
+                color: previewDark ? '#f5f5f5' : '#1a1a1a',
+                '--ink': previewDark ? '#f5f5f5' : '#1a1a1a',
+                '--ink-2': previewDark ? '#a3a3a3' : '#6b6b6b',
+                '--ink-3': previewDark ? '#737373' : '#9a9a9a',
+                '--surface': previewDark ? '#0a0a0a' : '#ffffff',
+                '--surface-field': previewDark ? '#171717' : '#f5f5f5',
+                '--surface-canvas': previewDark ? '#111111' : '#fafafa',
+                '--line': previewDark ? '#2e2e2e' : '#e5e5e5',
+                '--line-strong': previewDark ? '#404040' : '#d1d1d1',
+                '--color-ink': previewDark ? '#f5f5f5' : '#1a1a1a',
+                '--color-ink-2': previewDark ? '#a3a3a3' : '#6b6b6b',
+                '--color-ink-3': previewDark ? '#737373' : '#9a9a9a',
+                '--color-surface': previewDark ? '#0a0a0a' : '#ffffff',
+                '--color-surface-field': previewDark ? '#171717' : '#f5f5f5',
+                '--color-surface-canvas': previewDark ? '#111111' : '#fafafa',
+                '--color-line': previewDark ? '#2e2e2e' : '#e5e5e5',
+                '--color-line-strong': previewDark ? '#404040' : '#d1d1d1',
+                '--shadow-card': previewDark
+                  ? '0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3)'
+                  : '0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)',
+              } as React.CSSProperties}
               data-theme={previewDark ? 'dark' : 'light'}
             >
               {children}
