@@ -100,45 +100,45 @@ export default function Page() {
 ### Feedback Components
 | Component | Description | Demo |
 |---|---|---|
-| `LoadingState` | Pixel-grid loader with 3 variants (Drive, Dots, Orbit) + shimmer + timer | [View](https://stellix-ui-material.vercel.app/#loading-state) |
-| `Thinking` | Expandable trace panel with step types, progress bar, active indicators | [View](https://stellix-ui-material.vercel.app/#thinking) |
-| `TaskRows` | Live task status list with progress bars, status badges, expand details | [View](https://stellix-ui-material.vercel.app/#task-rows) |
+| `LoadingState` | Pixel-grid loader with 3 variants (Drive, Dots, Orbit) + shimmer + timer | [View](https://stellix-ui-material.vercel.app/components/loading-state) |
+| `Thinking` | Expandable trace panel with step types, progress bar, active indicators | [View](https://stellix-ui-material.vercel.app/components/thinking) |
+| `TaskRows` | Live task status list with progress bars, status badges, expand details | [View](https://stellix-ui-material.vercel.app/components/task-rows) |
 
 ### Content Components
 | Component | Description | Demo |
 |---|---|---|
-| `StreamingText` | Word-by-word streaming with citations, action toolbar, follow-ups | [View](https://stellix-ui-material.vercel.app/#streaming-text) |
-| `CodeBlock` | Syntax-highlighted code with streaming, copy button, line numbers | [View](https://stellix-ui-material.vercel.app/#code-block) |
-| `ContextCards` | Knowledge chunks with relevance meter, source icons, show more/less | [View](https://stellix-ui-material.vercel.app/#context-cards) |
+| `StreamingText` | Word-by-word streaming with citations, action toolbar, follow-ups | [View](https://stellix-ui-material.vercel.app/components/streaming-text) |
+| `CodeBlock` | Syntax-highlighted code with streaming, copy button, line numbers | [View](https://stellix-ui-material.vercel.app/components/code-block) |
+| `ContextCards` | Knowledge chunks with relevance meter, source icons, show more/less | [View](https://stellix-ui-material.vercel.app/components/context-cards) |
 
 ### Form Components
 | Component | Description | Demo |
 |---|---|---|
-| `ApprovalCard` | Human-in-the-loop with radio/checkbox options, risk badge, custom input | [View](https://stellix-ui-material.vercel.app/#approval-card) |
-| `PromptBar` | Composer with @sources, /commands, model picker, dictation, char count | [View](https://stellix-ui-material.vercel.app/#prompt-bar) |
-| `SelectionActions` | Text highlight toolbar — Rewrite, Summarize, Explain, Translate | [View](https://stellix-ui-material.vercel.app/#selection-actions) |
+| `ApprovalCard` | Human-in-the-loop with radio/checkbox options, risk badge, custom input | [View](https://stellix-ui-material.vercel.app/components/approval-card) |
+| `PromptBar` | Composer with @sources, /commands, model picker, dictation, char count | [View](https://stellix-ui-material.vercel.app/components/prompt-bar) |
+| `SelectionActions` | Text highlight toolbar — Rewrite, Summarize, Explain, Translate | [View](https://stellix-ui-material.vercel.app/components/selection-actions) |
 
 ### Table Components
 | Component | Description | Demo |
 |---|---|---|
-| `DiffTable` | Code diff viewer with unified/split toggle, accept/reject per hunk | [View](https://stellix-ui-material.vercel.app/#diff-table) |
-| `RecordsTable` | CRM grid with column sorting, row selection, card view on mobile | [View](https://stellix-ui-material.vercel.app/#records-table) |
-| `FilterTable` | Dynamic filter chips with count badges, clear all, live result count | [View](https://stellix-ui-material.vercel.app/#filter-table) |
+| `DiffTable` | Code diff viewer with unified/split toggle, accept/reject per hunk | [View](https://stellix-ui-material.vercel.app/components/diff-table) |
+| `RecordsTable` | CRM grid with column sorting, row selection, card view on mobile | [View](https://stellix-ui-material.vercel.app/components/records-table) |
+| `FilterTable` | Dynamic filter chips with count badges, clear all, live result count | [View](https://stellix-ui-material.vercel.app/components/filter-table) |
 
 ### Navigation Components
 | Component | Description | Demo |
 |---|---|---|
-| `Chat` | Tabbed chat with avatars, reasoning toggle, composer | [View](https://stellix-ui-material.vercel.app/#chat) |
-| `Search` | Command palette (Cmd+K) with keyboard nav, categories, recent searches | [View](https://stellix-ui-material.vercel.app/#search) |
-| `SidebarNav` | Collapsible nav groups, quick search, mobile hamburger drawer | — |
+| `Chat` | Tabbed chat with avatars, reasoning toggle, composer | [View](https://stellix-ui-material.vercel.app/components/chat) |
+| `Search` | Command palette (Cmd+K) with keyboard nav, categories, recent searches | [View](https://stellix-ui-material.vercel.app/components/search) |
+| `SidebarNav` | Collapsible nav groups, quick search, mobile hamburger drawer | [View](https://stellix-ui-material.vercel.app/components/sidebar-nav) |
 
 ### Card & Control Components
 | Component | Description | Demo |
 |---|---|---|
-| `RecommendationCard` | Agent suggestion with confidence meter, alternatives, Accept/Modify/Reject | [View](https://stellix-ui-material.vercel.app/#recommendation-card) |
-| `InsightCards` | SVG charts (line/bar/area) with trend badges, responsive grid | [View](https://stellix-ui-material.vercel.app/#insight-cards) |
-| `ToolChips` | Tool call display with status icons, expandable diff counts | [View](https://stellix-ui-material.vercel.app/#tool-chips) |
-| `FineTuneCard` | Property inspector with slider, toggle, color picker, select | [View](https://stellix-ui-material.vercel.app/#fine-tune-card) |
+| `RecommendationCard` | Agent suggestion with confidence meter, alternatives, Accept/Modify/Reject | [View](https://stellix-ui-material.vercel.app/components/recommendation-card) |
+| `InsightCards` | SVG charts (line/bar/area) with trend badges, responsive grid | [View](https://stellix-ui-material.vercel.app/components/insight-cards) |
+| `ToolChips` | Tool call display with status icons, expandable diff counts | [View](https://stellix-ui-material.vercel.app/components/tool-chips) |
+| `FineTuneCard` | Property inspector with slider, toggle, color picker, select | [View](https://stellix-ui-material.vercel.app/components/fine-tune-card) |
 
 ---
 
