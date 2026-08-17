@@ -10,8 +10,6 @@ import {
   WrenchScrewdriverIcon,
   BookOpenIcon,
   ChevronDownIcon,
-  SunIcon,
-  MoonIcon,
   SparklesIcon,
   ChatBubbleLeftRightIcon,
   DocumentTextIcon,
@@ -20,18 +18,16 @@ import {
   RectangleGroupIcon,
   Squares2X2Icon,
   ShieldCheckIcon,
+  SwatchIcon,
 } from '@heroicons/react/24/outline';
 
 const nav = [
   { label: 'Overview', href: '/', icon: HomeIcon },
   { label: 'Setup', href: '/setup', icon: WrenchScrewdriverIcon },
   { label: 'Documentation', href: '/docs', icon: BookOpenIcon },
-  { label: 'Playground', href: '/playground', icon: CursorArrowRaysIcon },
-  { label: 'Theme Playground', href: '/theme-playground', icon: HomeIcon },
-  { label: 'Changelog', href: '/changelog', icon: BookOpenIcon },
   { label: 'Accessibility', href: '/accessibility', icon: ShieldCheckIcon },
   {
-    label: 'Feedback',
+    label: 'Core Feedback',
     icon: SparklesIcon,
     children: [
       { label: 'LoadingState', href: '/components/loading-state' },
@@ -190,6 +186,9 @@ const nav = [
       { label: 'ThemeBuilder', href: '/components/theme-builder' },
     ],
   },
+  { label: 'Changelog', href: '/changelog', icon: BookOpenIcon },
+  { label: 'Playground', href: '/playground', icon: CursorArrowRaysIcon },
+  { label: 'Theme Playground', href: '/theme-playground', icon: SwatchIcon },
 ];
 
 function NavGroup({ item, pathname }: { item: (typeof nav)[number]; pathname: string }) {
@@ -248,28 +247,6 @@ function NavGroup({ item, pathname }: { item: (typeof nav)[number]; pathname: st
   );
 }
 
-function DarkModeToggle() {
-  const [dark, setDark] = useState(false);
-  const toggle = () => {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.classList.toggle('dark', next);
-    document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
-  };
-  return (
-    <div className="border-t border-line p-3">
-      <button
-        onClick={toggle}
-        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-ink-2 hover:bg-surface-field hover:text-ink transition-colors"
-        aria-label="Toggle dark mode"
-      >
-        {dark ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
-        {dark ? 'Light Mode' : 'Dark Mode'}
-      </button>
-    </div>
-  );
-}
-
 export function Sidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -280,7 +257,7 @@ export function Sidebar() {
         <Squares2X2Icon className="h-5 w-5 text-accent" />
         <div>
           <div className="text-sm font-bold text-ink">Stellix UI</div>
-          <div className="text-[10px] text-ink-3">v0.1.3 — 19 components</div>
+          <div className="text-[10px] text-ink-3">v0.1.5 — 77 components</div>
         </div>
       </div>
       <nav className="flex-1 space-y-1 overflow-y-auto p-3">

@@ -11,6 +11,25 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: 'v0.1.5',
+    date: '2026-08-17',
+    changes: [
+      { type: 'feat', description: 'Added 19 React Native components: 12 Primitives (Button, Badge, Avatar, Tag, Tooltip, Toggle, Input, Textarea, Select, Checkbox, Radio, Switch) and 7 Feedback (Toast, Alert, ProgressBar, Spinner, SkeletonBlock, EmptyState, StepIndicator). Total native components: 40.' },
+      { type: 'feat', description: 'New NumberTicker variants: card, gradient, badge — with label, trend arrows, and animated counting.' },
+      { type: 'feat', description: 'New ProgressRing variants: dashboard, gradient, segmented — with status colors and segment visualization.' },
+      { type: 'feat', description: 'Redesigned OnboardingWizard with custom step bar, progress indicator, icon-based plan cards, and polished review step.' },
+      { type: 'feat', description: 'Interactive animation previews: ShakeAnimation, ConfettiEffect, MorphTransition, and SelectionActions now have trigger buttons in the demo.' },
+      { type: 'feat', description: 'ThemeSwitcher midnight fix: auto dark mode class, distinct swatch color, fixed invalid hex token.' },
+      { type: 'fix', description: 'Fixed GaugeChart large-arc flag causing arc to wrap over the top at >50%.' },
+      { type: 'fix', description: 'Fixed DonutChart taking extra width — constrained to max-w-sm.' },
+      { type: 'fix', description: 'Fixed StepIndicator horizontal alignment with invisible spacer lines for even centering.' },
+      { type: 'fix', description: 'Fixed Vercel production build: resolved type mismatches in DataCard, JSONViewer, ModelSelector, TokenCounter, ConversationList, AIChatLayout, and Dropdown.' },
+      { type: 'fix', description: 'Updated all demo previews, webCode, nativeCode, and propsTable to match actual component APIs across all categories.' },
+      { type: 'docs', description: 'Updated live demo URL to stellix-ui-material-web-alpha.vercel.app across all 4 package READMEs.' },
+      { type: 'docs', description: 'Added 520+ E2E tests covering primitives, feedback, layout, animations, and mobile viewports.' },
+    ],
+  },
+  {
     version: 'v0.1.4',
     date: '2026-08-15',
     changes: [
