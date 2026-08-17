@@ -96,27 +96,27 @@ export function RecommendationCard({
       )}
 
       {/* Actions */}
-      <div className="mt-4 flex items-center gap-2 sm:justify-end" data-testid="rec-actions">
+      <div className="mt-4 flex items-center gap-2 w-full overflow-hidden" data-testid="rec-actions">
         <button
           onClick={onReject}
-          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-line px-4 py-2.5 text-sm font-medium text-ink hover:bg-surface-field transition-colors sm:flex-none"
+          className="inline-flex flex-1 min-w-0 items-center justify-center gap-1 rounded-lg border border-line px-2 py-2 text-xs font-medium text-ink hover:bg-surface-field transition-colors sm:px-4 sm:py-2.5 sm:text-sm sm:gap-1.5"
           data-testid="rec-reject"
         >
-          <XMarkIcon className="h-4 w-4" /> Reject
+          <XMarkIcon className="h-3.5 w-3.5 shrink-0" /> Reject
         </button>
         <button
           onClick={onModify}
-          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-accent/30 px-4 py-2.5 text-sm font-medium text-accent hover:bg-accent/5 transition-colors sm:flex-none"
+          className="inline-flex flex-1 min-w-0 items-center justify-center gap-1 rounded-lg border border-accent/30 px-2 py-2 text-xs font-medium text-accent hover:bg-accent/5 transition-colors sm:px-4 sm:py-2.5 sm:text-sm sm:gap-1.5"
           data-testid="rec-modify"
         >
-          <PencilSquareIcon className="h-4 w-4" /> Modify
+          <PencilSquareIcon className="h-3.5 w-3.5 shrink-0" /> Modify
         </button>
         <button
           onClick={onAccept}
-          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:bg-accent/90 transition-colors sm:flex-none"
+          className="inline-flex flex-1 min-w-0 items-center justify-center gap-1 rounded-lg bg-accent px-2 py-2 text-xs font-medium text-white hover:bg-accent/90 transition-colors sm:px-4 sm:py-2.5 sm:text-sm sm:gap-1.5"
           data-testid="rec-accept"
         >
-          <CheckIcon className="h-4 w-4" /> Accept
+          <CheckIcon className="h-3.5 w-3.5 shrink-0" /> Accept
         </button>
       </div>
     </div>
