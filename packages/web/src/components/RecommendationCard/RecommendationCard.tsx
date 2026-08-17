@@ -63,17 +63,15 @@ export function RecommendationCard({
   return (
     <div className="animate-fade-up rounded-xl border border-line bg-surface p-4 shadow-card sm:p-6" data-testid="recommendation-card">
       {/* Header */}
-      <div className="flex items-start gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10">
-          <SparklesIcon className="h-5 w-5 text-accent" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2 flex-wrap">
-            <h3 className="text-base font-semibold text-ink" data-testid="rec-title">{title}</h3>
-            <ConfidenceMeter value={confidence} />
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/10">
+            <SparklesIcon className="h-4 w-4 text-accent" />
           </div>
-          <p className="mt-1 text-sm text-ink-2 break-words" data-testid="rec-description">{description}</p>
+          <h3 className="text-base font-semibold text-ink" data-testid="rec-title">{title}</h3>
         </div>
+        <ConfidenceMeter value={confidence} />
+        <p className="text-sm text-ink-2 leading-relaxed" data-testid="rec-description">{description}</p>
       </div>
 
       {/* Alternatives */}
