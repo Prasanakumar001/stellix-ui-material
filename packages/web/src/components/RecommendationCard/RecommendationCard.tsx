@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { cn, type RecommendationCardProps } from '@stellix/ui-core';
 import { CheckIcon } from '../Icons';
 import {
@@ -22,7 +22,7 @@ function ConfidenceMeter({ value }: { value: number }) {
         {Array.from({ length: segments }, (_, i) => (
           <div
             key={i}
-            className={cn('h-2.5 w-5 rounded-sm transition-colors sm:w-6', i < filled ? color : 'bg-surface-field')}
+            className={cn('h-2.5 w-5 rounded-sm transition-colors', i < filled ? color : 'bg-surface-field')}
             data-testid="confidence-segment"
           />
         ))}
@@ -59,9 +59,21 @@ export function RecommendationCard({
   onModify,
 }: RecommendationCardProps) {
   const [showAlts, setShowAlts] = React.useState(true);
+  const ref = useRef<HTMLDivElement>(null);
+  const [narrow, setNarrow] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => setNarrow(el.offsetWidth < 400);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   return (
-    <div className="animate-fade-up rounded-xl border border-line bg-surface p-4 shadow-card sm:p-6 w-full max-w-full overflow-hidden" data-testid="recommendation-card">
+    <div ref={ref} className="animate-fade-up rounded-xl border border-line bg-surface p-4 shadow-card overflow-hidden" data-testid="recommendation-card">
       {/* Header */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
@@ -95,29 +107,59 @@ export function RecommendationCard({
         </div>
       )}
 
-      {/* Actions */}
-      <div className="mt-4 grid grid-cols-3 gap-2 w-full" data-testid="rec-actions">
-        <button
-          onClick={onReject}
-          className="inline-flex items-center justify-center gap-1 rounded-lg border border-line px-1 py-2 text-xs font-medium text-ink hover:bg-surface-field transition-colors sm:px-3 sm:py-2.5 sm:text-sm"
-          data-testid="rec-reject"
-        >
-          <XMarkIcon className="h-3.5 w-3.5 shrink-0" /> <span>Reject</span>
-        </button>
-        <button
-          onClick={onModify}
-          className="inline-flex items-center justify-center gap-1 rounded-lg border border-accent/30 px-1 py-2 text-xs font-medium text-accent hover:bg-accent/5 transition-colors sm:px-3 sm:py-2.5 sm:text-sm"
-          data-testid="rec-modify"
-        >
-          <PencilSquareIcon className="h-3.5 w-3.5 shrink-0" /> <span>Modify</span>
-        </button>
-        <button
-          onClick={onAccept}
-          className="inline-flex items-center justify-center gap-1 rounded-lg bg-accent px-1 py-2 text-xs font-medium text-white hover:bg-accent/90 transition-colors sm:px-3 sm:py-2.5 sm:text-sm"
-          data-testid="rec-accept"
-        >
-          <CheckIcon className="h-3.5 w-3.5 shrink-0" /> <span>Accept</span>
-        </button>
+      {/* Actions — stacked on narrow, row on wide */}
+      <div className={cn('mt-4 gap-2', narrow ? 'flex flex-col' : 'flex items-center justify-end')} data-testid="rec-actions">
+        {narrow ? (
+          <>
+            <div className="flex gap-2">
+              <button
+                onClick={onReject}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg border border-line px-3 py-2.5 text-sm font-medium text-ink hover:bg-surface-field transition-colors"
+                data-testid="rec-reject"
+              >
+                <XMarkIcon className="h-4 w-4" /> Reject
+              </button>
+              <button
+                onClick={onModify}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg border border-accent/30 px-3 py-2.5 text-sm font-medium text-accent hover:bg-accent/5 transition-colors"
+                data-testid="rec-modify"
+              >
+                <PencilSquareIcon className="h-4 w-4" /> Modify
+              </button>
+            </div>
+            <button
+              onClick={onAccept}
+              className="w-full inline-flex items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:bg-accent/90 transition-colors"
+              data-testid="rec-accept"
+            >
+              <CheckIcon className="h-4 w-4" /> Accept
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={onReject}
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-line px-4 py-2.5 text-sm font-medium text-ink hover:bg-surface-field transition-colors"
+              data-testid="rec-reject"
+            >
+              <XMarkIcon className="h-4 w-4" /> Reject
+            </button>
+            <button
+              onClick={onModify}
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-accent/30 px-4 py-2.5 text-sm font-medium text-accent hover:bg-accent/5 transition-colors"
+              data-testid="rec-modify"
+            >
+              <PencilSquareIcon className="h-4 w-4" /> Modify
+            </button>
+            <button
+              onClick={onAccept}
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white hover:bg-accent/90 transition-colors"
+              data-testid="rec-accept"
+            >
+              <CheckIcon className="h-4 w-4" /> Accept
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
