@@ -61,7 +61,7 @@ export function RecommendationCard({
   const [showAlts, setShowAlts] = React.useState(true);
 
   return (
-    <div className="animate-fade-up rounded-xl border border-line bg-surface p-4 shadow-card sm:p-6" data-testid="recommendation-card">
+    <div className="animate-fade-up rounded-xl border border-line bg-surface p-4 shadow-card sm:p-6 w-full max-w-full overflow-hidden" data-testid="recommendation-card">
       {/* Header */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
@@ -96,27 +96,27 @@ export function RecommendationCard({
       )}
 
       {/* Actions */}
-      <div className="mt-4 flex items-center gap-2 w-full overflow-hidden" data-testid="rec-actions">
+      <div className="mt-4 grid grid-cols-3 gap-2 w-full" data-testid="rec-actions">
         <button
           onClick={onReject}
-          className="inline-flex flex-1 min-w-0 items-center justify-center gap-1 rounded-lg border border-line px-2 py-2 text-xs font-medium text-ink hover:bg-surface-field transition-colors sm:px-4 sm:py-2.5 sm:text-sm sm:gap-1.5"
+          className="inline-flex items-center justify-center gap-1 rounded-lg border border-line px-1 py-2 text-xs font-medium text-ink hover:bg-surface-field transition-colors sm:px-3 sm:py-2.5 sm:text-sm"
           data-testid="rec-reject"
         >
-          <XMarkIcon className="h-3.5 w-3.5 shrink-0" /> Reject
+          <XMarkIcon className="h-3.5 w-3.5 shrink-0" /> <span>Reject</span>
         </button>
         <button
           onClick={onModify}
-          className="inline-flex flex-1 min-w-0 items-center justify-center gap-1 rounded-lg border border-accent/30 px-2 py-2 text-xs font-medium text-accent hover:bg-accent/5 transition-colors sm:px-4 sm:py-2.5 sm:text-sm sm:gap-1.5"
+          className="inline-flex items-center justify-center gap-1 rounded-lg border border-accent/30 px-1 py-2 text-xs font-medium text-accent hover:bg-accent/5 transition-colors sm:px-3 sm:py-2.5 sm:text-sm"
           data-testid="rec-modify"
         >
-          <PencilSquareIcon className="h-3.5 w-3.5 shrink-0" /> Modify
+          <PencilSquareIcon className="h-3.5 w-3.5 shrink-0" /> <span>Modify</span>
         </button>
         <button
           onClick={onAccept}
-          className="inline-flex flex-1 min-w-0 items-center justify-center gap-1 rounded-lg bg-accent px-2 py-2 text-xs font-medium text-white hover:bg-accent/90 transition-colors sm:px-4 sm:py-2.5 sm:text-sm sm:gap-1.5"
+          className="inline-flex items-center justify-center gap-1 rounded-lg bg-accent px-1 py-2 text-xs font-medium text-white hover:bg-accent/90 transition-colors sm:px-3 sm:py-2.5 sm:text-sm"
           data-testid="rec-accept"
         >
-          <CheckIcon className="h-3.5 w-3.5 shrink-0" /> Accept
+          <CheckIcon className="h-3.5 w-3.5 shrink-0" /> <span>Accept</span>
         </button>
       </div>
     </div>
