@@ -98,9 +98,30 @@ function TrendBadge({ data }: { data: ChartDataPoint[] }) {
 
 /* ── Main InsightCards ── */
 export function InsightCards({ insights }: InsightCardsProps) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [cols, setCols] = React.useState(1);
+
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => {
+      const w = el.offsetWidth;
+      if (w < 500) setCols(1);
+      else if (w < 800) setCols(2);
+      else if (w < 1200) setCols(3);
+      else setCols(4);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <div
-      className={cn('grid gap-4', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4')}
+      ref={ref}
+      className="grid gap-4 w-full"
+      style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
       data-testid="insight-cards"
     >
       {insights.map((insight, i) => (

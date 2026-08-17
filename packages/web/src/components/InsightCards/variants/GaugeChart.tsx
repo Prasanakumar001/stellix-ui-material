@@ -50,7 +50,7 @@ export function GaugeChart({ value, max, label, unit = '' }: GaugeChartProps) {
   const textColor = pct >= 0.75 ? 'text-red' : pct >= 0.5 ? 'text-orange' : pct >= 0.25 ? 'text-yellow' : 'text-green';
 
   return (
-    <div className="flex flex-col items-center rounded-xl border border-line bg-surface p-4 shadow-card" data-testid="gauge-chart">
+    <div className="flex flex-col items-center rounded-xl border border-line bg-surface p-4 shadow-card w-full max-w-xs mx-auto" data-testid="gauge-chart">
       <p className="mb-1 text-sm font-semibold text-ink" data-testid="gauge-label">{label}</p>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} data-testid="gauge-svg" aria-label={`Gauge: ${value} of ${max}`}>
         {/* Track */}
