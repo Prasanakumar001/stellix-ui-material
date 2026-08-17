@@ -36,7 +36,7 @@ export function ThemeSwitcher({ target }: { target?: React.RefObject<HTMLElement
           >
             <span
               className="h-4 w-4 shrink-0 rounded-full border border-line"
-              style={{ backgroundColor: preset.tokens['--color-accent'] }}
+              style={{ backgroundColor: preset.swatch || preset.tokens['--color-accent'] }}
             />
             <span className="flex-1 truncate font-medium">{preset.name}</span>
             {active === key && <CheckIcon className="h-3.5 w-3.5 shrink-0" />}

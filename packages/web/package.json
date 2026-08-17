@@ -16,15 +16,15 @@
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/index.d.mts",
+        "types": "./src/index.ts",
         "default": "./dist/index.mjs"
       },
       "require": {
-        "types": "./dist/index.d.ts",
+        "types": "./src/index.ts",
         "default": "./dist/index.js"
       }
     },

@@ -39,6 +39,7 @@ const DEFAULT_MESSAGES = [
     id: 'm1',
     role: 'user' as const,
     content: 'Can you outline the key design decisions for a mixture-of-experts transformer?',
+    timestamp: 1723900000000 - 90000,
   },
   {
     id: 'm2',
@@ -47,11 +48,13 @@ const DEFAULT_MESSAGES = [
       'Sure. The three core decisions are: expert routing strategy (top-k vs. soft), load balancing via auxiliary loss, and expert capacity buffers to prevent token dropping. For Phase 21 I would recommend top-2 routing with a z-loss regulariser.',
     reasoning:
       'The user is asking about MoE architecture. I should cover routing, load balancing, and capacity since those are the main levers. Top-2 routing is well validated at this scale.',
+    timestamp: 1723900000000 - 60000,
   },
   {
     id: 'm3',
     role: 'user' as const,
     content: 'What auxiliary loss function works best at the 70B scale?',
+    timestamp: 1723900000000 - 30000,
   },
   {
     id: 'm4',
@@ -60,6 +63,7 @@ const DEFAULT_MESSAGES = [
       'At 70B, the Switch Transformer auxiliary loss (alpha * sum_i(f_i * p_i)) with alpha around 1e-2 keeps experts balanced without hurting perplexity. Combine it with z-loss (1e-3) to stabilise router logits.',
     reasoning:
       'Switch Transformer auxiliary loss is the standard choice. The user needs concrete hyperparameter guidance for the 70B scale, so I will give specific alpha values.',
+    timestamp: 1723900000000,
   },
 ];
 

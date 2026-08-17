@@ -1,6 +1,8 @@
 export interface ThemePreset {
   name: string;
   description: string;
+  isDark?: boolean;
+  swatch?: string;
   tokens: Record<string, string>;
 }
 
@@ -28,6 +30,7 @@ export const themePresets: Record<string, ThemePreset> = {
   dark: {
     name: 'Dark',
     description: 'Default dark theme',
+    isDark: true,
     tokens: {
       '--color-ink': '#f5f5f5',
       '--color-ink-2': '#a3a3a3',
@@ -48,10 +51,12 @@ export const themePresets: Record<string, ThemePreset> = {
   midnight: {
     name: 'Midnight',
     description: 'Deep blue/purple dark theme',
+    isDark: true,
+    swatch: '#1e1b4b',
     tokens: {
       '--color-ink': '#e8e8f0',
       '--color-ink-2': '#9898b0',
-      '--color-ink-3': '#6868808',
+      '--color-ink-3': '#686880',
       '--color-surface': '#0c0c1d',
       '--color-surface-field': '#151530',
       '--color-surface-canvas': '#0a0a18',
@@ -170,5 +175,14 @@ export const themePresets: Record<string, ThemePreset> = {
 export function applyTheme(el: HTMLElement, preset: ThemePreset) {
   for (const [key, value] of Object.entries(preset.tokens)) {
     el.style.setProperty(key, value);
+  }
+  // Toggle dark class on documentElement for dark themes (sidebar, scrollbars, etc.)
+  const root = el === document.documentElement ? el : document.documentElement;
+  if (preset.isDark) {
+    root.classList.add('dark');
+    root.setAttribute('data-theme', 'dark');
+  } else {
+    root.classList.remove('dark');
+    root.setAttribute('data-theme', 'light');
   }
 }

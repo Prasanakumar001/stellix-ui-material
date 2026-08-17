@@ -2,7 +2,12 @@
 
 import React from 'react';
 import { Changelog } from '@stellix/ui-web';
-import type { ChangelogEntry } from '@stellix/ui-web';
+
+interface ChangelogEntry {
+  version: string;
+  date: string;
+  changes: { type: 'feat' | 'fix' | 'breaking' | 'docs'; description: string }[];
+}
 
 const entries: ChangelogEntry[] = [
   {

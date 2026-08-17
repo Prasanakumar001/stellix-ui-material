@@ -288,7 +288,7 @@ export function Sidebar() {
           <NavGroup key={item.label} item={item} pathname={pathname} />
         ))}
       </nav>
-      <DarkModeToggle />
+      {/* Theme is controlled by ThemeSwitcher */}
     </div>
   );
 

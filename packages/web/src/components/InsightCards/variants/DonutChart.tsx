@@ -34,7 +34,7 @@ export function DonutChart({ segments, centerLabel }: DonutChartProps) {
   const hoveredSeg = hovered !== null ? segments[hovered] : null;
 
   return (
-    <div className="flex flex-col items-center gap-4 rounded-xl border border-line bg-surface p-4 shadow-card sm:flex-row sm:items-start" data-testid="donut-chart">
+    <div className="flex flex-col items-center gap-4 rounded-xl border border-line bg-surface p-4 shadow-card w-full max-w-sm mx-auto sm:flex-row sm:items-start" data-testid="donut-chart">
       {/* SVG */}
       <div className="relative shrink-0" data-testid="donut-svg-wrapper">
         <svg

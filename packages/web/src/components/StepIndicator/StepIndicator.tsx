@@ -84,11 +84,15 @@ export function StepIndicator({
         <li key={i} data-testid="step-item" className="flex flex-1 items-start">
           <div className="flex flex-col items-center flex-1">
             <div className="flex w-full items-center">
-              {i > 0 && (
+              {i === 0 ? (
+                <div className="h-0.5 flex-1" />
+              ) : (
                 <div className={cn('h-0.5 flex-1', i <= currentStep ? 'bg-accent' : 'bg-border')} />
               )}
               <StepCircle index={i} state={getState(i)} />
-              {i < steps.length - 1 && (
+              {i === steps.length - 1 ? (
+                <div className="h-0.5 flex-1" />
+              ) : (
                 <div className={cn('h-0.5 flex-1', i < currentStep ? 'bg-accent' : 'bg-border')} />
               )}
             </div>

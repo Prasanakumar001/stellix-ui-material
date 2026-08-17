@@ -36,8 +36,7 @@ export function GaugeChart({ value, max, label, unit = '' }: GaugeChartProps) {
   const angle = Math.PI * (1 - pct); // PI=left, 0=right
   const fillEndX = cx + R * Math.cos(angle);
   const fillEndY = cy - R * Math.sin(angle);
-  const largeArc = pct > 0.5 ? 1 : 0;
-  const fillPath = `M ${leftX} ${cy} A ${R} ${R} 0 ${largeArc} 1 ${fillEndX} ${fillEndY}`;
+  const fillPath = `M ${leftX} ${cy} A ${R} ${R} 0 0 1 ${fillEndX} ${fillEndY}`;
 
   // Needle
   const needleLen = R - stroke - 6;

@@ -92,7 +92,7 @@ test.describe('Phase 12 — Composition Patterns E2E', () => {
       await expect(page.locator('h1')).toContainText('OnboardingWizard');
     });
     test('renders step indicator', async ({ page }) => {
-      const steps = page.locator('[data-testid="step-indicator"]');
+      const steps = page.locator('[data-testid="onboarding-steps"]');
       await expect(steps).toBeVisible();
     });
   });

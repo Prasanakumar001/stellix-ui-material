@@ -46,6 +46,94 @@ import {
   ThemeSwitcher, ThemeBuilder,
 } from '@stellix/ui-web';
 
+// --- Interactive SelectionActions preview ---
+function SelectionActionsPreview() {
+  const textRef = React.useRef<HTMLParagraphElement>(null);
+  const selectText = () => {
+    const el = textRef.current;
+    if (!el) return;
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+  };
+  return (
+    <div className="space-y-4">
+      <SelectionActions
+        actions={['rewrite', 'summarize', 'explain', 'translate']}
+        onAction={(action, text) => alert(`${action}: "${text.slice(0, 60)}..."`)}
+      >
+        <p ref={textRef} className="text-sm leading-relaxed text-ink-2 select-text">
+          Select any portion of this paragraph to trigger the floating action toolbar. The
+          component uses the browser&apos;s native Selection API to detect highlighted text and
+          positions the toolbar relative to the selection rectangle. On mobile devices a bottom
+          sheet appears instead.
+        </p>
+      </SelectionActions>
+      <button onClick={selectText} className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent/90 transition-colors">
+        Select All Text
+      </button>
+    </div>
+  );
+}
+
+// --- Interactive animation previews ---
+function ShakePreview() {
+  const [shake, setShake] = React.useState(false);
+  const trigger = () => { setShake(true); setTimeout(() => setShake(false), 500); };
+  return (
+    <div className="space-y-4">
+      <ShakeAnimation shake={shake}>
+        <div className="rounded-lg border-2 border-red bg-red/5 p-4 text-center text-sm text-red">
+          Invalid input — this field is required
+        </div>
+      </ShakeAnimation>
+      <button onClick={trigger} className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent/90 transition-colors">
+        Trigger Shake
+      </button>
+    </div>
+  );
+}
+
+function ConfettiPreview() {
+  const [fire, setFire] = React.useState(false);
+  const trigger = () => { setFire(false); setTimeout(() => setFire(true), 10); };
+  return (
+    <div className="relative space-y-4">
+      <div className="relative rounded-xl border border-line bg-surface p-8 text-center text-ink">
+        <span className="text-lg font-semibold">🎉 Celebration!</span>
+        <ConfettiEffect active={fire} />
+      </div>
+      <button onClick={trigger} className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent/90 transition-colors">
+        Launch Confetti
+      </button>
+    </div>
+  );
+}
+
+function MorphPreview() {
+  const views = ['Dashboard', 'Analytics', 'Settings'];
+  const [idx, setIdx] = React.useState(0);
+  return (
+    <div className="space-y-4">
+      <MorphTransition transitionKey={views[idx]}>
+        <div className="rounded-xl border border-line bg-surface p-8 text-center">
+          <p className="text-lg font-semibold text-ink">{views[idx]}</p>
+          <p className="mt-1 text-sm text-ink-3">Current view content</p>
+        </div>
+      </MorphTransition>
+      <div className="flex gap-2">
+        {views.map((v, i) => (
+          <button key={v} onClick={() => setIdx(i)} className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${i === idx ? 'bg-accent text-white' : 'bg-surface-field text-ink-2 hover:bg-surface-field/80'}`}>
+            {v}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // --- Search is rendered inline to avoid fixed-position overlay escaping preview ---
 function SearchPreview() {
   const [open, setOpen] = React.useState(false);
@@ -576,19 +664,7 @@ const componentRegistry: Record<string, ComponentConfig> = {
     description:
       'Wraps any text content and shows a floating action toolbar (desktop) or bottom sheet (mobile) whenever the user selects text, offering rewrite, summarize, explain, and translate actions.',
     category: 'Forms',
-    preview: (
-      <SelectionActions
-        actions={['rewrite', 'summarize', 'explain', 'translate']}
-        onAction={(action, text) => console.log(action, text)}
-      >
-        <p className="text-sm leading-relaxed text-ink-2 select-text">
-          Select any portion of this paragraph to trigger the floating action toolbar. The
-          component uses the browser&apos;s native Selection API to detect highlighted text and
-          positions the toolbar relative to the selection rectangle. On mobile devices a bottom
-          sheet appears instead.
-        </p>
-      </SelectionActions>
-    ),
+    preview: <SelectionActionsPreview />,
     webCode: `import { SelectionActions } from '@stellix/ui-web';
 
 <SelectionActions
@@ -1092,6 +1168,7 @@ const componentRegistry: Record<string, ComponentConfig> = {
     ),
     webCode: `import { InsightCards, DonutChart, GaugeChart } from '@stellix/ui-web';
 
+{/* Insight Cards */}
 <InsightCards
   insights={[
     {
@@ -1117,10 +1194,36 @@ const componentRegistry: Record<string, ComponentConfig> = {
         { label: 'Wed', value: 98 },
       ],
     },
+    {
+      id: 'i3',
+      title: 'Token Usage',
+      description: 'Tokens consumed (millions)',
+      chartType: 'area',
+      data: [
+        { label: 'Mon', value: 4.2 },
+        { label: 'Tue', value: 5.8 },
+        { label: 'Wed', value: 5.1 },
+        { label: 'Thu', value: 7.3 },
+      ],
+    },
   ]}
-/>`,
-    nativeCode: `import { InsightCards } from '@stellix/ui-native';
+/>
 
+{/* Donut Chart */}
+<DonutChart
+  segments={[
+    { label: 'Web', value: 45, color: 'var(--color-accent)' },
+    { label: 'Mobile', value: 30, color: 'var(--color-green)' },
+    { label: 'API', value: 25, color: 'var(--color-orange)' },
+  ]}
+  centerLabel="Traffic"
+/>
+
+{/* Gauge Chart */}
+<GaugeChart value={73} max={100} label="CPU Usage" />`,
+    nativeCode: `import { InsightCards, DonutChart, GaugeChart } from '@stellix/ui-native';
+
+{/* Insight Cards */}
 <InsightCards
   insights={[
     {
@@ -1129,8 +1232,33 @@ const componentRegistry: Record<string, ComponentConfig> = {
       chartType: 'bar',
       data: [{ label: 'Mon', value: 1200 }, { label: 'Tue', value: 1850 }],
     },
+    {
+      id: 'i2',
+      title: 'Latency (p95)',
+      chartType: 'line',
+      data: [{ label: 'Mon', value: 120 }, { label: 'Tue', value: 135 }],
+    },
+    {
+      id: 'i3',
+      title: 'Token Usage',
+      chartType: 'area',
+      data: [{ label: 'Mon', value: 4.2 }, { label: 'Tue', value: 5.8 }],
+    },
   ]}
-/>`,
+/>
+
+{/* Donut Chart */}
+<DonutChart
+  segments={[
+    { label: 'Web', value: 45, color: '#6366f1' },
+    { label: 'Mobile', value: 30, color: '#22c55e' },
+    { label: 'API', value: 25, color: '#f97316' },
+  ]}
+  centerLabel="Traffic"
+/>
+
+{/* Gauge Chart */}
+<GaugeChart value={73} max={100} label="CPU Usage" />`,
     propsTable: [
       { name: 'insights', type: 'InsightItem[]', default: '-', description: 'Array of insight card definitions.' },
     ],
@@ -1230,14 +1358,23 @@ const componentRegistry: Record<string, ComponentConfig> = {
     description: 'A versatile button component with five variants, three sizes, loading state, and icon support.',
     category: 'Primitives',
     preview: (
-      <div className="flex flex-wrap items-center gap-3">
-        <Button variant="primary">Primary</Button>
-        <Button variant="secondary">Secondary</Button>
-        <Button variant="ghost">Ghost</Button>
-        <Button variant="danger">Danger</Button>
-        <Button variant="outline">Outline</Button>
-        <Button variant="primary" loading>Loading</Button>
-        <Button variant="primary" disabled>Disabled</Button>
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="primary">Primary</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button variant="destructive">Destructive</Button>
+          <Button variant="outline">Outline</Button>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="primary" size="sm">Small</Button>
+          <Button variant="primary" size="md">Medium</Button>
+          <Button variant="primary" size="lg">Large</Button>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="primary" loading>Loading</Button>
+          <Button variant="primary" disabled>Disabled</Button>
+        </div>
       </div>
     ),
     webCode: `import { Button } from '@stellix/ui-web';
@@ -1245,74 +1382,110 @@ const componentRegistry: Record<string, ComponentConfig> = {
 <Button variant="primary">Save changes</Button>
 <Button variant="secondary">Cancel</Button>
 <Button variant="ghost">Learn more</Button>
-<Button variant="danger">Delete</Button>
+<Button variant="destructive">Delete</Button>
 <Button variant="outline">Export</Button>
-<Button variant="primary" loading>Saving...</Button>`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+
+{/* Sizes */}
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
+
+{/* States */}
+<Button loading>Saving...</Button>
+<Button disabled>Disabled</Button>`,
+    nativeCode: `import { Button } from '@stellix/ui-native';
+
+<Button variant="primary" onClick={() => {}}>Save changes</Button>
+<Button variant="secondary" onClick={() => {}}>Cancel</Button>
+<Button variant="ghost" onClick={() => {}}>Learn more</Button>
+<Button variant="destructive" onClick={() => {}}>Delete</Button>
+<Button variant="outline" onClick={() => {}}>Export</Button>
+
+{/* Sizes */}
+<Button size="sm" onClick={() => {}}>Small</Button>
+<Button size="lg" onClick={() => {}}>Large</Button>
+
+{/* States */}
+<Button loading>Saving...</Button>`,
     propsTable: [
-      { name: 'variant', type: "'primary' | 'secondary' | 'ghost' | 'danger' | 'outline'", default: "'primary'", description: 'Visual style of the button.' },
+      { name: 'variant', type: "'primary' | 'secondary' | 'ghost' | 'destructive' | 'outline'", default: "'primary'", description: 'Visual style of the button.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Controls padding and font size.' },
       { name: 'loading', type: 'boolean', default: 'false', description: 'Shows a spinner and disables interaction.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents clicks and applies muted styling.' },
+      { name: 'icon', type: 'ReactNode', default: '-', description: 'Icon element shown before label.' },
       { name: 'onClick', type: '() => void', default: '-', description: 'Click handler.' },
     ],
   },
 
   badge: {
     title: 'Badge',
-    description: 'A compact status or label chip with color variants and optional dot indicator.',
+    description: 'A compact status or label chip with five variants, optional dot indicator, and removable option.',
     category: 'Primitives',
     preview: (
       <div className="flex flex-wrap items-center gap-2">
-        <Badge color="default">Default</Badge>
-        <Badge color="blue">Info</Badge>
-        <Badge color="green">Success</Badge>
-        <Badge color="yellow">Warning</Badge>
-        <Badge color="red">Error</Badge>
-        <Badge color="purple">Beta</Badge>
-        <Badge color="green" dot>Live</Badge>
+        <Badge variant="success">Success</Badge>
+        <Badge variant="warning">Warning</Badge>
+        <Badge variant="error">Error</Badge>
+        <Badge variant="info">Info</Badge>
+        <Badge variant="neutral">Neutral</Badge>
+        <Badge variant="success" dot>Live</Badge>
+        <Badge variant="error" removable onRemove={() => {}}>Removable</Badge>
       </div>
     ),
     webCode: `import { Badge } from '@stellix/ui-web';
 
-<Badge color="default">Default</Badge>
-<Badge color="blue">Info</Badge>
-<Badge color="green">Success</Badge>
-<Badge color="yellow">Warning</Badge>
-<Badge color="red">Error</Badge>
-<Badge color="green" dot>Live</Badge>`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+<Badge variant="success">Success</Badge>
+<Badge variant="warning">Warning</Badge>
+<Badge variant="error">Error</Badge>
+<Badge variant="info">Info</Badge>
+<Badge variant="neutral">Neutral</Badge>
+<Badge variant="success" dot>Live</Badge>
+<Badge variant="error" removable onRemove={() => {}}>Removable</Badge>`,
+    nativeCode: `import { Badge } from '@stellix/ui-native';
+
+<Badge variant="success">Success</Badge>
+<Badge variant="warning" dot>Warning</Badge>
+<Badge variant="error" removable onRemove={() => {}}>Error</Badge>
+<Badge variant="info">Info</Badge>
+<Badge variant="neutral">Neutral</Badge>`,
     propsTable: [
-      { name: 'color', type: "'default' | 'blue' | 'green' | 'yellow' | 'red' | 'purple'", default: "'default'", description: 'Color scheme of the badge.' },
-      { name: 'dot', type: 'boolean', default: 'false', description: 'Show a small pulsing dot before the label.' },
+      { name: 'variant', type: "'success' | 'warning' | 'error' | 'info' | 'neutral'", default: "'neutral'", description: 'Color variant of the badge.' },
+      { name: 'dot', type: 'boolean', default: 'false', description: 'Show a small dot indicator before the label.' },
+      { name: 'removable', type: 'boolean', default: 'false', description: 'Show a remove (x) button.' },
+      { name: 'onRemove', type: '() => void', default: '-', description: 'Called when the remove button is clicked.' },
       { name: 'children', type: 'ReactNode', default: '-', description: 'Badge label content.' },
     ],
   },
 
   avatar: {
     title: 'Avatar',
-    description: 'User avatar with image, initials fallback, status ring, and size variants.',
+    description: 'User avatar with image, initials fallback, status indicator, and four sizes.',
     category: 'Primitives',
     preview: (
       <div className="flex flex-wrap items-center gap-4">
-        <Avatar size="xs" initials="AL" />
-        <Avatar size="sm" initials="AT" status="online" />
-        <Avatar size="md" initials="GH" status="away" />
-        <Avatar size="lg" src="https://i.pravatar.cc/80?img=3" alt="User" status="busy" />
-        <Avatar size="xl" initials="JN" />
+        <Avatar size="sm" initials="AL" />
+        <Avatar size="md" initials="AT" status="online" />
+        <Avatar size="lg" initials="GH" status="away" />
+        <Avatar size="xl" initials="JN" status="offline" />
       </div>
     ),
     webCode: `import { Avatar } from '@stellix/ui-web';
 
 <Avatar size="sm" initials="AL" />
-<Avatar size="md" src="/avatars/user.png" alt="Ada Lovelace" status="online" />
-<Avatar size="lg" initials="AT" status="away" />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+<Avatar size="md" initials="AT" status="online" />
+<Avatar size="lg" src="/avatars/user.png" alt="Ada Lovelace" status="away" />
+<Avatar size="xl" initials="JN" status="offline" />`,
+    nativeCode: `import { Avatar } from '@stellix/ui-native';
+
+<Avatar size="sm" initials="AL" />
+<Avatar size="md" initials="AT" status="online" />
+<Avatar size="lg" src="/avatars/user.png" alt="Ada" status="away" />
+<Avatar size="xl" initials="JN" />`,
     propsTable: [
       { name: 'src', type: 'string', default: '-', description: 'Image URL for the avatar.' },
       { name: 'initials', type: 'string', default: '-', description: 'Fallback initials shown when no image is provided.' },
-      { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Size of the avatar circle.' },
-      { name: 'status', type: "'online' | 'away' | 'busy' | 'offline'", default: '-', description: 'Status indicator ring color.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Size of the avatar circle.' },
+      { name: 'status', type: "'online' | 'away' | 'offline'", default: '-', description: 'Status indicator dot.' },
     ],
   },
 
@@ -1334,7 +1507,11 @@ const componentRegistry: Record<string, ComponentConfig> = {
 <Tag>TypeScript</Tag>
 <Tag color="blue">React</Tag>
 <Tag color="green" removable onRemove={() => removeTag('nextjs')}>Next.js</Tag>`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+    nativeCode: `import { Tag } from '@stellix/ui-native';
+
+<Tag>TypeScript</Tag>
+<Tag color="#3b82f6">React</Tag>
+<Tag color="#22c55e" removable onRemove={() => {}}>Next.js</Tag>`,
     propsTable: [
       { name: 'color', type: "'default' | 'blue' | 'green' | 'purple' | 'orange' | 'red'", default: "'default'", description: 'Tag color scheme.' },
       { name: 'removable', type: 'boolean', default: 'false', description: 'Show a remove (x) button.' },
@@ -1369,7 +1546,11 @@ const componentRegistry: Record<string, ComponentConfig> = {
 <Tooltip content="Opens in a new tab" placement="bottom">
   <a href="#">External link</a>
 </Tooltip>`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+    nativeCode: `import { Tooltip } from '@stellix/ui-native';
+
+<Tooltip content="Long press to see tooltip" placement="top">
+  <Text>Hover me</Text>
+</Tooltip>`,
     propsTable: [
       { name: 'content', type: 'ReactNode', default: '-', description: 'Tooltip text or content.' },
       { name: 'placement', type: "'top' | 'bottom' | 'left' | 'right'", default: "'top'", description: 'Preferred placement relative to the trigger.' },
@@ -1390,15 +1571,19 @@ const componentRegistry: Record<string, ComponentConfig> = {
     ),
     webCode: `import { Toggle } from '@stellix/ui-web';
 
-const [bold, setBold] = useState(false);
+const [dark, setDark] = useState(false);
 
-<Toggle pressed={bold} onPressedChange={setBold}>Bold</Toggle>`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+<Toggle checked={dark} onChange={setDark} label="Dark Mode" description="Enable dark theme" />
+<Toggle checked={true} onChange={() => {}} label="Notifications" />`,
+    nativeCode: `import { Toggle } from '@stellix/ui-native';
+
+<Toggle checked={enabled} onChange={setEnabled} label="Enable notifications" description="Receive push alerts" />`,
     propsTable: [
-      { name: 'pressed', type: 'boolean', default: 'false', description: 'Controlled pressed state.' },
-      { name: 'onPressedChange', type: '(pressed: boolean) => void', default: '-', description: 'Fired when the toggle state changes.' },
+      { name: 'checked', type: 'boolean', default: 'false', description: 'Controlled checked state.' },
+      { name: 'onChange', type: '(checked: boolean) => void', default: '-', description: 'Fired when the toggle state changes.' },
+      { name: 'label', type: 'string', default: '-', description: 'Label text beside the toggle.' },
+      { name: 'description', type: 'string', default: '-', description: 'Helper text below the label.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents interaction.' },
-      { name: 'children', type: 'ReactNode', default: '-', description: 'Toggle label or icon.' },
     ],
   },
 
@@ -1408,24 +1593,31 @@ const [bold, setBold] = useState(false);
     category: 'Primitives',
     preview: (
       <div className="space-y-4 max-w-sm">
-        <Input label="Email address" placeholder="you@example.com" type="email" />
-        <Input label="API Key" placeholder="sk-..." type="password" helperText="Keep this secret." />
-        <Input label="Username" placeholder="ada_lovelace" error="Username is already taken." />
-        <Input label="Search" placeholder="Search docs..." leadingIcon="search" />
+        <Input label="Email address" placeholder="you@example.com" type="email" value="" onChange={() => {}} />
+        <Input label="API Key" placeholder="sk-..." type="password" value="" onChange={() => {}} helperText="Keep this secret." />
+        <Input label="Username" placeholder="ada_lovelace" value="taken_name" onChange={() => {}} error="Username is already taken." />
       </div>
     ),
     webCode: `import { Input } from '@stellix/ui-web';
 
-<Input label="Email" placeholder="you@example.com" type="email" />
-<Input label="API Key" type="password" helperText="Keep this secret." />
-<Input label="Username" error="Username is already taken." />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+<Input label="Email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
+<Input label="API Key" type="password" value={key} onChange={(e) => setKey(e.target.value)} helperText="Keep this secret." />
+<Input label="Username" value={name} onChange={(e) => setName(e.target.value)} error="Username is already taken." />`,
+    nativeCode: `import { Input } from '@stellix/ui-native';
+
+<Input label="Email" placeholder="you@example.com" value={email} onChange={setEmail} type="email" />
+<Input label="API Key" type="password" value={key} onChange={setKey} helperText="Keep this secret." />
+<Input label="Username" value={name} onChange={setName} error="Already taken" />`,
     propsTable: [
       { name: 'label', type: 'string', default: '-', description: 'Label displayed above the input.' },
+      { name: 'value', type: 'string', default: '-', description: 'Controlled input value.' },
+      { name: 'onChange', type: '(e: ChangeEvent) => void', default: '-', description: 'Change handler (web gets event, native gets string).' },
       { name: 'error', type: 'string', default: '-', description: 'Error message shown below; applies error styling.' },
       { name: 'helperText', type: 'string', default: '-', description: 'Helper text shown below the input.' },
-      { name: 'leadingIcon', type: 'string', default: '-', description: 'Icon name to show inside the left edge.' },
+      { name: 'prefixIcon', type: 'ReactNode', default: '-', description: 'Icon element inside the left edge.' },
+      { name: 'suffixIcon', type: 'ReactNode', default: '-', description: 'Icon element inside the right edge.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the input.' },
+      { name: 'type', type: "'text' | 'password' | 'email' | 'number'", default: "'text'", description: 'Input type.' },
     ],
   },
 
@@ -1444,22 +1636,28 @@ const [bold, setBold] = useState(false);
 <Textarea
   label="System prompt"
   placeholder="You are a helpful assistant..."
+  value={prompt}
+  onChange={(e) => setPrompt(e.target.value)}
   rows={4}
-  autoResize
 />
 
 <Textarea
   label="Notes"
+  value={notes}
+  onChange={(e) => setNotes(e.target.value)}
   maxLength={300}
-  showCount
 />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+    nativeCode: `import { Textarea } from '@stellix/ui-native';
+
+<Textarea label="System prompt" placeholder="You are a helpful assistant..." value={prompt} onChange={setPrompt} rows={4} />
+<Textarea label="Notes" value={notes} onChange={setNotes} maxLength={300} />`,
     propsTable: [
       { name: 'label', type: 'string', default: '-', description: 'Label displayed above the textarea.' },
+      { name: 'value', type: 'string', default: '-', description: 'Controlled textarea value.' },
+      { name: 'onChange', type: '(e: ChangeEvent) => void', default: '-', description: 'Change handler (web gets event, native gets string).' },
       { name: 'rows', type: 'number', default: '3', description: 'Initial visible row count.' },
-      { name: 'autoResize', type: 'boolean', default: 'false', description: 'Expand height as content grows.' },
-      { name: 'maxLength', type: 'number', default: '-', description: 'Character limit.' },
-      { name: 'showCount', type: 'boolean', default: 'false', description: 'Display remaining character count.' },
+      { name: 'maxLength', type: 'number', default: '-', description: 'Character limit. Shows count when set.' },
+      { name: 'error', type: 'string', default: '-', description: 'Error message shown below.' },
     ],
   },
 
@@ -1472,21 +1670,24 @@ const [bold, setBold] = useState(false);
         <Select
           label="Model"
           placeholder="Choose a model..."
+          value=""
+          onChange={() => {}}
           options={[
-            { value: 'chimera-70b', label: 'Chimera-70B' },
-            { value: 'gpt-4o', label: 'GPT-4o' },
-            { value: 'claude-3-5', label: 'Claude 3.5 Sonnet' },
-            { value: 'gemini-pro', label: 'Gemini Pro' },
+            { value: 'claude-opus', label: 'Claude Opus' },
+            { value: 'claude-sonnet', label: 'Claude Sonnet' },
+            { value: 'claude-haiku', label: 'Claude Haiku' },
           ]}
         />
         <Select
           label="Output format"
+          value="json"
+          onChange={() => {}}
+          searchable
           options={[
             { value: 'json', label: 'JSON' },
             { value: 'markdown', label: 'Markdown' },
             { value: 'plain', label: 'Plain text' },
           ]}
-          defaultValue="json"
         />
       </div>
     ),
@@ -1495,19 +1696,36 @@ const [bold, setBold] = useState(false);
 <Select
   label="Model"
   placeholder="Choose a model..."
+  value={model}
+  onChange={setModel}
+  searchable
   options={[
-    { value: 'chimera-70b', label: 'Chimera-70B' },
-    { value: 'gpt-4o',      label: 'GPT-4o' },
+    { value: 'claude-opus', label: 'Claude Opus' },
+    { value: 'claude-sonnet', label: 'Claude Sonnet' },
+    { value: 'claude-haiku', label: 'Claude Haiku' },
   ]}
-  onChange={(val) => setModel(val)}
 />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+    nativeCode: `import { Select } from '@stellix/ui-native';
+
+<Select
+  label="Model"
+  placeholder="Choose a model..."
+  value={model}
+  onChange={setModel}
+  searchable
+  options={[
+    { value: 'opus', label: 'Claude Opus' },
+    { value: 'sonnet', label: 'Claude Sonnet' },
+    { value: 'haiku', label: 'Claude Haiku' },
+  ]}
+/>`,
     propsTable: [
       { name: 'options', type: 'SelectOption[]', default: '-', description: 'Array of { value, label } objects.' },
-      { name: 'label', type: 'string', default: '-', description: 'Label shown above the select.' },
-      { name: 'placeholder', type: 'string', default: '-', description: 'Placeholder when no value is selected.' },
-      { name: 'defaultValue', type: 'string', default: '-', description: 'Initially selected value (uncontrolled).' },
+      { name: 'value', type: 'string', default: '-', description: 'Controlled selected value.' },
       { name: 'onChange', type: '(value: string) => void', default: '-', description: 'Fired when selection changes.' },
+      { name: 'label', type: 'string', default: '-', description: 'Label shown above the select.' },
+      { name: 'placeholder', type: 'string', default: "'Select an option'", description: 'Placeholder when no value is selected.' },
+      { name: 'searchable', type: 'boolean', default: 'false', description: 'Enable search/filter within the dropdown.' },
     ],
   },
 
@@ -1531,7 +1749,9 @@ const [enabled, setEnabled] = useState(true);
   onChange={setEnabled}
   label="Enable streaming responses"
 />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+    nativeCode: `import { Checkbox } from '@stellix/ui-native';
+
+<Checkbox checked={enabled} onChange={setEnabled} label="Enable streaming responses" description="Stream tokens in real-time" />`,
     propsTable: [
       { name: 'checked', type: 'boolean', default: 'false', description: 'Controlled checked state.' },
       { name: 'onChange', type: '(checked: boolean) => void', default: '-', description: 'Fired when the checkbox is toggled.' },
@@ -1571,7 +1791,17 @@ const [model, setModel] = useState('gpt4o');
     { value: 'haiku',   label: 'Claude Haiku', description: 'Fastest.' },
   ]}
 />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+    nativeCode: `import { Radio } from '@stellix/ui-native';
+
+<Radio
+  options={[
+    { value: 'opus', label: 'Claude Opus', description: 'Most capable.' },
+    { value: 'sonnet', label: 'Claude Sonnet', description: 'Balanced.' },
+    { value: 'haiku', label: 'Claude Haiku', description: 'Fastest.' },
+  ]}
+  value={model}
+  onChange={setModel}
+/>`,
     propsTable: [
       { name: 'options', type: 'RadioOption[]', default: '-', description: 'Array of { value, label, description? } items.' },
       { name: 'value', type: 'string', default: '-', description: 'Currently selected value.' },
@@ -1600,12 +1830,16 @@ const [enabled, setEnabled] = useState(false);
   onChange={setEnabled}
   label="Enable dark mode"
 />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+    nativeCode: `import { Switch } from '@stellix/ui-native';
+
+<Switch checked={dark} onChange={setDark} label="Enable dark mode" size="md" />
+<Switch checked={notify} onChange={setNotify} label="Push notifications" size="sm" />`,
     propsTable: [
       { name: 'checked', type: 'boolean', default: 'false', description: 'Controlled on/off state.' },
       { name: 'onChange', type: '(checked: boolean) => void', default: '-', description: 'Fired when toggled.' },
       { name: 'label', type: 'string', default: '-', description: 'Label shown beside the switch.' },
-      { name: 'helperText', type: 'string', default: '-', description: 'Supporting text shown below the label.' },
+      { name: 'description', type: 'string', default: '-', description: 'Supporting text shown below the label.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Track and thumb size.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Prevents interaction.' },
     ],
   },
@@ -1617,28 +1851,35 @@ const [enabled, setEnabled] = useState(false);
     category: 'Feedback',
     preview: (
       <div className="space-y-3">
-        <Toast variant="success" title="Changes saved" description="Your settings have been updated successfully." />
-        <Toast variant="error" title="Upload failed" description="The file exceeds the 10 MB size limit." />
-        <Toast variant="warning" title="Rate limit approaching" description="You have used 90% of your monthly quota." />
-        <Toast variant="info" title="New version available" description="Stellix UI 2.1.0 is ready to install." action={{ label: 'Update now', onClick: () => {} }} />
+        <Toast variant="success" title="Changes saved" message="Your settings have been updated successfully." />
+        <Toast variant="error" title="Upload failed" message="The file exceeds the 10 MB size limit." />
+        <Toast variant="warning" title="Rate limit approaching" message="You have used 90% of your monthly quota." />
+        <Toast variant="info" title="New version available" message="Stellix UI 2.1.0 is ready to install." action={{ label: 'Update now', onClick: () => {} }} />
       </div>
     ),
     webCode: `import { Toast } from '@stellix/ui-web';
 
-<Toast variant="success" title="Changes saved" description="Settings updated." />
-<Toast variant="error"   title="Upload failed" description="File exceeds limit." />
+<Toast variant="success" title="Changes saved" message="Settings updated." onDismiss={() => {}} />
+<Toast variant="error" title="Upload failed" message="File exceeds 10 MB limit." />
 <Toast
   variant="info"
   title="New version available"
+  message="Stellix UI 2.1.0 is ready."
   action={{ label: 'Update now', onClick: () => install() }}
+  autoDismiss={5000}
 />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+    nativeCode: `import { Toast } from '@stellix/ui-native';
+
+<Toast variant="success" title="Saved" message="Changes saved successfully." onDismiss={() => {}} />
+<Toast variant="error" title="Error" message="Something went wrong." />
+<Toast variant="info" title="Update" message="New version available." action={{ label: 'Update', onClick: install }} autoDismiss={5000} />`,
     propsTable: [
       { name: 'variant', type: "'success' | 'error' | 'warning' | 'info'", default: "'info'", description: 'Determines icon and color.' },
       { name: 'title', type: 'string', default: '-', description: 'Bold heading of the toast.' },
-      { name: 'description', type: 'string', default: '-', description: 'Supporting detail text.' },
+      { name: 'message', type: 'string', default: '-', description: 'Supporting detail text.' },
+      { name: 'onDismiss', type: '() => void', default: '-', description: 'Dismiss handler. Shows close button when set.' },
       { name: 'action', type: '{ label: string; onClick: () => void }', default: '-', description: 'Optional inline action button.' },
-      { name: 'duration', type: 'number', default: '4000', description: 'Auto-dismiss timeout in ms. Pass 0 to disable.' },
+      { name: 'autoDismiss', type: 'number', default: '-', description: 'Auto-dismiss timeout in ms.' },
     ],
   },
 
@@ -1648,23 +1889,35 @@ const [enabled, setEnabled] = useState(false);
     category: 'Feedback',
     preview: (
       <div className="space-y-3">
-        <Alert variant="info" title="API key expiring soon" description="Your API key expires in 7 days. Rotate it to avoid downtime." />
-        <Alert variant="success" title="Deployment complete" description="v2.4.0 is live on all regions." dismissible />
-        <Alert variant="warning" title="Deprecated endpoint" description="The v1 API will be removed on 2027-01-01." />
-        <Alert variant="error" title="Service disruption" description="The embeddings endpoint is experiencing elevated latency." />
+        <Alert variant="info" title="API key expiring soon">Your API key expires in 7 days. Rotate it to avoid downtime.</Alert>
+        <Alert variant="success" title="Deployment complete" dismissible onDismiss={() => {}}>v2.4.0 is live on all regions.</Alert>
+        <Alert variant="warning" title="Deprecated endpoint">The v1 API will be removed on 2027-01-01.</Alert>
+        <Alert variant="error" title="Service disruption">The embeddings endpoint is experiencing elevated latency.</Alert>
       </div>
     ),
     webCode: `import { Alert } from '@stellix/ui-web';
 
-<Alert variant="info"    title="API key expiring soon" description="Rotate it to avoid downtime." />
-<Alert variant="success" title="Deployment complete"   description="v2.4.0 is live." dismissible />
-<Alert variant="error"   title="Service disruption"    description="Elevated latency on embeddings." />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+<Alert variant="info" title="API key expiring soon">
+  Rotate it to avoid downtime.
+</Alert>
+<Alert variant="success" title="Deployment complete" dismissible onDismiss={() => {}}>
+  v2.4.0 is live.
+</Alert>
+<Alert variant="error" title="Service disruption">
+  Elevated latency on embeddings.
+</Alert>`,
+    nativeCode: `import { Alert } from '@stellix/ui-native';
+
+<Alert variant="info" title="API key expiring soon">Rotate it to avoid downtime.</Alert>
+<Alert variant="success" title="Deployment complete">v2.4.0 is live.</Alert>
+<Alert variant="error" title="Service disruption" dismissible onDismiss={() => {}}>Elevated latency.</Alert>`,
     propsTable: [
       { name: 'variant', type: "'info' | 'success' | 'warning' | 'error'", default: "'info'", description: 'Color and icon set.' },
       { name: 'title', type: 'string', default: '-', description: 'Alert heading.' },
-      { name: 'description', type: 'string', default: '-', description: 'Detail message.' },
+      { name: 'children', type: 'ReactNode', default: '-', description: 'Detail message content.' },
       { name: 'dismissible', type: 'boolean', default: 'false', description: 'Show a close button.' },
+      { name: 'onDismiss', type: '() => void', default: '-', description: 'Dismiss handler.' },
+      { name: 'icon', type: 'ReactNode', default: '-', description: 'Custom icon override.' },
     ],
   },
 
@@ -1686,7 +1939,11 @@ const [enabled, setEnabled] = useState(false);
 <ProgressBar value={72} label="Uploading..." showValue />
 <ProgressBar value={45} color="green" label="Training" showValue />
 <ProgressBar indeterminate label="Processing..." />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+    nativeCode: `import { ProgressBar } from '@stellix/ui-native';
+
+<ProgressBar value={72} label="Uploading..." showValue />
+<ProgressBar value={45} color="#22c55e" label="Training" showValue />
+<ProgressBar indeterminate label="Processing..." />`,
     propsTable: [
       { name: 'value', type: 'number', default: '0', description: 'Progress value 0-100.' },
       { name: 'color', type: "'default' | 'green' | 'orange' | 'blue' | 'red'", default: "'default'", description: 'Fill color.' },
@@ -1702,22 +1959,27 @@ const [enabled, setEnabled] = useState(false);
     category: 'Feedback',
     preview: (
       <div className="flex flex-wrap items-center gap-6">
-        <Spinner size="xs" />
         <Spinner size="sm" />
-        <Spinner size="md" />
-        <Spinner size="lg" color="green" />
-        <Spinner size="xl" color="accent" />
+        <Spinner size="md" label="Loading..." />
+        <Spinner size="lg" />
+        <Spinner size="xl" />
       </div>
     ),
     webCode: `import { Spinner } from '@stellix/ui-web';
 
 <Spinner size="sm" />
-<Spinner size="md" color="green" />
-<Spinner size="lg" color="accent" />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+<Spinner size="md" label="Loading..." />
+<Spinner size="lg" />
+<Spinner size="xl" />`,
+    nativeCode: `import { Spinner } from '@stellix/ui-native';
+
+<Spinner size="sm" />
+<Spinner size="md" label="Loading..." />
+<Spinner size="lg" />`,
     propsTable: [
-      { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Diameter of the spinner.' },
-      { name: 'color', type: "'default' | 'accent' | 'green' | 'red'", default: "'default'", description: 'Stroke color.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Diameter of the spinner.' },
+      { name: 'color', type: 'string', default: "'border-accent'", description: 'Border color class (web) or color string (native).' },
+      { name: 'label', type: 'string', default: '-', description: 'Text label below the spinner.' },
     ],
   },
 
@@ -1727,38 +1989,38 @@ const [enabled, setEnabled] = useState(false);
     category: 'Feedback',
     preview: (
       <div className="space-y-6 max-w-sm">
+        <SkeletonBlock variant="card" />
+        <SkeletonBlock variant="text" lines={4} />
         <div className="flex items-center gap-3">
-          <SkeletonBlock shape="circle" width={40} height={40} />
-          <div className="flex-1 space-y-2">
-            <SkeletonBlock height={14} width="60%" />
-            <SkeletonBlock height={12} width="40%" />
-          </div>
-        </div>
-        <SkeletonBlock height={120} />
-        <div className="space-y-2">
-          <SkeletonBlock height={12} />
-          <SkeletonBlock height={12} width="85%" />
-          <SkeletonBlock height={12} width="70%" />
+          <SkeletonBlock variant="circle" width="40px" height="40px" />
+          <SkeletonBlock variant="rectangle" width="60%" height="14px" />
         </div>
       </div>
     ),
     webCode: `import { SkeletonBlock } from '@stellix/ui-web';
 
-// Circle avatar placeholder
-<SkeletonBlock shape="circle" width={40} height={40} />
+{/* Card skeleton with avatar + text */}
+<SkeletonBlock variant="card" />
 
-// Image placeholder
-<SkeletonBlock height={200} />
+{/* Text lines */}
+<SkeletonBlock variant="text" lines={3} />
 
-// Text lines
-<SkeletonBlock height={14} />
-<SkeletonBlock height={14} width="80%" />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+{/* Circle avatar */}
+<SkeletonBlock variant="circle" width="48px" height="48px" />
+
+{/* Rectangle placeholder */}
+<SkeletonBlock variant="rectangle" height="120px" />`,
+    nativeCode: `import { SkeletonBlock } from '@stellix/ui-native';
+
+<SkeletonBlock variant="card" />
+<SkeletonBlock variant="text" lines={3} />
+<SkeletonBlock variant="circle" width={48} />
+<SkeletonBlock variant="rectangle" height={96} />`,
     propsTable: [
-      { name: 'shape', type: "'rect' | 'circle'", default: "'rect'", description: 'Shape of the skeleton block.' },
-      { name: 'width', type: "number | string", default: "'100%'", description: 'Width (px or CSS value).' },
-      { name: 'height', type: 'number', default: '16', description: 'Height in pixels.' },
-      { name: 'animate', type: 'boolean', default: 'true', description: 'Enable shimmer animation.' },
+      { name: 'variant', type: "'text' | 'circle' | 'rectangle' | 'card'", default: "'rectangle'", description: 'Shape preset of the skeleton.' },
+      { name: 'lines', type: 'number', default: '3', description: 'Number of text lines (text variant only).' },
+      { name: 'width', type: "string", default: "'100%'", description: 'Width of the skeleton block.' },
+      { name: 'height', type: 'string', default: '-', description: 'Height of the skeleton block.' },
     ],
   },
 
@@ -1769,29 +2031,30 @@ const [enabled, setEnabled] = useState(false);
     preview: (
       <div className="space-y-8">
         <EmptyState
-          icon="inbox"
           title="No conversations yet"
           description="Start a new conversation to see it appear here."
           action={{ label: 'New conversation', onClick: () => {} }}
         />
-        <EmptyState
-          icon="search"
-          title="No results found"
-          description="Try adjusting your search or filter to find what you are looking for."
-        />
       </div>
     ),
     webCode: `import { EmptyState } from '@stellix/ui-web';
+import { InboxIcon } from '@heroicons/react/24/outline';
 
 <EmptyState
-  icon="inbox"
+  icon={<InboxIcon className="h-8 w-8" />}
   title="No conversations yet"
   description="Start a new conversation to see it appear here."
   action={{ label: 'New conversation', onClick: () => openNew() }}
 />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
+    nativeCode: `import { EmptyState } from '@stellix/ui-native';
+
+<EmptyState
+  title="No conversations yet"
+  description="Start a new conversation to see it here."
+  action={{ label: 'New conversation', onClick: openNew }}
+/>`,
     propsTable: [
-      { name: 'icon', type: 'string', default: '-', description: 'Icon name to display above the title.' },
+      { name: 'icon', type: 'ReactNode', default: 'InboxIcon', description: 'Custom icon element. Uses default inbox icon if omitted.' },
       { name: 'title', type: 'string', default: '-', description: 'Primary heading.' },
       { name: 'description', type: 'string', default: '-', description: 'Supporting detail text.' },
       { name: 'action', type: '{ label: string; onClick: () => void }', default: '-', description: 'Optional CTA button.' },
@@ -1805,40 +2068,66 @@ const [enabled, setEnabled] = useState(false);
     preview: (
       <div className="space-y-8">
         <StepIndicator
+          orientation="horizontal"
           steps={[
-            { id: '1', label: 'Account' },
-            { id: '2', label: 'Profile' },
-            { id: '3', label: 'Billing' },
-            { id: '4', label: 'Review' },
+            { label: 'Account' },
+            { label: 'Profile' },
+            { label: 'Billing' },
+            { label: 'Review' },
           ]}
           currentStep={2}
         />
         <StepIndicator
+          orientation="vertical"
           steps={[
-            { id: '1', label: 'Ingest' },
-            { id: '2', label: 'Embed' },
-            { id: '3', label: 'Index' },
+            { label: 'Upload', description: 'Choose your files' },
+            { label: 'Configure', description: 'Set parameters' },
+            { label: 'Deploy', description: 'Go live' },
           ]}
-          currentStep={3}
+          currentStep={1}
         />
       </div>
     ),
     webCode: `import { StepIndicator } from '@stellix/ui-web';
 
+{/* Horizontal */}
 <StepIndicator
+  orientation="horizontal"
   steps={[
-    { id: '1', label: 'Account' },
-    { id: '2', label: 'Profile' },
-    { id: '3', label: 'Billing' },
-    { id: '4', label: 'Review' },
+    { label: 'Account' },
+    { label: 'Profile' },
+    { label: 'Billing' },
+    { label: 'Review' },
+  ]}
+  currentStep={2}
+/>
+
+{/* Vertical with descriptions */}
+<StepIndicator
+  orientation="vertical"
+  steps={[
+    { label: 'Upload', description: 'Choose files' },
+    { label: 'Configure', description: 'Set parameters' },
+    { label: 'Deploy', description: 'Go live' },
+  ]}
+  currentStep={1}
+/>`,
+    nativeCode: `import { StepIndicator } from '@stellix/ui-native';
+
+<StepIndicator
+  orientation="horizontal"
+  steps={[
+    { label: 'Upload', description: 'Choose files' },
+    { label: 'Configure', description: 'Set parameters' },
+    { label: 'Review', description: 'Check results' },
+    { label: 'Deploy', description: 'Go live' },
   ]}
   currentStep={2}
 />`,
-    nativeCode: `Same API - import from @stellix/ui-native`,
     propsTable: [
-      { name: 'steps', type: '{ id: string; label: string }[]', default: '-', description: 'Ordered step definitions.' },
-      { name: 'currentStep', type: 'number', default: '1', description: '1-based index of the active step.' },
-      { name: 'onStepClick', type: '(index: number) => void', default: '-', description: 'Allows clicking completed steps to navigate back.' },
+      { name: 'steps', type: '{ label: string; description?: string }[]', default: '-', description: 'Ordered step definitions.' },
+      { name: 'currentStep', type: 'number', default: '0', description: '0-based index of the active step.' },
+      { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: 'Layout direction.' },
     ],
   },
 
@@ -1873,19 +2162,21 @@ const [enabled, setEnabled] = useState(false);
 const [tab, setTab] = useState('overview');
 
 <Tabs
-  value={tab}
+  activeTab={tab}
   onChange={setTab}
   tabs={[
-    { value: 'overview',   label: 'Overview',       content: <Overview /> },
-    { value: 'api',        label: 'API Reference',  content: <ApiDocs /> },
-    { value: 'changelog',  label: 'Changelog',      content: <Changelog /> },
+    { id: 'overview',  label: 'Overview' },
+    { id: 'api',       label: 'API Reference' },
+    { id: 'changelog', label: 'Changelog' },
   ]}
+  variant="default"
 />`,
     nativeCode: `Same API - import from @stellix/ui-native`,
     propsTable: [
-      { name: 'tabs', type: '{ value: string; label: string; content: ReactNode }[]', default: '-', description: 'Tab definitions including panel content.' },
-      { name: 'value', type: 'string', default: '-', description: 'Controlled active tab value.' },
-      { name: 'onChange', type: '(value: string) => void', default: '-', description: 'Fired when a tab is clicked.' },
+      { name: 'tabs', type: '{ id: string; label: string; icon?: ReactNode }[]', default: '-', description: 'Tab definitions.' },
+      { name: 'activeTab', type: 'string', default: '-', description: 'Controlled active tab id.' },
+      { name: 'onChange', type: '(id: string) => void', default: '-', description: 'Fired when a tab is clicked.' },
+      { name: 'variant', type: "'default' | 'pill' | 'bordered'", default: "'default'", description: 'Visual style variant.' },
     ],
   },
 
@@ -1911,7 +2202,6 @@ const [tab, setTab] = useState('overview');
             { label: 'Run #42', href: '/projects/chimera/runs/42' },
             { label: 'Metrics' },
           ]}
-          maxItems={3}
         />
       </div>
     ),
@@ -1927,7 +2217,6 @@ const [tab, setTab] = useState('overview');
     nativeCode: `Same API - import from @stellix/ui-native`,
     propsTable: [
       { name: 'items', type: '{ label: string; href?: string }[]', default: '-', description: 'Ordered crumb items. Last item is the current page.' },
-      { name: 'maxItems', type: 'number', default: '-', description: 'Truncate with ellipsis beyond this count.' },
       { name: 'separator', type: 'ReactNode', default: "'/'", description: 'Custom separator between crumbs.' },
     ],
   },
@@ -1948,16 +2237,16 @@ const [tab, setTab] = useState('overview');
 const [page, setPage] = useState(1);
 
 <Pagination
-  page={page}
+  currentPage={page}
   totalPages={20}
   onPageChange={setPage}
 />`,
     nativeCode: `Same API - import from @stellix/ui-native`,
     propsTable: [
-      { name: 'page', type: 'number', default: '1', description: 'Current page (1-based).' },
+      { name: 'currentPage', type: 'number', default: '1', description: 'Current page (1-based).' },
       { name: 'totalPages', type: 'number', default: '-', description: 'Total number of pages.' },
       { name: 'onPageChange', type: '(page: number) => void', default: '-', description: 'Fired when a page is selected.' },
-      { name: 'siblings', type: 'number', default: '1', description: 'Number of sibling pages shown around the current page.' },
+      { name: 'showPageNumbers', type: 'boolean', default: 'true', description: 'Whether to show individual page number buttons.' },
     ],
   },
 
@@ -1969,11 +2258,11 @@ const [page, setPage] = useState(1);
       <Dropdown
         trigger={<Button variant="outline">Actions</Button>}
         items={[
-          { id: 'edit', label: 'Edit', icon: 'pencil', onClick: () => {} },
-          { id: 'duplicate', label: 'Duplicate', icon: 'copy', onClick: () => {} },
-          { id: 'divider', type: 'divider' },
-          { id: 'archive', label: 'Archive', icon: 'archive', onClick: () => {} },
-          { id: 'delete', label: 'Delete', icon: 'trash', variant: 'danger', onClick: () => {} },
+          { label: 'Edit', onClick: () => {} },
+          { label: 'Duplicate', onClick: () => {} },
+          { label: '', divider: true },
+          { label: 'Archive', onClick: () => {} },
+          { label: 'Delete', onClick: () => {}, disabled: false },
         ]}
       />
     ),
@@ -1982,17 +2271,18 @@ const [page, setPage] = useState(1);
 <Dropdown
   trigger={<Button variant="outline">Actions</Button>}
   items={[
-    { id: 'edit',      label: 'Edit',      icon: 'pencil',  onClick: () => editItem() },
-    { id: 'duplicate', label: 'Duplicate', icon: 'copy',    onClick: () => duplicateItem() },
-    { id: 'divider',   type: 'divider' },
-    { id: 'delete',    label: 'Delete',    icon: 'trash',   variant: 'danger', onClick: () => deleteItem() },
+    { label: 'Edit',      onClick: () => editItem() },
+    { label: 'Duplicate', onClick: () => duplicateItem() },
+    { divider: true },
+    { label: 'Delete',    onClick: () => deleteItem() },
   ]}
+  align="left"
 />`,
     nativeCode: `Same API - import from @stellix/ui-native`,
     propsTable: [
       { name: 'trigger', type: 'ReactNode', default: '-', description: 'Element that opens the dropdown on click.' },
-      { name: 'items', type: 'DropdownItem[]', default: '-', description: 'Menu items, including optional dividers.' },
-      { name: 'placement', type: "'bottom-start' | 'bottom-end' | 'top-start'", default: "'bottom-start'", description: 'Preferred open direction.' },
+      { name: 'items', type: '{ label?: string; icon?: ReactNode; onClick?: () => void; divider?: boolean; disabled?: boolean }[]', default: '-', description: 'Menu items, including optional dividers.' },
+      { name: 'align', type: "'left' | 'right'", default: "'left'", description: 'Horizontal alignment of the dropdown menu.' },
     ],
   },
 
@@ -2028,14 +2318,14 @@ const [open, setOpen] = useState(false);
       { name: 'open', type: 'boolean', default: 'false', description: 'Controls visibility.' },
       { name: 'onClose', type: '() => void', default: '-', description: 'Fired on backdrop click or Escape key.' },
       { name: 'title', type: 'string', default: '-', description: 'Modal heading.' },
-      { name: 'size', type: "'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Controls max width.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Controls max width.' },
       { name: 'footer', type: 'ReactNode', default: '-', description: 'Content in the modal footer (action buttons).' },
     ],
   },
 
   drawer: {
     title: 'Drawer',
-    description: 'A slide-in panel from any edge of the viewport with configurable width.',
+    description: 'A slide-in panel from any edge of the viewport with configurable size.',
     category: 'Layout',
     preview: (
       <div className="flex flex-col gap-2 items-start">
@@ -2059,9 +2349,9 @@ const [open, setOpen] = useState(false);
     propsTable: [
       { name: 'open', type: 'boolean', default: 'false', description: 'Controls visibility.' },
       { name: 'onClose', type: '() => void', default: '-', description: 'Fired on overlay click or Escape key.' },
-      { name: 'side', type: "'left' | 'right' | 'top' | 'bottom'", default: "'right'", description: 'Edge from which the drawer slides in.' },
+      { name: 'side', type: "'left' | 'right' | 'bottom'", default: "'right'", description: 'Edge from which the drawer slides in.' },
       { name: 'title', type: 'string', default: '-', description: 'Drawer header title.' },
-      { name: 'width', type: 'string', default: "'400px'", description: 'Width for left/right drawers.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Controls drawer width (left/right) or height (bottom).' },
     ],
   },
 
@@ -2071,7 +2361,7 @@ const [open, setOpen] = useState(false);
     category: 'Layout',
     preview: (
       <Accordion
-        type="single"
+        multiple={false}
         items={[
           { id: '1', title: 'What is Chimera?', content: 'Chimera is Stellix Private Ltd\'s flagship MoE transformer model, designed for enterprise agentic AI workloads with multimodal input and tool-use capabilities.' },
           { id: '2', title: 'How do I install Stellix UI?', content: 'Run npm install @stellix/ui-web in your Next.js project, then wrap your app with the StelixProvider component.' },
@@ -2082,7 +2372,7 @@ const [open, setOpen] = useState(false);
     webCode: `import { Accordion } from '@stellix/ui-web';
 
 <Accordion
-  type="single"
+  multiple={false}
   items={[
     { id: '1', title: 'What is Chimera?',        content: 'Chimera is our flagship MoE model...' },
     { id: '2', title: 'How do I install?',        content: 'Run npm install @stellix/ui-web...' },
@@ -2092,7 +2382,7 @@ const [open, setOpen] = useState(false);
     nativeCode: `Same API - import from @stellix/ui-native`,
     propsTable: [
       { name: 'items', type: '{ id: string; title: string; content: ReactNode }[]', default: '-', description: 'Accordion section definitions.' },
-      { name: 'type', type: "'single' | 'multiple'", default: "'single'", description: 'Whether one or many panels can be open at once.' },
+      { name: 'multiple', type: 'boolean', default: 'false', description: 'Whether multiple panels can be open at once.' },
       { name: 'defaultOpen', type: 'string[]', default: '[]', description: 'IDs of panels open by default.' },
     ],
   },
@@ -2104,17 +2394,17 @@ const [open, setOpen] = useState(false);
     category: 'Data Display',
     preview: (
       <div className="grid grid-cols-2 gap-4">
-        <DataCard label="Total requests" value="2.4M" trend={12.5} trendDirection="up" />
-        <DataCard label="Avg latency" value="142ms" trend={-8.3} trendDirection="down" />
-        <DataCard label="Error rate" value="0.12%" trend={2.1} trendDirection="up" trendBad />
-        <DataCard label="Active agents" value="7" />
+        <DataCard label="Total requests" value="2.4M" change={12.5} changeLabel="vs last week" />
+        <DataCard label="Avg latency" value="142ms" change={-8.3} changeLabel="vs last week" />
+        <DataCard label="Error rate" value="0.12%" change={2.1} changeLabel="vs last week" />
+        <DataCard label="Active agents" value="7" change={0} changeLabel="stable" />
       </div>
     ),
     webCode: `import { DataCard } from '@stellix/ui-web';
 
-<DataCard label="Total requests" value="2.4M" trend={12.5} trendDirection="up" />
-<DataCard label="Avg latency"    value="142ms" trend={-8.3} trendDirection="down" />
-<DataCard label="Error rate"     value="0.12%" trend={2.1} trendDirection="up" trendBad />`,
+<DataCard label="Total requests" value="2.4M" change={12.5} changeLabel="vs last week" />
+<DataCard label="Avg latency" value="142ms" change={-8.3} changeLabel="vs last week" />
+<DataCard label="Error rate" value="0.12%" change={2.1} changeLabel="vs last week" />`,
     nativeCode: `Same API - import from @stellix/ui-native`,
     propsTable: [
       { name: 'label', type: 'string', default: '-', description: 'Metric label.' },
@@ -2210,7 +2500,7 @@ const [open, setOpen] = useState(false);
           choices: [{ index: 0, message: { role: 'assistant', content: 'Hello, how can I help?' }, finish_reason: 'stop' }],
           created: 1723680000,
         }}
-        defaultExpanded
+        collapsed={false}
       />
     ),
     webCode: `import { JSONViewer } from '@stellix/ui-web';
@@ -2221,13 +2511,13 @@ const [open, setOpen] = useState(false);
     usage: { prompt_tokens: 512, completion_tokens: 248 },
     choices: [{ message: { role: 'assistant', content: 'Hello!' } }],
   }}
-  defaultExpanded
+  collapsed={false}
 />`,
     nativeCode: `Same API - import from @stellix/ui-native`,
     propsTable: [
       { name: 'data', type: 'unknown', default: '-', description: 'Any JSON-serializable value to display.' },
-      { name: 'defaultExpanded', type: 'boolean', default: 'false', description: 'Expand all nodes on first render.' },
-      { name: 'maxDepth', type: 'number', default: '3', description: 'Maximum initially expanded depth.' },
+      { name: 'collapsed', type: 'boolean', default: 'false', description: 'Collapse all nodes on first render.' },
+      { name: 'depth', type: 'number', default: '0', description: 'Initial depth level.' },
     ],
   },
 
@@ -2416,12 +2706,12 @@ const [open, setOpen] = useState(false);
     category: 'AI / Agent',
     preview: (
       <ModelSelector
-        value="chimera-70b"
+        selected="chimera-70b"
         models={[
-          { id: 'chimera-70b', name: 'Chimera-70B', provider: 'Stellix', contextWindow: 128000, costPer1k: 0.002, capabilities: ['tools', 'vision', 'reasoning'] },
-          { id: 'gpt-4o', name: 'GPT-4o', provider: 'OpenAI', contextWindow: 128000, costPer1k: 0.005, capabilities: ['tools', 'vision'] },
-          { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet', provider: 'Anthropic', contextWindow: 200000, costPer1k: 0.003, capabilities: ['tools', 'vision', 'reasoning'] },
-          { id: 'gemini-pro-2', name: 'Gemini 2.0 Pro', provider: 'Google', contextWindow: 1000000, costPer1k: 0.0035, capabilities: ['tools', 'vision'] },
+          { id: 'chimera-70b', name: 'Chimera-70B', provider: 'Stellix', costPer1k: 0.002, capabilities: ['tools', 'vision', 'reasoning'] },
+          { id: 'gpt-4o', name: 'GPT-4o', provider: 'OpenAI', costPer1k: 0.005, capabilities: ['tools', 'vision'] },
+          { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet', provider: 'Anthropic', costPer1k: 0.003, capabilities: ['tools', 'vision', 'reasoning'] },
+          { id: 'gemini-pro-2', name: 'Gemini 2.0 Pro', provider: 'Google', costPer1k: 0.0035, capabilities: ['tools', 'vision'] },
         ]}
         onChange={(id) => console.log('model', id)}
       />
@@ -2431,9 +2721,9 @@ const [open, setOpen] = useState(false);
 <ModelSelector
   value={selectedModel}
   models={[
-    { id: 'chimera-70b',       name: 'Chimera-70B',        provider: 'Stellix',    contextWindow: 128000, costPer1k: 0.002 },
-    { id: 'gpt-4o',            name: 'GPT-4o',             provider: 'OpenAI',     contextWindow: 128000, costPer1k: 0.005 },
-    { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet',  provider: 'Anthropic',  contextWindow: 200000, costPer1k: 0.003 },
+    { id: 'chimera-70b',       name: 'Chimera-70B',        provider: 'Stellix',    costPer1k: 0.002, capabilities: ['tools', 'vision', 'reasoning'] },
+    { id: 'gpt-4o',            name: 'GPT-4o',             provider: 'OpenAI',     costPer1k: 0.005, capabilities: ['tools', 'vision'] },
+    { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet',  provider: 'Anthropic',  costPer1k: 0.003, capabilities: ['tools', 'vision', 'reasoning'] },
   ]}
   onChange={(id) => setSelectedModel(id)}
 />`,
@@ -2454,15 +2744,14 @@ const [open, setOpen] = useState(false);
         <TokenCounter
           prompt={3240}
           completion={512}
-          contextLimit={128000}
-          model="Chimera-70B"
+          limit={128000}
+          costPer1k={0.002}
         />
         <TokenCounter
           prompt={185000}
           completion={4096}
-          contextLimit={200000}
-          model="Claude 3.5 Sonnet"
-          warning
+          limit={200000}
+          costPer1k={0.003}
         />
       </div>
     ),
@@ -2471,16 +2760,15 @@ const [open, setOpen] = useState(false);
 <TokenCounter
   prompt={3240}
   completion={512}
-  contextLimit={128000}
-  model="Chimera-70B"
+  limit={128000}
+  costPer1k={0.002}
 />`,
     nativeCode: `Same API - import from @stellix/ui-native`,
     propsTable: [
       { name: 'prompt', type: 'number', default: '0', description: 'Number of prompt tokens.' },
       { name: 'completion', type: 'number', default: '0', description: 'Number of completion tokens.' },
-      { name: 'contextLimit', type: 'number', default: '-', description: 'Maximum context window size for the model.' },
-      { name: 'model', type: 'string', default: '-', description: 'Model name label.' },
-      { name: 'warning', type: 'boolean', default: 'false', description: 'Highlight when approaching context limit.' },
+      { name: 'limit', type: 'number', default: '-', description: 'Maximum context window size for the model.' },
+      { name: 'costPer1k', type: 'number', default: '-', description: 'Cost per 1,000 tokens.' },
     ],
   },
 
@@ -2492,15 +2780,13 @@ const [open, setOpen] = useState(false);
       <div className="h-96 w-72 overflow-auto rounded-xl border border-line">
         <ConversationList
           conversations={[
-            { id: '1', title: 'Refactor auth module', lastMessage: 'Here is the updated code...', timestamp: '2 min ago', pinned: true },
-            { id: '2', title: 'MoE architecture deep-dive', lastMessage: 'The gating network routes tokens to...', timestamp: '1 hr ago' },
-            { id: '3', title: 'Debug slow query', lastMessage: 'Try adding an index on user_id.', timestamp: 'Yesterday' },
-            { id: '4', title: 'Write unit tests for API', lastMessage: 'I have generated 12 test cases.', timestamp: '2 days ago' },
+            { id: '1', title: 'Refactor auth module', preview: 'Here is the updated code...', date: '2 min ago', model: 'Chimera-70B', messageCount: 12 },
+            { id: '2', title: 'MoE architecture deep-dive', preview: 'The gating network routes tokens to...', date: '1 hr ago', model: 'GPT-4o', messageCount: 8 },
+            { id: '3', title: 'Debug slow query', preview: 'Try adding an index on user_id.', date: 'Yesterday', model: 'Claude 3.5', messageCount: 5 },
+            { id: '4', title: 'Write unit tests for API', preview: 'I have generated 12 test cases.', date: '2 days ago', model: 'Chimera-70B', messageCount: 3 },
           ]}
           activeId="2"
           onSelect={(id) => console.log('select', id)}
-          onDelete={(id) => console.log('delete', id)}
-          onPin={(id) => console.log('pin', id)}
         />
       </div>
     ),
@@ -2508,12 +2794,11 @@ const [open, setOpen] = useState(false);
 
 <ConversationList
   conversations={[
-    { id: '1', title: 'Refactor auth module',   lastMessage: 'Here is the updated code...', timestamp: '2m ago', pinned: true },
-    { id: '2', title: 'MoE architecture',       lastMessage: 'The gating network...',        timestamp: '1h ago' },
+    { id: '1', title: 'Refactor auth module',   preview: 'Here is the updated code...', date: '2m ago', model: 'Chimera-70B', messageCount: 12 },
+    { id: '2', title: 'MoE architecture',       preview: 'The gating network...',        date: '1h ago', model: 'GPT-4o', messageCount: 8 },
   ]}
   activeId={activeConversation}
   onSelect={(id) => setActiveConversation(id)}
-  onDelete={(id) => deleteConversation(id)}
 />`,
     nativeCode: `Same API - import from @stellix/ui-native`,
     propsTable: [
@@ -2665,9 +2950,10 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
 </GlimmEffect>`,
     nativeCode: 'Same API - import from @stellix/ui-native',
     propsTable: [
-      { prop: 'active', type: 'boolean', default: 'false', description: 'Enable the shimmer sweep animation.' },
-      { prop: 'duration', type: 'number', default: '1200', description: 'Duration of one sweep cycle in ms.' },
-      { prop: 'children', type: 'ReactNode', default: '—', description: 'Content to wrap with the shimmer effect.' },
+      { name: 'active', type: 'boolean', default: 'false', description: 'Enable the shimmer sweep animation.' },
+      { name: 'children', type: 'ReactNode', default: '—', description: 'Content to wrap with the shimmer effect.' },
+      { name: 'color', type: 'string', default: '—', description: 'Color of the shimmer highlight.' },
+      { name: 'className', type: 'string', default: '—', description: 'Additional CSS class names.' },
     ],
   },
 
@@ -2690,9 +2976,10 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
 />`,
     nativeCode: 'Same API - import from @stellix/ui-native',
     propsTable: [
-      { prop: 'items', type: '{ id: string; label: string }[]', default: '—', description: 'List of navigation items.' },
-      { prop: 'activeId', type: 'string', default: '—', description: 'ID of the currently active item.' },
-      { prop: 'onChange', type: '(id: string) => void', default: '—', description: 'Callback when user selects a different item.' },
+      { name: 'items', type: '{ id: string; label: string }[]', default: '—', description: 'List of navigation items.' },
+      { name: 'activeId', type: 'string', default: '—', description: 'ID of the currently active item.' },
+      { name: 'onChange', type: '(id: string) => void', default: '—', description: 'Callback when user selects a different item.' },
+      { name: 'className', type: 'string', default: '—', description: 'Additional CSS class names.' },
     ],
   },
 
@@ -2700,7 +2987,7 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
     title: 'MorphTransition',
     description: 'Smooth fade/scale transition triggered when its key prop changes, ideal for route or state changes.',
     category: 'Animations',
-    preview: <MorphTransition transitionKey="demo"><div className="rounded-xl border border-line bg-surface p-6 text-center text-ink">Content fades in</div></MorphTransition>,
+    preview: <MorphPreview />,
     webCode: `import { MorphTransition } from '@stellix/ui-web';
 
 <MorphTransition transitionKey={currentView}>
@@ -2710,9 +2997,9 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
 </MorphTransition>`,
     nativeCode: 'Same API - import from @stellix/ui-native',
     propsTable: [
-      { prop: 'transitionKey', type: 'string | number', default: '—', description: 'Changing this value triggers the transition.' },
-      { prop: 'duration', type: 'number', default: '300', description: 'Transition duration in ms.' },
-      { prop: 'children', type: 'ReactNode', default: '—', description: 'Content to transition.' },
+      { name: 'transitionKey', type: 'string', default: '—', description: 'Changing this value triggers the transition.' },
+      { name: 'children', type: 'ReactNode', default: '—', description: 'Content to transition.' },
+      { name: 'className', type: 'string', default: '—', description: 'Additional CSS class names.' },
     ],
   },
 
@@ -2720,7 +3007,7 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
     title: 'ConfettiEffect',
     description: 'Burst of confetti particles over wrapped content — perfect for success states and celebrations.',
     category: 'Animations',
-    preview: <ConfettiEffect active={false}><div className="rounded-xl border border-line bg-surface p-6 text-center text-ink text-sm">Click the Preview tab to trigger</div></ConfettiEffect>,
+    preview: <ConfettiPreview />,
     webCode: `import { ConfettiEffect } from '@stellix/ui-web';
 
 <ConfettiEffect active={showConfetti}>
@@ -2730,9 +3017,9 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
 </ConfettiEffect>`,
     nativeCode: 'Same API - import from @stellix/ui-native',
     propsTable: [
-      { prop: 'active', type: 'boolean', default: 'false', description: 'Set to true to fire the confetti burst.' },
-      { prop: 'count', type: 'number', default: '80', description: 'Number of confetti particles.' },
-      { prop: 'children', type: 'ReactNode', default: '—', description: 'Content beneath the confetti layer.' },
+      { name: 'active', type: 'boolean', default: 'false', description: 'Set to true to fire the confetti burst.' },
+      { name: 'duration', type: 'number', default: '2000', description: 'Duration of the confetti animation in ms.' },
+      { name: 'className', type: 'string', default: '—', description: 'Additional CSS class names.' },
     ],
   },
 
@@ -2749,49 +3036,154 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
 />`,
     nativeCode: 'Same API - import from @stellix/ui-native',
     propsTable: [
-      { prop: 'text', type: 'string', default: '—', description: 'The string to type out.' },
-      { prop: 'speed', type: 'number', default: '50', description: 'Delay in ms between each character.' },
-      { prop: 'loop', type: 'boolean', default: 'false', description: 'Restart from the beginning after finishing.' },
+      { name: 'text', type: 'string', default: '—', description: 'The string to type out.' },
+      { name: 'speed', type: 'number', default: '50', description: 'Delay in ms between each character.' },
+      { name: 'onComplete', type: '() => void', default: '—', description: 'Callback fired when typing finishes.' },
+      { name: 'className', type: 'string', default: '—', description: 'Additional CSS class names.' },
     ],
   },
 
   'number-ticker': {
     title: 'NumberTicker',
-    description: 'Animates a numeric value counting up (or down) to the target, with optional prefix, suffix, and decimals.',
+    description: 'Animates a numeric value counting up (or down) to the target, with four visual variants: default, card, gradient, and badge.',
     category: 'Animations',
-    preview: <div className="flex gap-8"><NumberTicker value={1456} prefix="" suffix=" tests" /><NumberTicker value={92} suffix=" components" /><NumberTicker value={99.9} suffix="%" decimals={1} /></div>,
+    preview: (
+      <div className="space-y-8">
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Default</p>
+          <div className="flex flex-wrap gap-8">
+            <NumberTicker value={1456} suffix=" tests" />
+            <NumberTicker value={92} suffix=" components" />
+            <NumberTicker value={99.9} suffix="%" decimals={1} />
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Card Variant</p>
+          <div className="flex flex-wrap gap-4">
+            <NumberTicker variant="card" value={12847} label="Total Users" trend="up" />
+            <NumberTicker variant="card" value={3.2} suffix="ms" decimals={1} label="Avg Latency" trend="down" />
+            <NumberTicker variant="card" value={99.98} suffix="%" decimals={2} label="Uptime" />
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Gradient Variant</p>
+          <div className="flex flex-wrap gap-4">
+            <NumberTicker variant="gradient" value={520} suffix="+" label="E2E Tests Passing" />
+            <NumberTicker variant="gradient" value={40} label="Components" />
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Badge Variant</p>
+          <div className="flex flex-wrap gap-3">
+            <NumberTicker variant="badge" value={42} label="new" trend="up" />
+            <NumberTicker variant="badge" value={7} label="issues" trend="down" />
+            <NumberTicker variant="badge" value={100} suffix="%" label="coverage" />
+          </div>
+        </div>
+      </div>
+    ),
     webCode: `import { NumberTicker } from '@stellix/ui-web';
 
-<div className="flex gap-8">
-  <NumberTicker value={1456} suffix=" tests" />
-  <NumberTicker value={92} suffix=" components" />
-  <NumberTicker value={99.9} suffix="%" decimals={1} />
-</div>`,
-    nativeCode: 'Same API - import from @stellix/ui-native',
+{/* Default */}
+<NumberTicker value={1456} suffix=" tests" />
+
+{/* Card with label and trend */}
+<NumberTicker variant="card" value={12847} label="Total Users" trend="up" />
+<NumberTicker variant="card" value={3.2} suffix="ms" decimals={1} label="Avg Latency" trend="down" />
+
+{/* Gradient hero stat */}
+<NumberTicker variant="gradient" value={520} suffix="+" label="E2E Tests Passing" />
+
+{/* Compact badge */}
+<NumberTicker variant="badge" value={42} label="new" trend="up" />`,
+    nativeCode: `import { NumberTicker } from '@stellix/ui-native';
+
+<NumberTicker value={1456} suffix=" tests" />
+<NumberTicker variant="card" value={12847} label="Total Users" trend="up" />
+<NumberTicker variant="gradient" value={520} suffix="+" label="E2E Tests" />
+<NumberTicker variant="badge" value={42} label="new" trend="up" />`,
     propsTable: [
-      { prop: 'value', type: 'number', default: '—', description: 'Target numeric value to animate to.' },
-      { prop: 'suffix', type: 'string', default: "''", description: 'Text appended after the number.' },
-      { prop: 'decimals', type: 'number', default: '0', description: 'Number of decimal places to display.' },
+      { name: 'value', type: 'number', default: '—', description: 'Target numeric value to animate to.' },
+      { name: 'variant', type: "'default' | 'card' | 'gradient' | 'badge'", default: "'default'", description: 'Visual style of the ticker.' },
+      { name: 'label', type: 'string', default: '-', description: 'Descriptive label (card/gradient/badge variants).' },
+      { name: 'trend', type: "'up' | 'down'", default: '-', description: 'Trend arrow indicator (card/badge variants).' },
+      { name: 'prefix', type: 'string', default: "''", description: 'Text prepended before the number.' },
+      { name: 'suffix', type: 'string', default: "''", description: 'Text appended after the number.' },
+      { name: 'decimals', type: 'number', default: '0', description: 'Number of decimal places to display.' },
+      { name: 'duration', type: 'number', default: '1000', description: 'Animation duration in ms.' },
     ],
   },
 
   'progress-ring': {
     title: 'ProgressRing',
-    description: 'Circular SVG progress indicator with an optional center label, configurable size and stroke width.',
+    description: 'Circular SVG progress indicator with four variants: default, dashboard card, gradient arc, and segmented ring.',
     category: 'Animations',
-    preview: <div className="flex gap-6"><ProgressRing value={75} label="75%" /><ProgressRing value={45} size={48} strokeWidth={3} /><ProgressRing value={100} label="Done" /></div>,
+    preview: (
+      <div className="space-y-8">
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Default</p>
+          <div className="flex flex-wrap items-center gap-6">
+            <ProgressRing value={75} label="75%" />
+            <ProgressRing value={45} size={48} strokeWidth={3} />
+            <ProgressRing value={100} label="Done" color="#22c55e" />
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Dashboard Variant</p>
+          <div className="flex flex-wrap gap-4">
+            <ProgressRing variant="dashboard" value={87} title="CPU Usage" subtitle="3 cores active" status="success" />
+            <ProgressRing variant="dashboard" value={64} title="Memory" subtitle="5.1 / 8 GB" status="warning" />
+            <ProgressRing variant="dashboard" value={92} title="Disk" subtitle="184 / 200 GB" status="error" />
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Gradient Variant</p>
+          <div className="flex flex-wrap items-center gap-6">
+            <ProgressRing variant="gradient" value={78} label="Model Accuracy" size={96} strokeWidth={6} />
+            <ProgressRing variant="gradient" value={42} label="Training" size={72} />
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-3">Segmented Variant</p>
+          <div className="flex flex-wrap items-center gap-6">
+            <ProgressRing variant="segmented" value={75} label="6 of 8 tasks" segments={8} status="info" />
+            <ProgressRing variant="segmented" value={40} label="Progress" segments={5} status="warning" />
+            <ProgressRing variant="segmented" value={100} label="All clear" segments={6} status="success" />
+          </div>
+        </div>
+      </div>
+    ),
     webCode: `import { ProgressRing } from '@stellix/ui-web';
 
-<div className="flex gap-6">
-  <ProgressRing value={75} label="75%" />
-  <ProgressRing value={45} size={48} strokeWidth={3} />
-  <ProgressRing value={100} label="Done" />
-</div>`,
-    nativeCode: 'Same API - import from @stellix/ui-native',
+{/* Default */}
+<ProgressRing value={75} label="75%" />
+
+{/* Dashboard card with status */}
+<ProgressRing variant="dashboard" value={87} title="CPU Usage" subtitle="3 cores active" status="success" />
+<ProgressRing variant="dashboard" value={64} title="Memory" subtitle="5.1 / 8 GB" status="warning" />
+
+{/* Gradient arc */}
+<ProgressRing variant="gradient" value={78} label="Model Accuracy" size={96} strokeWidth={6} />
+
+{/* Segmented ring */}
+<ProgressRing variant="segmented" value={75} label="6 of 8 tasks" segments={8} status="info" />`,
+    nativeCode: `import { ProgressRing } from '@stellix/ui-native';
+
+<ProgressRing value={75} label="75%" />
+<ProgressRing variant="dashboard" value={87} title="CPU Usage" status="success" />
+<ProgressRing variant="gradient" value={78} label="Accuracy" />
+<ProgressRing variant="segmented" value={75} label="6 of 8" segments={8} status="info" />`,
     propsTable: [
-      { prop: 'value', type: 'number', default: '—', description: 'Progress percentage (0–100).' },
-      { prop: 'size', type: 'number', default: '64', description: 'Diameter of the ring in px.' },
-      { prop: 'strokeWidth', type: 'number', default: '4', description: 'Thickness of the progress arc.' },
+      { name: 'value', type: 'number', default: '—', description: 'Progress percentage (0–100).' },
+      { name: 'variant', type: "'default' | 'dashboard' | 'gradient' | 'segmented'", default: "'default'", description: 'Visual style of the ring.' },
+      { name: 'title', type: 'string', default: '-', description: 'Heading text (dashboard variant).' },
+      { name: 'subtitle', type: 'string', default: '-', description: 'Detail text below title (dashboard variant).' },
+      { name: 'status', type: "'success' | 'warning' | 'error' | 'info'", default: '-', description: 'Semantic color for the ring arc.' },
+      { name: 'segments', type: 'number', default: '8', description: 'Number of arc segments (segmented variant).' },
+      { name: 'label', type: 'string', default: '-', description: 'Text in the center of the ring.' },
+      { name: 'size', type: 'number', default: '64', description: 'Diameter of the ring in px.' },
+      { name: 'strokeWidth', type: 'number', default: '4', description: 'Thickness of the progress arc.' },
+      { name: 'color', type: 'string', default: "'#6366f1'", description: 'Custom color for the arc (overridden by status).' },
     ],
   },
 
@@ -2809,9 +3201,9 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
 </RippleEffect>`,
     nativeCode: 'Same API - import from @stellix/ui-native',
     propsTable: [
-      { prop: 'color', type: 'string', default: "'rgba(255,255,255,0.35)'", description: 'Color of the ripple overlay.' },
-      { prop: 'duration', type: 'number', default: '500', description: 'Ripple expand duration in ms.' },
-      { prop: 'children', type: 'ReactNode', default: '—', description: 'Element that receives the ripple on click.' },
+      { name: 'children', type: 'ReactNode', default: '—', description: 'Element that receives the ripple on click.' },
+      { name: 'color', type: 'string', default: '—', description: 'Color of the ripple overlay.' },
+      { name: 'className', type: 'string', default: '—', description: 'Additional CSS class names.' },
     ],
   },
 
@@ -2819,7 +3211,7 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
     title: 'ShakeAnimation',
     description: 'Horizontal shake animation applied to wrapped content — ideal for invalid form inputs or error states.',
     category: 'Animations',
-    preview: <ShakeAnimation shake={false}><div className="rounded-lg border-2 border-red bg-red/5 p-4 text-center text-sm text-red">Invalid input - set shake=true to trigger</div></ShakeAnimation>,
+    preview: <ShakePreview />,
     webCode: `import { ShakeAnimation } from '@stellix/ui-web';
 
 <ShakeAnimation shake={hasError}>
@@ -2829,9 +3221,10 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
 </ShakeAnimation>`,
     nativeCode: 'Same API - import from @stellix/ui-native',
     propsTable: [
-      { prop: 'shake', type: 'boolean', default: 'false', description: 'Trigger the shake animation when true.' },
-      { prop: 'intensity', type: 'number', default: '6', description: 'Pixel offset for the shake displacement.' },
-      { prop: 'children', type: 'ReactNode', default: '—', description: 'Content to apply the shake to.' },
+      { name: 'shake', type: 'boolean', default: 'false', description: 'Trigger the shake animation when true.' },
+      { name: 'children', type: 'ReactNode', default: '—', description: 'Content to apply the shake to.' },
+      { name: 'intensity', type: 'number', default: '6', description: 'Pixel offset for the shake displacement.' },
+      { name: 'className', type: 'string', default: '—', description: 'Additional CSS class names.' },
     ],
   },
 
@@ -2855,9 +3248,10 @@ const [prompt, setPrompt] = useState('You are a helpful assistant.');
 </div>`,
     nativeCode: 'Same API - import from @stellix/ui-native',
     propsTable: [
-      { prop: 'direction', type: "'up' | 'down' | 'left' | 'right'", default: "'up'", description: 'Direction the content slides in from.' },
-      { prop: 'delay', type: 'number', default: '0', description: 'Delay in ms before the animation starts.' },
-      { prop: 'children', type: 'ReactNode', default: '-', description: 'Content to reveal.' },
+      { name: 'direction', type: "'left' | 'right' | 'up' | 'down'", default: "'up'", description: 'Direction the content slides in from.' },
+      { name: 'delay', type: 'number', default: '0', description: 'Delay in ms before the animation starts.' },
+      { name: 'children', type: 'ReactNode', default: '—', description: 'Content to reveal.' },
+      { name: 'className', type: 'string', default: '—', description: 'Additional CSS class names.' },
     ],
   },
 
