@@ -1,8 +1,8 @@
 # @stellix/ui-native
 
-> 19 React Native components for mobile apps — built with NativeWind and Reanimated.
+> 40 React Native components for mobile apps — built with NativeWind and Reanimated.
 
-**[Live Demo (Web version)](https://stellix-ui-material.vercel.app/)**
+**[Live Demo (Web version)](https://stellix-ui-material-web-alpha.vercel.app/)**
 
 ## What is this?
 
@@ -64,18 +64,20 @@ export default function Screen() {
 }
 ```
 
-## All 19 Components
+## All 40 Components
 
-Same components as `@stellix/ui-web`, adapted for React Native:
+Cross-platform components adapted for React Native:
 
 | Category | Components |
 |---|---|
-| **Feedback** | `LoadingState`, `Thinking`, `TaskRows` |
-| **Content** | `StreamingText`, `CodeBlock`, `ContextCards` |
+| **Core** | `LoadingState`, `Thinking`, `TaskRows`, `StreamingText`, `CodeBlock`, `ContextCards` |
 | **Forms** | `ApprovalCard`, `PromptBar`, `SelectionActions` |
 | **Tables** | `DiffTable`, `RecordsTable`, `FilterTable` |
 | **Navigation** | `Chat`, `Search`, `SidebarNav` |
 | **Cards** | `RecommendationCard`, `InsightCards`, `ToolChips`, `FineTuneCard` |
+| **Charts** | `DonutChart`, `GaugeChart` |
+| **Primitives** | `Button`, `Badge`, `Avatar`, `Tag`, `Tooltip`, `Toggle`, `Input`, `Textarea`, `Select`, `Checkbox`, `Radio`, `Switch` |
+| **Feedback** | `Toast`, `Alert`, `ProgressBar`, `Spinner`, `SkeletonBlock`, `EmptyState`, `StepIndicator` |
 
 ## Responsive Behavior
 
