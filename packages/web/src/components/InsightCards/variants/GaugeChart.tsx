@@ -13,86 +13,65 @@ export type GaugeChartProps = {
 export function GaugeChart({ value, max, label, unit = '' }: GaugeChartProps) {
   const pct = Math.min(Math.max(value / (max || 1), 0), 1);
 
-  // SVG semicircle gauge params
-  const W = 200;
-  const H = 110;
-  const cx = W / 2;
-  const cy = H - 10;
-  const R = 80;
-  const trackWidth = 14;
+  // Semicircle from left (180deg) to right (0deg)
+  const R = 70;
+  const stroke = 10;
+  const cx = 100;
+  const cy = 85;
 
-  // Arc from 180deg to 0deg (left to right semicircle)
-  const startAngle = Math.PI; // left
-  const endAngle = 0;         // right
-  const spanAngle = Math.PI;
+  // Arc path helper (angles in radians, 0=right, PI=left)
+  const arc = (startDeg: number, endDeg: number, r: number) => {
+    const s = (startDeg * Math.PI) / 180;
+    const e = (endDeg * Math.PI) / 180;
+    const x1 = cx + r * Math.cos(s);
+    const y1 = cy - r * Math.sin(s);
+    const x2 = cx + r * Math.cos(e);
+    const y2 = cy - r * Math.sin(e);
+    const large = Math.abs(endDeg - startDeg) > 180 ? 1 : 0;
+    return `M ${x1} ${y1} A ${r} ${r} 0 ${large} 0 ${x2} ${y2}`;
+  };
 
-  const toXY = (angle: number, radius: number) => ({
-    x: cx + radius * Math.cos(angle),
-    y: cy - radius * Math.sin(angle),
-  });
+  // Track: full semicircle 180 -> 0
+  const trackPath = arc(180, 0, R);
 
-  const rMid = R - trackWidth / 2;
-  const trackStart = toXY(startAngle, rMid);
-  const trackEnd = toXY(endAngle, rMid);
+  // Fill: 180 -> (180 - pct*180)
+  const fillDeg = 180 - pct * 180;
+  const fillPath = arc(180, fillDeg, R);
 
-  const fillAngle = startAngle - pct * spanAngle;
-  const fillEnd = toXY(fillAngle, rMid);
-  const largeArc = pct > 0.5 ? 1 : 0;
+  // Needle tip position
+  const needleAngle = (fillDeg * Math.PI) / 180;
+  const needleLen = R - stroke - 8;
+  const tipX = cx + needleLen * Math.cos(needleAngle);
+  const tipY = cy - needleLen * Math.sin(needleAngle);
 
-  // Needle
-  const needleAngle = startAngle - pct * spanAngle;
-  const needleTip = toXY(needleAngle, R - trackWidth - 4);
-  const needleBase1 = toXY(needleAngle + Math.PI / 2, 5);
-  const needleBase2 = toXY(needleAngle - Math.PI / 2, 5);
-
-  // Color by pct
+  // Color
   const color = pct >= 0.75 ? '#ef4444' : pct >= 0.5 ? '#f97316' : pct >= 0.25 ? '#eab308' : '#22c55e';
-  const textColor = pct >= 0.75 ? 'text-red' : pct >= 0.5 ? 'text-orange' : pct >= 0.25 ? 'text-yellow' : 'text-green';
+  const textColor = pct >= 0.75 ? 'text-red' : pct >= 0.5 ? 'text-orange' : pct >= 0.25 ? 'text-orange' : 'text-green';
 
   return (
     <div className="flex flex-col items-center rounded-xl border border-line bg-surface p-4 shadow-card w-full max-w-xs mx-auto" data-testid="gauge-chart">
-      <p className="mb-1 text-sm font-semibold text-ink" data-testid="gauge-label">{label}</p>
-      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} data-testid="gauge-svg" aria-label={`Gauge: ${value} of ${max}`}>
+      <p className="mb-2 text-sm font-semibold text-ink" data-testid="gauge-label">{label}</p>
+      <svg viewBox="0 0 200 100" className="w-full max-w-[200px]" data-testid="gauge-svg">
         {/* Track */}
-        <path
-          d={`M ${trackStart.x} ${trackStart.y} A ${rMid} ${rMid} 0 0 1 ${trackEnd.x} ${trackEnd.y}`}
-          fill="none"
-          stroke="var(--color-surface-field, #e5e7eb)"
-          strokeWidth={trackWidth}
-          strokeLinecap="round"
-          data-testid="gauge-track"
-        />
-        {/* Fill arc */}
-        {pct > 0 && (
-          <path
-            d={`M ${trackStart.x} ${trackStart.y} A ${rMid} ${rMid} 0 ${largeArc} 1 ${fillEnd.x} ${fillEnd.y}`}
-            fill="none"
-            stroke={color}
-            strokeWidth={trackWidth}
-            strokeLinecap="round"
-            data-testid="gauge-fill"
-            style={{ transition: 'all 0.4s ease' }}
-          />
+        <path d={trackPath} fill="none" stroke="var(--color-line, #e5e5e5)" strokeWidth={stroke} strokeLinecap="round" />
+        {/* Fill */}
+        {pct > 0.01 && (
+          <path d={fillPath} fill="none" stroke={color} strokeWidth={stroke} strokeLinecap="round" style={{ transition: 'all 0.6s ease' }} />
         )}
         {/* Needle */}
-        <polygon
-          points={`${needleTip.x},${needleTip.y} ${needleBase1.x},${needleBase1.y} ${needleBase2.x},${needleBase2.y}`}
-          fill={color}
-          data-testid="gauge-needle"
-          style={{ transition: 'all 0.4s ease' }}
-        />
-        <circle cx={cx} cy={cy} r={5} fill="var(--color-surface, #fff)" stroke={color} strokeWidth={2} />
-        {/* Min/max labels */}
-        <text x={trackStart.x - 4} y={cy + 16} textAnchor="middle" fontSize="9" fill="var(--color-ink-3, #9ca3af)">0</text>
-        <text x={trackEnd.x + 4} y={cy + 16} textAnchor="middle" fontSize="9" fill="var(--color-ink-3, #9ca3af)">{max}</text>
+        <line x1={cx} y1={cy} x2={tipX} y2={tipY} stroke={color} strokeWidth={2.5} strokeLinecap="round" style={{ transition: 'all 0.6s ease' }} />
+        {/* Center dot */}
+        <circle cx={cx} cy={cy} r={4} fill="var(--color-surface, #fff)" stroke={color} strokeWidth={2} />
+        {/* Min/Max */}
+        <text x={cx - R - 2} y={cy + 14} textAnchor="middle" fontSize="9" fill="var(--color-ink-3, #9a9a9a)">0</text>
+        <text x={cx + R + 2} y={cy + 14} textAnchor="middle" fontSize="9" fill="var(--color-ink-3, #9a9a9a)">{max}</text>
       </svg>
-      {/* Value readout */}
-      <div className="flex flex-col items-center -mt-2">
-        <span className={cn('text-3xl font-bold tabular-nums', textColor)} data-testid="gauge-value">
-          {value}
-          {unit && <span className="ml-0.5 text-lg font-medium">{unit}</span>}
+      {/* Value */}
+      <div className="flex flex-col items-center mt-1">
+        <span className={cn('text-2xl font-bold tabular-nums', textColor)} data-testid="gauge-value">
+          {value}{unit && <span className="ml-0.5 text-base font-medium">{unit}</span>}
         </span>
-        <span className="text-xs text-ink-3">{Math.round(pct * 100)}% of {max}{unit}</span>
+        <span className="text-xs text-ink-3">{Math.round(pct * 100)}% of {max}</span>
       </div>
     </div>
   );
